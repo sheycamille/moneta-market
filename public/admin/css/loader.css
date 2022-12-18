@@ -1,0 +1,44 @@
+.container-fluid {
+    display: block;
+}
+
+div.load-container {
+    width: 100%;
+    height: 100vh;
+    display: none;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background: #0000ff24;
+}
+
+div.loader {
+    animation: rotate 2s infinite ease;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    top: 45%;
+    border: 4px solid #CCE6F4;
+    border-top-color: #003844;
+    border-right-color: #FFB100;
+    border-bottom-color: #006C67;
+    border-left-color: #F194B4;
+    border-radius: 50%;
+}
+
+/* animations */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(-45deg);
+    }
+
+    100% {
+        transform: rotate(720deg);
+    }
+}
