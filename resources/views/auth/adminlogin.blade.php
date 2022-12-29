@@ -18,7 +18,7 @@
                                 <!-- module logo begin -->
                                 <a class="uk-logo" href="{{ route('home') }}">
                                     <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
-                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="130"
+                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="180"
                                         height="36" data-uk-img>
                                 </a>
                                 <!-- module logo begin -->
@@ -48,9 +48,8 @@
 
                                     <div class="uk-margin-small uk-width-1-1 uk-inline">
                                         <span class="uk-form-icon uk-form-icon-flip fas fa-user fa-sm"></span>
-                                        <input name="email" class="uk-input uk-border-rounded"
-                                            value="{{ old('email') }}" id="email" placeholder="name@example.com"
-                                            required>
+                                        <input name="email" class="uk-input uk-border-rounded" value="{{ old('email') }}"
+                                            id="email" placeholder="name@example.com" required>
                                     </div>
                                     <div class="uk-margin-small uk-width-1-1 uk-inline">
                                         <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>

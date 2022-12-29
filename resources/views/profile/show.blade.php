@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('title', 'My Profile')
-@section('my-profile', 'c-active')
+
+@section('profile-li', 'selected')
+@section('security', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

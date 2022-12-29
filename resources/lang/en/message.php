@@ -321,6 +321,7 @@ return [
         'dash' => 'Dashboard',
         'my_act' => 'My Account',
         'my_pfl' => 'My Profile',
+        'update_pfl' => 'Update Profile',
         'kyc' => 'My KYC',
         'sec' => 'Account Security',
         'with_info' => 'Withdrawal Info',

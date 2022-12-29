@@ -2,8 +2,8 @@
 
 @section('title', 'My Demo Accounts')
 
-@section('accounts', 'c-show')
-@section('demo-accounts', 'c-active')
+@section('accounts-li', 'selected')
+@section('daccounts', 'active')
 
 @section('css')
     <link href="{{ asset('admin/css/loader.css') }}" rel="stylesheet">
@@ -11,6 +11,7 @@
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -107,7 +108,8 @@
                                                             <!-- Modal content -->
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title text-left text-white">Trader7 Reset
+                                                                    <h4 class="modal-title text-left text-white">Trader7
+                                                                        Reset
                                                                         Password</h4>
                                                                     <button type="button"
                                                                         class="close text-left text-white"
@@ -131,8 +133,7 @@
 
                                                                         <div
                                                                             class="d-flex justify-content-start align-content-start input-wrapper">
-                                                                            <input
-                                                                                class="form-control text-left checkbox"
+                                                                            <input class="form-control text-left checkbox"
                                                                                 type="checkbox" name="master_password">
                                                                             <label>Reset Investor Password</label>
                                                                         </div>

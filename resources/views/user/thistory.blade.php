@@ -4,6 +4,7 @@
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

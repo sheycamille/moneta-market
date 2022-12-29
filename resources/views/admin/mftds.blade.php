@@ -3,7 +3,7 @@
 @section('title', 'Manage FTDs')
 
 @section('maccounts', 'c-show')
-@section('ftds', 'c-active')
+@section('ftds', 'active')
 
 @section('content')
 

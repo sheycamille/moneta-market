@@ -2,11 +2,12 @@
 
 @section('title', 'My Withdrawal Info')
 
-@section('my-accounts', 'c-show')
-@section('withdrawal-info', 'c-active')
+@section('profile-li', 'selected')
+@section('winfo', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

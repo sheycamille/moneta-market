@@ -2,23 +2,51 @@
 
 @section('title', 'Dashboard')
 
-@section('dashboard', 'c-active')
+@section('dashboard', 'active')
+@section('dashboard-li', 'selected')
 
 @section('css')
-    <link href="{{ asset('admin/css/coreui-chartjs.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('admin/css/coreui-chartjs.css') }}" rel="stylesheet"> --}}
 @endsection
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-7 align-self-center">
+                <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">@lang('message.topmenu.hi')
+                    {{ Auth::user()->name }}!</h3>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb m-0 p-0">
+                            <li class="breadcrumb-item"><a href="/dashboard" class="text-muted">Dashboard</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
     <div class="container-fluid">
         <div class="fade-in">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h1 class="text-left">@lang('message.body.welcome'), {{ Auth::user()->name }}!</h1>
+                            <h1 class="text-left">@lang('message.body.welcome') {{ Auth::user()->name }}!</h1>
                         </div>
 
                         <div class="card-body">
@@ -183,4 +211,9 @@
             </div>
         </div>
     </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+
+
 @endsection

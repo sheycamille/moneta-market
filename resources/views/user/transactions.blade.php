@@ -2,10 +2,12 @@
 
 @section('title', 'My Transactions')
 
-@section('transactions', 'c-active')
+@section('transactions-li', 'selected')
+@section('transactions', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

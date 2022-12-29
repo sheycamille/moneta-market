@@ -3,7 +3,7 @@
 @section('title', 'Manage admins')
 
 @section('manage-admins', 'c-show')
-@section('admins', 'c-active')
+@section('admins', 'active')
 
 @section('content')
 

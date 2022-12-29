@@ -15,7 +15,7 @@
                                 <!-- module logo begin -->
                                 <a class="uk-logo" href="{{ route('home') }}">
                                     <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
-                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="130"
+                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="180"
                                         height="36" data-uk-img>
                                 </a>
                                 <!-- module logo begin -->

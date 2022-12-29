@@ -2,11 +2,12 @@
 
 @section('title', 'Coins Payment')
 
-@section('deposits-and-withdrawals', 'c-show')
-@section('deposits', 'c-active')
+@section('dw-li', 'selected')
+@section('deposits', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -125,8 +126,7 @@
                                                     class="col-6 text-center d-flex justify-content-center align-items-center">
                                                     <a class="text-center" href="https://catalyx.io/" target="_blank">
                                                         <img src="{{ asset('dash/images/catalyx.png') }}"
-                                                            alt="Buy on Catalyx" tilte="Buy on Catalyx"
-                                                            width="80%" />
+                                                            alt="Buy on Catalyx" tilte="Buy on Catalyx" width="80%" />
                                                         <br>
                                                         <span>Buy Now</span>
                                                     </a>
@@ -143,9 +143,12 @@
                                                 </div>
                                                 <div
                                                     class="col-6 text-center d-flex justify-content-center align-items-center">
-                                                    <a class="text-center" href="https://coinbase.com/join/leonar_0of?src=ios-link" target="_blank">
+                                                    <a class="text-center"
+                                                        href="https://coinbase.com/join/leonar_0of?src=ios-link"
+                                                        target="_blank">
                                                         <img src="{{ asset('dash/images/coinbase.png') }}"
-                                                            alt="Buy on Coinbase" tilte="Buy on Coinbase" width="80%" />
+                                                            alt="Buy on Coinbase" tilte="Buy on Coinbase"
+                                                            width="80%" />
                                                         <br>
                                                         <span>@lang('message.coins.buy')</span>
                                                     </a>

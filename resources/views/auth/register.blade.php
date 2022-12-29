@@ -43,7 +43,7 @@
                                 <!-- module logo begin -->
                                 <a class="uk-logo" href="{{ route('home') }}">
                                     <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
-                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="130"
+                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="180"
                                         height="36" data-uk-img>
                                 </a>
                                 <!-- module logo begin -->
@@ -84,8 +84,7 @@
                                         <span class="uk-form-icon uk-form-icon-flip fas fa-user fa-sm"
                                             for="first_name"></span>
                                         <input type="text" class="uk-input uk-border-rounded" name="first_name"
-                                            value="{{ old('first_name') }}" id="first_name"
-                                            placeholder="@lang('message.first_name')">
+                                            value="{{ old('first_name') }}" id="first_name" placeholder="@lang('message.first_name')">
                                     </div>
                                     <div class="uk-margin-small uk-width-1-1 uk-inline">
                                         @if ($errors->has('last_name'))
@@ -96,8 +95,7 @@
                                         <span class="uk-form-icon uk-form-icon-flip fas fa-user fa-sm"
                                             for="last_name"></span>
                                         <input type="text" class="uk-input uk-border-rounded" name="last_name"
-                                            value="{{ old('last_name') }}" id="last_name"
-                                            placeholder="@lang('message.last_name')">
+                                            value="{{ old('last_name') }}" id="last_name" placeholder="@lang('message.last_name')">
                                     </div>
 
                                     <div class="uk-margin-small uk-width-1-1 uk-inline">

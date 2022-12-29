@@ -97,7 +97,7 @@ class UserController extends Controller
     // profile route
     public function profile()
     {
-        $countries = Country::whereStatus('active')->get();
+        $countries = Country::orderBy('name')->whereStatus('active')->get();
         $userinfo = User::where('id', Auth::user()->id)->first();
 
         return view('user.profile')->with(array(
@@ -369,7 +369,7 @@ class UserController extends Controller
 
         $t7 = Trader7::find($t7_id);
 
-        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-PayPal', 'MM-Auto-'.$request->orderid, 'deposit', 'balance');
+        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-PayPal', 'SKY-Auto-'.$request->orderid, 'deposit', 'balance');
         if(gettype($resp) !== 'integer') {
             return json_encode(['message' => 'Sorry an error occured, report this to support!']);
         } else {
@@ -521,7 +521,7 @@ class UserController extends Controller
     // serves account security page
     public function security()
     {
-        $countries = Country::whereStatus('active')->get();
+        $countries = Country::orderBy('name')->whereStatus('active')->get();
 
         return view('profile.show', [
             'title' => 'Two Factor Authentication',
@@ -786,7 +786,7 @@ class UserController extends Controller
     {
         $method = Wdmethod::find($methodId);
         $amount = $request->session()->get('amount');
-        $countries = Country::whereStatus('active')->get();
+        $countries = Country::orderBy('name')->whereStatus('active')->get();
 
         $data = [];
         if (strpos(strtolower($method->name), 'bank') > -1) {
@@ -875,6 +875,46 @@ class UserController extends Controller
                 'dmethod' => $method,
                 'transaction_id' => $transaction_id,
             ];
+        } elseif (strpos(strtolower($method->setting_key), 'ragapay') > -1) {
+            $view = 'ragapay';
+            $title = 'Make RagaPay Payment';
+            $txn_id = rand();
+            $request->session()->put('ragapay_transaction_id', $txn_id);
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+                'transaction_id' => $txn_id,
+            ];
+
+            // make an auth request to Ragapay
+            $desc = 'Payment of goods';
+            $user = Auth::user();
+            $amount = number_format((float)$amount, 2, '.', '');
+            $to_md5 = sha1(md5(strtoupper($txn_id . $amount . 'usd' . $desc . config('ragapay.api_secret'))));
+
+            $input = [
+                'merchant_key'=> config('ragapay.api_key'),
+                'operation'=> 'purchase',
+                'methods'=> [],
+                'order'=> [
+                    'number'=> $txn_id,
+                    'amount'=> $amount,
+                    'currency'=> 'USD',
+                    'description'=> $desc,
+                ],
+                'cancel_url'=> route('successragapaycharge'),
+                'success_url'=> route('cancelragapaycharge'),
+                'customer'=> [
+                    'name'=> $user->name,
+                    'email'=> $user->email,
+                ],
+                'hash'=> $to_md5
+            ];
+
+            $response = Http::post(config('ragapay.endpoint'), $input);
+
+            $data['url'] = $response['redirect_url'];
+            return redirect($data['url']);
         } else {
             $view = 'coins';
             $wallet_address = Setting::where('name', $method->setting_key)->first()->value;
@@ -921,7 +961,7 @@ class UserController extends Controller
 
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayPound', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayPound', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -975,7 +1015,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayPound', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayPound', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
@@ -1034,7 +1074,7 @@ class UserController extends Controller
 
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayStudio', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayStudio', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
@@ -1088,7 +1128,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayStudio', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayStudio', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1147,7 +1187,7 @@ class UserController extends Controller
 
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-ChargeMoney', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-ChargeMoney', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1201,7 +1241,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-ChargeMoney', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-ChargeMoney', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1265,7 +1305,7 @@ class UserController extends Controller
 
         if ($resp['status'] == 'C') {
             $amt = $resp['amount'];
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-YWallit', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-YWallit', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1317,7 +1357,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'C') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-YWallit', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-YWallit', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1387,7 +1427,7 @@ class UserController extends Controller
 
         if ($resp->responseCode == '0') {
             $amt = $resp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-VirtualPay', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-VirtualPay', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1441,7 +1481,7 @@ class UserController extends Controller
 
         if ($data['responseCode'] == '0') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-VirtualPay', 'MM-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-VirtualPay', 'SKY-Auto', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1479,7 +1519,6 @@ class UserController extends Controller
 
     public function handleAuthorizeNetPay(Request $request)
     {
-        $data = $request->all();
         $user = auth()->user();
         $t7_id = $request->session()->get('t7_account_id');
         $t7 = Trader7::find($t7_id);
@@ -1536,7 +1575,7 @@ class UserController extends Controller
                     $message_text = $tresponse->getMessages()[0]->getDescription() . ", Transaction ID: " . $tresponse->getTransId();
 
                     $amt = $data['amount'];
-                    $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-AuthorizeNet', 'MM-Auto', 'deposit', 'balance');
+                    $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-AuthorizeNet', 'SKY-Auto', 'deposit', 'balance');
                     if(gettype($respTrans) !== 'integer') {
                         return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
                     } else {
@@ -1605,7 +1644,7 @@ class UserController extends Controller
         $deposit->save();
 
         $postInput = [
-            'salt' => config('cashonex.api_secret'),
+            'salt' => config('cashonex.api_key'),
             'last_name' => $request->last_name,
             'first_name' => $request->first_name,
             'email' => $request->email,
@@ -1623,6 +1662,7 @@ class UserController extends Controller
             'cvv_code' => $request->cvv_code,
             'expiry_month' => $request->expiry_month,
             'expiry_year' => $request->expiry_year,
+            'redirect_url' => $request->redirect_url,
             'clientip' => $request->ip(),
             'redirect_url' => route('verifycashonexcharge'),
             'webhook_url' => route('verifycashonexcharge'),
@@ -1630,11 +1670,13 @@ class UserController extends Controller
         ];
 
         $headers = [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'secret' => config('cashonex.api_secret')
+            'Content-Type' => 'application/json',
+            'Idempotency-Key' => config('cashonex.api_key')
         ];
 
-        $response = Http::withHeaders($headers)->post($endpoint, $postInput);
+        $response = Http::withHeaders($headers)->withBody(json_encode($postInput), 'application/json')->post($endpoint);
+
+        dd([$postInput, $headers, $response]);
 
         $resp = json_decode($response->getBody(), true);
         $msg = $resp['message'];
@@ -1645,7 +1687,7 @@ class UserController extends Controller
 
         if($resp['data']['gatewayStatus']=='APPROVED') {
             $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'MM-Auto-'.$paymentId, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'SKY-Auto-'.$paymentId, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
@@ -1722,7 +1764,7 @@ class UserController extends Controller
 
         if($resp['data']['gatewayStatus']=='APPROVED') {
             $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'MM-Auto-'.$paymentId, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'SKY-Auto-'.$paymentId, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
@@ -1778,7 +1820,7 @@ class UserController extends Controller
         if(!$deposit) $deposit = new Deposit();
 
         $deposit->status = $request->status;
-        $deposit->payment_mode = 'NumpPay';
+        $deposit->payment_mode = 'NumPay';
         $deposit->user = $user->id;
         $deposit->account_id = $t7_id;
         $deposit->txn_id = $paymentId;
@@ -1791,7 +1833,7 @@ class UserController extends Controller
 
         if($request->status == 'Success') {
             if($request->paid_amount) $amount = $request->paid_amount;
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-NUMPAY', 'MM-Auto-'.$paymentId, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-NUMPAY', 'SKY-Auto-'.$paymentId, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 return redirect(route('account.liveaccounts'))->with('message', 'Sorry an error occured, report this to support!');
@@ -1829,155 +1871,51 @@ class UserController extends Controller
     }
 
 
-    public function handleNumPay(Request $request)
+    public function successRagapay(Request $request)
     {
-        error_log(implode(" ", $request->all()));
-        dd($request->all());
-    }
-
-
-    public function startPaycly(Request $request)
-    {
-        $endpoint = "";
-
+        $endpoint = config('ragapay.endpoint');
         $t7_id = $request->session()->get('t7_account_id');
+        $txn_id = $request->session()->get('ragapay_transaction_id');
+        $card_number = $request->ccnumber;
+        $password = config('ragapay.api_secret');
+
         $t7 = Trader7::find($t7_id);
         $user = Auth::user();
         $amount = $request->amount;
 
         $deposit = new Deposit();
         $deposit->status = 'Pending';
-        $deposit->payment_mode = 'Cashonex';
+        $deposit->payment_mode = 'RagaPay';
         $deposit->user = $user->id;
         $deposit->account_id = $t7_id;
+        $deposit->txn_id = $txn_id;
         $deposit->save();
 
-        $postInput = [
-            'salt' => config('cashonex.api_key'),
-            'last_name' => $request->last_name,
-            'first_name' => $request->first_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'country' => $request->country,
-            'zip_code' => $request->zip_code,
-            'amount' => $amount,
-            'currency' => $request->currency,
-            'pay_by' => $request->pay_by,
-            'card_number' => $request->card_number,
-            'card_name' => $request->card_name,
-            'cvv_code' => $request->cvv_code,
-            'expiry_month' => $request->expiry_month,
-            'expiry_year' => $request->expiry_year,
-            'clientip' => $request->ip(),
-            'redirect_url' => route('verifycashonexcharge'),
-            'webhook_url' => route('verifycashonexcharge'),
-            'orderid' => $deposit->id,
-        ];
+        // $postInput = [
+        //     'action' => 'CAPTURE',
+        //     'client_key' => $user->id . $txn_id . $deposit->id,
+        //     'trans_id' => $txn_id,
+        //     'order_amount' => $amount,
+        //     'hash' => md5(strtoupper(strrev($user->email).$password.$txn_id.strrev(substr($card_number,0,6).substr($card_number, -4)))),
+        // ];
 
-        $headers = [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'secret' => config('cashonex.api_secret')
-        ];
+        // $headers = [
+        //     'Content-Type' => 'application/x-www-form-urlencoded',
+        //     'secret' => config('cashonex.api_secret')
+        // ];
 
-        $response = Http::withHeaders($headers)->post($endpoint, $postInput);
+        // $response = Http::withHeaders($headers)->post($endpoint, $postInput);
 
-        $resp = json_decode($response->getBody(), true);
-        $msg = $resp['message'];
+        // $resp = json_decode($response->getBody(), true);
 
-        if($resp['success'] ==  false) {
-            return redirect()->back()->with('message', $msg);
-        }
-
-        if($resp['data']['gatewayStatus']=='APPROVED') {
-            $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'MM-Auto-'.$paymentId, 'deposit', 'balance');
+        if($request->status == 'SUCCESS') {
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Ragapay', 'SKY-Auto-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance += $amount;
                 $t7->save();
-                $deposit->txn_id = $paymentId;
-                $deposit->status = 'Processed';
-                $deposit->save();
-
-                //save transaction
-                $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
-
-                //send email notification
-                $currency = Setting::getValue('currency');
-                $site_name = Setting::getValue('site_name');
-                $objDemo = new \stdClass();
-
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
-                $objDemo->message = "\r Hello $name, \r\n
-
-                \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
-                $objDemo->sender = "$site_name";
-                $objDemo->date = Carbon::Now();
-                $objDemo->subject = "Deposit Processed!";
-
-                Mail::bcc($user->email)->send(new NewNotification($objDemo));
-                $msg = 'Your deposit was successfully processed!';
-            }
-        }
-
-        // If 3D
-        if($resp['data']['redirectUrl']!='') {
-            $msg = 'Security Redirection by PSP! Redirecting...';
-            header('Location: '.$resp['data']['redirectUrl']);
-        }
-
-        // If 2D
-        if($resp['data']['gatewayStatus']=='INITIATED') {
-            $msg = 'Deposit Initiated by PSP! Check back later...';
-        }
-
-        if($resp['data']['gatewayStatus']=='DECLINED') {
-            $msg = 'Deposit Declined by PSP!';
-        }
-
-        Session::flash('message', $msg);
-        return redirect(route('account.liveaccounts'))->with('message', $msg);
-    }
-
-
-    public function checkPaycly(Request $request)
-    {
-        $endpoint = "https://cashonex.co/api/rest/paymentStatus";
-        $user = Auth::user();
-        $deposit = Deposit::find($request->deposit_id);
-        $amount = $deposit->amount;
-        $t7 = Trader7::find($deposit->account_id);
-
-        $postInput = [
-            'api-key' => config('cashonex.api_key'),
-            'orderid' => $deposit->id,
-            'paymentId' => $deposit->txn_id,
-        ];
-
-        $headers = [
-            'Content-Type' => 'application/x-www-form-urlencoded',
-            'secret' => config('cashonex.api_secret')
-        ];
-
-        $response = Http::withHeaders($headers)->post($endpoint, $postInput);
-
-        $resp = json_decode($response->getBody(), true);
-
-        if($resp['data']['gatewayStatus']=='APPROVED') {
-            $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'MM-Auto-'.$paymentId, 'deposit', 'balance');
-
-            if(gettype($respT7) !== 'integer') {
-                return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
-            } else {
-                $t7->balance += $amount;
-                $t7->save();
-                $deposit->txn_id = $paymentId;
                 $deposit->status = 'Processed';
                 $deposit->save();
 
@@ -2001,5 +1939,10 @@ class UserController extends Controller
                 $message = 'Your deposit was successfully processed!';
             }
         }
+    }
+
+    public function cancelRagapay(Request $request)
+    {
+
     }
 }

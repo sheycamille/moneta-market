@@ -315,6 +315,7 @@ return [
         'dash' => 'Panel de control',
         'my_act' => 'Mi Cuenta',
         'my_pfl' => 'Mi perfil',
+        'update_pfl' => 'Actualizar perfil',
         'kyc' => 'Mi KYC',
         'sec' => 'Seguridad de la cuenta',
         'with_info' => 'Información de retiro',

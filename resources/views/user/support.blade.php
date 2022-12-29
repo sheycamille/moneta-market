@@ -2,11 +2,12 @@
 
 @section('title', 'Contact Us')
 
-@section('support', 'c-active')
-@section('my-profile', 'c-active')
+@section('profile-li', 'selected')
+@section('support', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

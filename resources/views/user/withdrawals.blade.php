@@ -2,11 +2,12 @@
 
 @section('title', 'My Withdrawals')
 
-@section('deposits-and-withdrawals', 'c-show')
-@section('withdrawals', 'c-active')
+@section('dw-li', 'selected')
+@section('withdrawals', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

@@ -2,8 +2,8 @@
 
 @section('title', 'My Live Accounts')
 
-@section('accounts', 'c-show')
-@section('live-accounts', 'c-active')
+@section('accounts-li', 'selected')
+@section('laccounts', 'active')
 
 @section('css')
     <link href="{{ asset('admin/css/loader.css') }}" rel="stylesheet">
@@ -11,6 +11,7 @@
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -144,7 +145,8 @@
                                                             <!-- Modal content-->
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title text-left text-white">Trader7 Reset
+                                                                    <h4 class="modal-title text-left text-white">Trader7
+                                                                        Reset
                                                                         Password</h4>
                                                                     <button type="button"
                                                                         class="close text-left text-white"

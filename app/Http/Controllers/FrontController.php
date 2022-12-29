@@ -23,9 +23,7 @@ class FrontController extends Controller
 {
     public function index(Request $request)
     {
-        $faq = Faq::orderby('id', 'desc')->get();
-
-        return view('front.index', compact('faq'));
+        return redirect()->to('login');
     }
 
 

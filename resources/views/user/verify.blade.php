@@ -2,11 +2,12 @@
 
 @section('title', 'Account Verification(KYC)')
 
-@section('my-account', 'c-show')
-@section('kyc', 'c-active')
+@section('kyc-li', 'selected')
+@section('kyc', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -45,9 +46,10 @@
                                                 <div class="quick-actions-header">
                                                     @if (Auth::user()->account_verify == '')
                                                         <h4 class="ml-3">
-                                                            <a href="#" class="p-0 col-12"><i
-                                                                    class="glyphicon glyphicon-ok"></i>
-                                                                @lang('message.verify.status')</a>
+                                                            <a href="#" class="p-0 col-12">
+                                                                <i class="glyphicon glyphicon-ok"></i>
+                                                                @lang('message.verify.status')
+                                                            </a>
                                                         </h4>
                                                     @else
                                                         <h4 class="ml-3">

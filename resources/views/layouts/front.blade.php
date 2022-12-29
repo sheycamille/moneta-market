@@ -109,7 +109,7 @@
                             <!-- module logo begin -->
                             <a class="uk-logo" href="{{ route('home') }}">
                                 <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
-                                    data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="130"
+                                    data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="180"
                                     height="36" data-uk-img>
                             </a>
                             <!-- module logo begin -->
@@ -316,7 +316,7 @@
                             <li><a href="{{ route('home') }}"><img class="uk-margin-small-bottom"
                                         src="{{ asset('front/img/group-logo.png') }}"
                                         data-src="{{ asset('front/img/group-logo.png') }}" alt="logo"
-                                        width="130" height="36" data-uk-img></a></li>
+                                        width="180" height="36" data-uk-img></a></li>
                             <li><a href="mailto:support@monetamarket.ca"><i
                                         class="fas fa-envelope uk-margin-small-right"></i>support@monetamarket.ca</a>
                             </li>

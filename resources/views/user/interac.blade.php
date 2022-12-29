@@ -2,11 +2,12 @@
 
 @section('title', 'Interac Payment')
 
-@section('deposits-and-withdrawals', 'c-show')
-@section('deposits', 'c-active')
+@section('dw-li', 'selected')
+@section('deposits', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

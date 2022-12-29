@@ -3,7 +3,7 @@
 @section('title', 'Manage Account Types')
 
 @section('maccounts', 'c-show')
-@section('accounttypes', 'c-active')
+@section('accounttypes', 'active')
 
 @section('content')
 

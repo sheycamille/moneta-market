@@ -2,8 +2,8 @@
 
 @section('title', 'Manage KYC')
 
-@section('manage-users', 'c-show')
-@section('kyc', 'c-active')
+@section('musers-li', 'selected')
+@section('mkyc', 'active')
 
 @section('content')
 
@@ -50,7 +50,8 @@
                         <div class="mb-5 row">
                             <div class="col-12 p-4">
                                 <div class="bs-example table-responsive" data-example-id="hoverable-table">
-                                    <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm yajra-datatable">
+                                    <table id="ShipTable"
+                                        class="table table-bordered table-striped table-responsive-sm yajra-datatable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -59,6 +60,7 @@
                                                 <th>KYC Status</th>
                                                 <th>Uploaded Date</th>
                                                 <th>Verified Date</th>
+                                                <th>Docs</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -94,7 +96,8 @@
                                                             class="badge badge-primary" style="paddig: 20px;"><i
                                                                 class="fa fa-eye"></i>
                                                             Passport</a>
-
+                                                    </td>
+                                                    <td>
                                                         @if (auth('admin')->user()->hasPermissionTo('mkyc-validate', 'admin'))
                                                             {{-- @if ($user->account_verify != 'Verified') --}}
                                                             <a href="{{ route('acceptkyc', $user->id) }}"
@@ -325,4 +328,3 @@
         });
     </script>
 @endsection
-

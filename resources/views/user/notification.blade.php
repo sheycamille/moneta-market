@@ -2,12 +2,14 @@
 
 @section('title', 'My Notifications')
 
-@section('my-account', 'c-show')
-@section('notifications', 'c-active')
+@section('profile-li', 'selected')
+@section('notifications', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
+
 
     <div class="container-fluid">
         <div class="fade-in">

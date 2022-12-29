@@ -1,59 +1,109 @@
 @section('topbar')
-    <header class="c-header c-header-light c-header-fixed c-header-with-subheader">
-        <button class="c-header-toggler c-class-toggler d-lg-none mr-auto" type="button" data-target="#sidebar"
-            data-class="c-sidebar-show"><span class="c-header-toggler-icon"></span></button>
-        <a class="c-header-brand d-sm-none" href="/">
-            <img class="c-header-brand" src="{{ asset('front/favicon.png') }}" alt="Moneta Market Logo"
-                style="width: 50vw;">
-        </a>
-        <button class="c-header-toggler c-class-toggler ml-3 d-md-down-none" type="button" data-target="#sidebar"
-            data-class="c-sidebar-lg-show" responsive="true"><span class="c-header-toggler-icon"></span></button>
-
-        <ul class="c-header-nav ml-auto mr-4">
-            <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#"
-                    role="button" aria-haspopup="true" aria-expanded="false">
-                    <div class="">
-                        Hi {{ Auth('admin')->User()->firstName }}
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="{{ url('admin/icons/sprites/free.svg#cil-menu') }}"></use>
-                        </svg>
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right pt-0">
-                    <a class="dropdown-item" href="{{ route('adminchangepass') }}">Change
-                        Password
-                    </a>
-                    <div class="dropdown-divider"></div>
-
-                    <a class="dropdown-item" href="#"
-                        onclick="event.preventDefault();document.getElementById('logoutform').submit();">
-
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="{{ url('admin/icons/sprites/free.svg#cil-account-logout') }}"></use>
-                        </svg>
-                        Logout
-                        <form id="logoutform" action="{{ route('adminlogout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <header class="topbar" data-navbarbg="skin1">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <div class="navbar-header">
+                <!-- This is for the sidebar toggle which is visible on mobile only -->
+                <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                        class="ti-menu ti-close"></i></a>
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-brand">
+                    <!-- Logo icon -->
+                    <a href="/">
+                        <b class="logo-icon">
+                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                            <!-- Dark Logo icon -->
+                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo icon -->
+                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="light-logo" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span class="logo-text">
+                            <!-- dark Logo text -->
+                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo text -->
+                            {{-- <img src="{{ asset('front/logo.png') }}" class="light-logo" alt="homepage" /> --}}
+                        </span>
                     </a>
                 </div>
-            </li>
-        </ul>
-
-        <div class="c-subheader px-3">
-            <ol class="breadcrumb border-0 m-0">
-                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                <?php $segments = ''; ?>
-                @for ($i = 1; $i <= count(Request::segments()); $i++)
-                    <?php $segments .= '/' . Request::segment($i); ?>
-                    @if ($i < count(Request::segments()))
-                        <li class="breadcrumb-item">{{ ucfirst(Request::segment($i)) }}
-                        </li>
-                    @else
-                        <li class="breadcrumb-item active">{{ ucfirst(Request::segment($i)) }}</li>
-                    @endif
-                @endfor
-            </ol>
-        </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Toggle which is visible on mobile only -->
+                <!-- ============================================================== -->
+                <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                    data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Logo -->
+            <!-- ============================================================== -->
+            <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin1">
+                <!-- ============================================================== -->
+                <!-- Right side toggle and nav items -->
+                <!-- ============================================================== -->
+                <ul class="navbar-nav w-100 align-items-center">
+                    <li class="nav-item ml-0 ml-md-3 ml-lg-0">
+                        <a class="nav-link search-bar" href="javascript:void(0)">
+                            <form class="my-2 my-lg-0" action="{{ route('refreshaccounts') }}">
+                                <div class="customize-input customize-input-v4">
+                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                    <i class="form-control-icon" data-feather="search"></i>
+                                </div>
+                            </form>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="col-5 d-flex align-self-center">
+                            <ul class="d-flex flex-row align-self-center text-white">
+                                <li class="breadcrumb-item text-white"><a class="text-white" href="/dashboard">Home</a></li>
+                                <?php $segments = ''; ?>
+                                @for ($i = 1; $i <= count(Request::segments()); $i++)
+                                    <?php $segments .= '/' . Request::segment($i); ?>
+                                    @if ($i < count(Request::segments()))
+                                        <li class="breadcrumb-item text-white">{{ ucfirst(Request::segment($i)) }}
+                                        </li>
+                                    @else
+                                        <li class="breadcrumb-item text-white active">{{ ucfirst(Request::segment($i)) }}
+                                        </li>
+                                    @endif
+                                @endfor
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-auto">
+                        <div class="col-5 d-flex align-self-center">
+                            <ul class="d-flex flex-row align-self-center">
+                                @if (App::getLocale() == 'en')
+                                    <li><a class="btn btn-warning text-white" href="{{ route('switchlang', 'fr') }}">FR</a>
+                                    </li>
+                                    <li><a class="btn btn-danger text-white" href="{{ route('switchlang', 'es') }}">ES</a>
+                                    </li>
+                                @elseif (App::getLocale() == 'fr')
+                                    <li><a class="btn btn-success text-white" href="{{ route('switchlang', 'en') }}">EN</a>
+                                    </li>
+                                    <li><a class="btn btn-danger text-white" href="{{ route('switchlang', 'es') }}">ES</a>
+                                    </li>
+                                @else
+                                    <li><a class="btn btn-success text-white" href="{{ route('switchlang', 'en') }}">EN</a>
+                                    </li>
+                                    <li><a class="btn btn-primary text-white" href="{{ route('switchlang', 'FR') }}">FR</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
 @endsection

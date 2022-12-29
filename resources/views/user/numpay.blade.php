@@ -2,11 +2,42 @@
 
 @section('title', 'NumPay Payment')
 
-@section('deposits-and-withdrawals', 'c-show')
-@section('deposits', 'c-active')
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <style>
+        span.select2.select2-container.select2-container--default {
+            max-width: 100%;
+            width: 100%;
+            border: 0 none;
+            border-radius: 5px;
+            padding: 3px 0;
+            background: white;
+            color: #768192;
+            font-size: .941rem;
+            border: 1px solid #ddd;
+            transition: .2s ease-in-out;
+            transition-property: color, background-color, border;
+        }
+
+        .select2-selection {
+            border: 0 none !important;
+            border-radius: none !important;
+            background-color: white !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #768192;
+            line-height: 28px;
+        }
+    </style>
+@endsection
+
+@section('dw-li', 'selected')
+@section('deposits', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -59,7 +90,7 @@
 
                                             <div class="card shadow">
                                                 <div class="card-body">
-                                                    <div id="azulpay" class="d-flex justify-content-center col-xs-12">
+                                                    <div id="numpay" class="d-flex justify-content-center col-xs-12">
                                                         <form method="post"
                                                             action="https://numpayments.com/Server2s/numpay.php"
                                                             class="form">
@@ -125,19 +156,17 @@
                                                                 </div>
                                                                 <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Country*</h5>
-                                                                    {{-- <input type="text" name="country"
-                                                                    class="form-control"
-                                                                    value="{{ Auth::user()->country }}" required> --}}
-                                                                    <select class="form-control" name="country"
-                                                                        id="country" required>
-                                                                        <option selected disabled>Choose Country</option>
+                                                                    <select name="country" id="country"
+                                                                        class="form-control country-select" required>
+                                                                        <option>@lang('message.register.chs')</option>
                                                                         @foreach ($countries as $country)
                                                                             <option
-                                                                                @if (Auth::user()->country == $country->id) selected @endif
-                                                                                value="{{ strtoupper($country->code) }}">
-                                                                                {{ $country->name }}</option>
+                                                                                @if (Auth::user()->country_id == $country->id || Auth::user()->country_id == $country->name) selected @endif
+                                                                                value="{{ $country->id }}">
+                                                                                {{ ucfirst($country->name) }}</option>
                                                                         @endforeach
-                                                                    </select> <br>
+                                                                    </select>
+                                                                    <br>
                                                                 </div>
                                                             </div>
 
@@ -202,4 +231,17 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer>
+    </script>
+    <script type="text/javascript">
+        $(function() {
+            $('.country-select').select2({
+                placeholder: 'Select a country',
+                allowClear: true
+            })
+        })
+    </script>
 @endsection

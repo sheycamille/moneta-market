@@ -2,16 +2,17 @@
 
 @section('title', 'PayPal Payment')
 
-@section('deposits-and-withdrawals', 'c-show')
-@section('deposits', 'c-active')
-
 @section('loadPaypal')
     <script src="https://www.paypal.com/sdk/js?client-id={{ \App\Models\Setting::getValue('pp_ci ') }}&currency=USD">
     </script>
 @endsection
 
+@section('dw-li', 'selected')
+@section('deposits', 'active')
+
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

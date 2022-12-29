@@ -2,8 +2,8 @@
 
 @section('title', 'Manage Users')
 
-@section('manage-users', 'c-show')
-@section('users', 'c-active')
+@section('musers-li', 'selected')
+@section('musers', 'active')
 
 @section('css')
     <style>

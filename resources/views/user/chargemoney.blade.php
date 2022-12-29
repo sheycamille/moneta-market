@@ -2,11 +2,12 @@
 
 @section('title', 'ChargeMoney Payment')
 
-@section('deposits-and-withdrawals', 'c-show')
-@section('deposits', 'c-active')
+@section('dw-li', 'selected')
+@section('deposits', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -59,8 +60,7 @@
                                             <div class="card shadow">
                                                 <div class="card-body">
                                                     <div id="chargemoney" class="d-flex justify-content-center col-xs-12">
-                                                        <form method="post"
-                                                            action="{{ route('startchargemoneycharge') }}"
+                                                        <form method="post" action="{{ route('startchargemoneycharge') }}"
                                                             enctype="multipart/form-data" class="form">
                                                             <h3 class=" text-center pt-5 pb-3">
                                                                 Personal Details:

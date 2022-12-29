@@ -5,6 +5,7 @@
     @yield('loadPaypal')
 
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>@yield('title') | {{ \App\Models\Setting::getValue('site_name') }}</title>
@@ -22,43 +23,77 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Icons-->
-    <link href="{{ asset('admin/css/free.min.css') }}" rel="stylesheet"> <!-- icons -->
+    <!-- Custom CSS -->
+    <link href="{{ asset('admin/libs/chartist/dist/chartist.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/extra-libs/c3/c3.min.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ asset('admin/css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/custom.css') }}" rel="stylesheet">
 
-    {{-- <link href="{{ asset('admin/css/flag-icon.min.css') }}" rel="stylesheet"> <!-- icons --> --}}
-    <!-- Main styles for this application-->
-    <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
     @yield('css')
 </head>
 
-<body class="c-app">
-
-    @yield('sidebar')
-
-    <div class="c-wrapper">
-
-        @yield('topbar')
-
-        <div class="c-body container">
-
-            <main class="c-main">
-
-                @yield('content')
-
-            </main>
-
-            <footer class="c-footer">
-                <div><a href="https://monetamarket.ca">Moneta Market</a> &copy; 2022.</div>
-                <div class="ml-auto">Powered by&nbsp;<a href="https://monetamarket.ca/">Moneta Market</a></div>
-            </footer>
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
         </div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin1" data-sidebartype="full"
+        data-sidebar-position="absolute" data-header-position="relative" data-boxed-layout="full">
+        <div class="app-container" data-navbarbg="skin1"></div>
+
+        @yield('topbar')
+
+        @yield('sidebar')
+
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            @yield('content')
+
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center text-muted"> © 2023 <a href="https://www.monetamarkets.ca/">Moneta
+                    Markets</a>
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+
     <!-- Moneta Market and necessary plugins-->
-    <script src="{{ asset('admin/js/coreui.bundle.min.js') }}"></script>
-    <script src="{{ asset('admin/js/coreui-utils.js') }}"></script>
-    <script src="{{ asset('admin/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/libs/popper.js/dist/umd/popper.min.js') }}"></script>
+    <script src="{{ asset('admin/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin/js/feather.min.js') }}"></script>
+    <script src="{{ asset('admin/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script src="{{ asset('admin/js/custom.js') }}"></script>
     @yield('javascript')
 
 </body>

@@ -1,114 +1,189 @@
 @section('sidebar')
-    <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
-        <div class="c-sidebar-brand">
-            <a href="/">
-                <img class="c-sidebar-brand-full" src="{{ asset('front/img/group-logo.png') }}" width="100" alt="Moneta Market Logo">
-                <img class="c-sidebar-brand-minimized" src="{{ asset('front/favicon.png') }}" width="40" alt="Moneta Market Logo">
-            </a>
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <aside class="left-sidebar" data-sidebarbg="skin6">
+        <div class="user-profile text-center pt-2">
+
+            <div class="profile-section">
+                <p class="font-weight-light mb-0 font-18">{{ Auth::user()->name }}</p>
+                <span class="op-7 font-14"></span>
+                <div class="row border-top border-bottom mt-3 no-gutters">
+                    {{-- <div class="col-4 border-right">
+                        <a class="p-3 d-block menubar-height" href="javascript:void(0)" id="bell" data-display="static"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span><i data-feather="bell" class="svg-icon op-7"></i></span>
+                            <span class="badge badge-danger badge-no rounded-circle">5</span>
+                        </a>
+                    </div>
+                    <div class="col-4 border-right">
+                        <a class="p-3 d-block menubar-height" id="bottom-sidebar" href="javascript:void(0)" role="button">
+                            <span><i data-feather="settings" class="svg-icon op-7"></i></span>
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a class="p-3 d-block menubar-height" href="javascript:void(0)" role="button" data-display="static"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span><i data-feather="message-square" class="svg-icon op-7"></i></span>
+                        </a>
+                    </div> --}}
+                </div>
+            </div>
         </div>
-        <ul class="c-sidebar-nav">
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link" href="{{ route('dashboard') }}">
-                    <i class="cil-speedometer c-sidebar-nav-icon"></i>
-                    @lang('message.dashboard.dash')
-                </a>
-            </li>
 
-            <li class="c-sidebar-nav-dropdown">
-                <a class="c-sidebar-nav-dropdown-toggle @yield('my-account')" href="#">
-                    <i class="cil-wallet c-sidebar-nav-icon"></i>
-                    @lang('message.dashboard.my_act')
-                </a>
-                <ul class="c-sidebar-nav-dropdown-items">
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('my-profile')" href="{{ route('account.profile') }}">
-                            @lang('message.dashboard.my_pfl')
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li class="nav-small-cap"><span class="hide-menu">Menu</span></li>
+
+                    <li class="sidebar-item @yield('dashboard-li')">
+                        <a class="sidebar-link sidebar-link @yield('dashboard')" href="{{ route('dashboard') }}"
+                            aria-expanded="false">
+                            <i data-feather="home" class="feather-icon"></i>
+                            <span class="hide-menu">@lang('message.dashboard.dash')</span>
                         </a>
                     </li>
-                    @if (\App\Models\Setting::getValue('enable_kyc') == 'yes')
-                        <li class="c-sidebar-nav-item">
-                            <a class="c-sidebar-nav-link @yield('kyc')" href="{{ route('account.verify') }}">
-                                <span class="link-collapse">@lang('message.dashboard.kyc')</span>
+
+                    <li class="sidebar-item @yield('accounts-li')">
+                        <div class="dropdown sub-dropdown">
+                            <a class="sidebar-link sidebar-link @yield('accounts-li')" data-toggle="dropdown" href="#"
+                                aria-expanded="false" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="grid" class="feather-icon"></i>
+                                <span class="hide-menu">@lang('message.dashboard.trade')</span>
+                                <span class="badge rounded-circle profile-dd text-center mt-2"><i
+                                        class="fas fa-angle-down"></i></span>
                             </a>
-                        </li>
-                    @endif
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('security')" href="{{ route('account.security') }}">
-                            <span class="sub-item">@lang('message.dashboard.sec')</span>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item @yield('laccounts')" href="{{ route('account.liveaccounts') }}">
+                                    <i class="fas fa-circle text-success font-12 mr-2"></i>
+                                    @lang('message.dashboard.live')
+                                </a>
+                                <a class="dropdown-item @yield('daccounts')" href="{{ route('account.demoaccounts') }}">
+                                    <i class="fas fa-circle text-warning font-12 mr-2"></i>
+                                    @lang('message.dashboard.demo')
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="sidebar-item @yield('dw-li')">
+                        <div class="dropdown sub-dropdown">
+                            <a class="sidebar-link sidebar-link @yield('accounts')" data-toggle="dropdown" href="#"
+                                aria-expanded="false" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="dollar-sign" class="dollar-sign-icon"></i>
+                                <span class="hide-menu">@lang('message.dashboard.deposits')</span>
+                                <span class="badge rounded-circle profile-dd text-center mt-2"><i
+                                        class="fas fa-angle-down"></i></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item @yield('deposits')" href="{{ route('account.deposits') }}">
+                                    <i class="fas fa-circle text-success font-12 mr-2"></i>
+                                    @lang('message.dashboard.depo')
+                                </a>
+                                <a class="dropdown-item @yield('withdrawals')" href="{{ route('account.withdrawals') }}">
+                                    <i class="fas fa-circle text-warning font-12 mr-2"></i>
+                                    @lang('message.dashboard.with')
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="sidebar-item @yield('downloads-li')">
+                        <a class="sidebar-link sidebar-link @yield('downloads')" href="{{ route('account.downloads') }}"
+                            aria-expanded="false">
+                            <i data-feather="download" class="download-icon"></i>
+                            <span class="hide-menu">@lang('message.dashboard.down')</span>
                         </a>
                     </li>
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('withdrawal-info')" href="{{ route('withdrawaldetails') }}">
-                            <span class="sub-item">@lang('message.dashboard.with_info')</span>
+
+                    <li class="sidebar-item @yield('support-li')">
+                        <a class="sidebar-link sidebar-link @yield('support')" href="{{ route('account.support') }}"
+                            aria-expanded="false">
+                            <i data-feather="help-circle" class="help-circle-icon"></i>
+                            @lang('message.dashboard.sup')
                         </a>
                     </li>
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('notifications')" href="{{ route('notifications') }}">
-                            <span class="sub-item">@lang('message.dashboard.notif')</span>
-                        </a>
+
+                    <li class="sidebar-item @yield('profile-li')">
+                        <div class="dropdown sub-dropdown">
+                            <a class="sidebar-link sidebar-link @yield('profile') @yield('changepassword') @yield('security') @yield('support') @yield('winfo') @yield('notifications')"
+                                data-toggle="dropdown" href="#" aria-expanded="false" type="button"
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i data-feather="user" class="user-icon"></i>
+                                <span class="hide-menu">@lang('message.dashboard.my_pfl')</span>
+                                <span class="badge rounded-circle profile-dd text-center mt-2"><i
+                                        class="fas fa-angle-down"></i></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item @yield('profile')" href="{{ route('account.profile') }}">
+                                    <i class="fas fa-circle text-primary font-12 mr-2"></i>
+                                    @lang('message.dashboard.update_pfl')
+                                </a>
+                                <a class="dropdown-item @yield('cpassword')" href="{{ route('changepassword') }}">
+                                    <i class="fas fa-circle text-warning font-12 mr-2"></i>
+                                    @lang('message.topmenu.chg_pss')
+                                </a>
+                                <a class="dropdown-item @yield('security')" href="{{ route('account.security') }}">
+                                    <i class="fas fa-circle text-success font-12 mr-2"></i>
+                                    @lang('message.dashboard.sec')
+                                </a>
+                                <a class="dropdown-item @yield('winfo')" href="{{ route('withdrawaldetails') }}">
+                                    <i class="fas fa-circle text-primary font-12 mr-2"></i>
+                                    @lang('message.dashboard.with_info')
+                                </a>
+                                <a class="dropdown-item @yield('notifications')" href="{{ route('notifications') }}">
+                                    <i class="fas fa-circle font-12 mr-2"></i>
+                                    @lang('message.dashboard.notif')
+                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-circle text-success font-12 mr-2"></i>
+                                    @lang('message.topmenu.log')
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="sidebar-item @yield('kyc-li')">
+                        <div class="dropdown sub-dropdown">
+                            <a class="sidebar-link sidebar-link @yield('kyc')" data-toggle="dropdown" href="#"
+                                aria-expanded="false" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="shield" class="shield-icon"></i>
+                                <span class="hide-menu">KYC</span>
+                                <span class="badge rounded-circle profile-dd text-center mt-2"><i
+                                        class="fas fa-angle-down"></i></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault();">
+                                    KYC Status: {{ Auth::user()->account_verify }}
+                                </a>
+
+                                @if (Auth::user()->account_verify != 'Verified')
+                                    <a class="dropdown-item @yield('kyc')" href="{{ route('account.verify') }}">
+                                        <i class="fas fa-circle text-warning font-12 mr-2"></i>
+                                        Verify Account
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
                     </li>
                 </ul>
-            </li>
-
-            <li class="c-sidebar-nav-dropdown">
-                <a class="c-sidebar-nav-dropdown-toggle @yield('accounts')" href="#">
-                    <i class="cil-window-restore c-sidebar-nav-icon"></i>
-                    @lang('message.dashboard.trade')
-                </a>
-
-                <ul class="c-sidebar-nav-dropdown-items">
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('live-accounts')" href="{{ route('account.liveaccounts') }}">
-                            <span class="sub-item">@lang('message.dashboard.live')</span>
-                        </a>
-                    </li>
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('demo-accounts')" href="{{ route('account.demoaccounts') }}">
-                            <span class="sub-item">@lang('message.dashboard.demo')</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            {{-- <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link @yield('transactions')" href="{{ route('account.history') }}">
-                <i class="cil-history c-sidebar-nav-icon"></i>
-                @lang('message.dashboard.trans')
-            </a>
-        </li> --}}
-
-            <li class="c-sidebar-nav-dropdown">
-                <a class="c-sidebar-nav-dropdown-toggle @yield('deposits-and-withdrawals')" href="#">
-                    <i class="cil-money c-sidebar-nav-icon"></i>
-                    @lang('message.dashboard.deposits')
-                </a>
-                <ul class="c-sidebar-nav-dropdown-items">
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('deposits')" href="{{ route('account.deposits') }}">
-                            <span class="sub-item">@lang('message.dashboard.depo')</span>
-                        </a>
-                    </li>
-                    <li class="c-sidebar-nav-item">
-                        <a class="c-sidebar-nav-link @yield('withdrawals')" href="{{ route('account.withdrawals') }}">
-                            <span class="sub-item">@lang('message.dashboard.with')</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link @yield('downloads')" href="{{ route('account.downloads') }}">
-                    <i class="cil-cloud-download c-sidebar-nav-icon"></i>
-                    @lang('message.dashboard.down')
-                </a>
-            </li>
-
-            <li class="c-sidebar-nav-item">
-                <a class="c-sidebar-nav-link @yield('support')" href="{{ route('account.support') }}">
-                    <i class="cil-headphones c-sidebar-nav-icon"></i>
-                    @lang('message.dashboard.sup')
-                </a>
-            </li>
-        </ul>
-    </div>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
 @endsection

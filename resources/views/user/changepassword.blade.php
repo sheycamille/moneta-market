@@ -2,10 +2,12 @@
 
 @section('title', 'Change Password')
 
-@section('my-profile', 'c-active')
+@section('profile-li', 'selected')
+@section('cpassword', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">

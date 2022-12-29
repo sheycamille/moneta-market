@@ -142,7 +142,7 @@
             <div class="uk-grid">
                 <div class="uk-width-1-1">
                     <ul class="uk-breadcrumb">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><span>@yield('title')</span></li>
                     </ul>
                 </div>

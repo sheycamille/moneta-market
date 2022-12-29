@@ -2,11 +2,42 @@
 
 @section('title', 'My Profile')
 
-@section('my-account', 'c-show')
-@section('my-profile', 'c-active')
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <style>
+        span.select2.select2-container.select2-container--default {
+            max-width: 100%;
+            width: 100%;
+            border: 0 none;
+            border-radius: 5px;
+            padding: 3px 0;
+            background: white;
+            color: #768192;
+            font-size: .941rem;
+            border: 1px solid #ddd;
+            transition: .2s ease-in-out;
+            transition-property: color, background-color, border;
+        }
+
+        .select2-selection {
+            border: 0 none !important;
+            border-radius: none !important;
+            background-color: white !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #768192;
+            line-height: 28px;
+        }
+    </style>
+@endsection
+
+@section('profile-li', 'selected')
+@section('profile', 'active')
 
 @section('content')
 
+    @include('user.sidebar')
     @include('user.topmenu')
 
     <div class="container-fluid">
@@ -116,17 +147,14 @@
                                                         <div class="row">
                                                             <div class="form-group col-sm-6">
                                                                 <label for="country">@lang('message.register.country')</label>
-                                                                <select class="form-control" name="country" id="country"
-                                                                    required>
-                                                                    <option selected disabled>
-                                                                        @lang('message.body.country')
-                                                                    </option>
+                                                                <select name="country" id="country"
+                                                                    class="form-control country-select" required>
+                                                                    <option>@lang('message.register.chs')</option>
                                                                     @foreach ($countries as $country)
                                                                         <option
                                                                             @if (Auth::user()->country_id == $country->id || Auth::user()->country_id == $country->name) selected @endif
                                                                             value="{{ $country->id }}">
-                                                                            {{ ucfirst($country->name) }}
-                                                                        </option>
+                                                                            {{ ucfirst($country->name) }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -176,37 +204,14 @@
     </div>
 @endsection
 
-{{-- @section('javascript')
-<script type="text/javascript">
-    $('#country').change(function () {
-        var countryID = $(this).val();
-        if (countryID) {
-            $.get( "{{url('/get-state-list')}}?country_id=" + countryID, function( data ) {
-                $("#state").empty();
-                $("#state").append('<option>Select</option>');
-                $.each(data, function (key, state) {
-                    $("#state").append('<option value="' + state.id + '">' + state.name + '</option>');
-                });
-            });
-        } else {
-            $("#state").empty();
-            $("#town").empty();
-        }
-    });
-
-    $('#state').on('change', function () {
-        var stateID = $(this).val();
-        if (stateID) {
-            $.get( "{{url('/get-town-list')}}?state_id=" + stateID, function( data ) {
-                $("#town").empty();
-                $("#town").append('<option>Select</option>');
-                $.each(data, function (key, town) {
-                    $("#town").append('<option value="' + town.id + '">' + town.name + '</option>');
-                });
-            });
-        } else {
-            $("#town").empty();
-        }
-    });
-</script>
-@endsection --}}
+@section('javascript')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('.country-select').select2({
+                placeholder: 'Select a country',
+                allowClear: true
+            })
+        })
+    </script>
+@endsection

@@ -346,6 +346,7 @@ return [
         'dash' => 'Tableau de bord',
         'my_act' => 'Mon compte',
         'my_pfl' => 'Mon profil',
+        'update_pfl' => 'Mise à jour du profil',
         'kyc' => 'Mon KYC',
         'sec' => 'Sécurité du compte',
         'with_info' => 'Informations sur les retraits',

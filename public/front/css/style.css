@@ -78,7 +78,7 @@ body {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: "\f00c";
-    color: #fd6a4f;
+    color: #ac1929;
     top: 2px;
     left: 4px;
 }
@@ -115,14 +115,14 @@ header .uk-navbar-dropdown li {
 }
 
 .in-optional-nav div {
-    border: 1px solid #fd6a4f;
+    border: 1px solid #ac1929;
     border-radius: 6px;
     margin-left: 11px;
     padding: 5px 4px 8px;
 }
 
 .in-optional-nav div .uk-button {
-    color: #fd6a4f;
+    color: #ac1929;
     font-size: 0.765rem;
     font-weight: bold;
     line-height: 10px;
@@ -133,7 +133,7 @@ header .uk-navbar-dropdown li {
 }
 
 .in-optional-nav div .uk-button:first-child {
-    border-right: 1px solid #fd6a4f;
+    border-right: 1px solid #ac1929;
 }
 
 .in-mobile-nav .uk-button {
@@ -287,7 +287,7 @@ footer .in-footer-socials i {
 }
 
 .in-blog-1 .uk-card-default a.uk-button-text {
-    color: #fd6a4f;
+    color: #ac1929;
 }
 
 .in-blog-1 .uk-card-default a.uk-button-text:hover {
@@ -401,7 +401,7 @@ footer .in-footer-socials i {
 
 .in-widget-tag a:hover .uk-label {
     transition: all ease 0.5s;
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     color: #fff;
 }
 
@@ -472,7 +472,7 @@ footer .in-footer-socials i {
 }
 
 .in-card-10 .in-card-orange {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
 }
 
 .in-card-paper {
@@ -634,17 +634,17 @@ footer .in-footer-socials i {
 }
 
 .in-content-11 .uk-card-default:hover {
-    border-color: #fd6a4f;
+    border-color: #ac1929;
     text-decoration: none;
 }
 
 .in-content-11 .uk-card-default:hover h4 {
-    color: #fd6a4f;
+    color: #ac1929;
     transition: all ease 0.5s;
 }
 
 .in-content-11 .uk-card-default:hover .in-icon-wrap {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     transition: all ease 0.5s;
 }
 
@@ -666,7 +666,7 @@ footer .in-footer-socials i {
 }
 
 .in-faq-5 .uk-open .uk-accordion-title {
-    color: #fd6a4f;
+    color: #ac1929;
     border-bottom: 0;
 }
 
@@ -730,22 +730,22 @@ footer .in-footer-socials i {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: "\f00c";
-    color: #fd6a4f;
+    color: #ac1929;
     top: 1px;
     left: 4px;
 }
 
 .in-pricing-1.in-pricing-featured .uk-card {
-    border-color: #fd6a4f;
+    border-color: #ac1929;
 }
 
 .in-pricing-1.in-pricing-featured .uk-card:hover {
     background-color: white;
-    border-color: #fd6a4f;
+    border-color: #ac1929;
 }
 
 .in-pricing-1.in-pricing-featured .uk-card-header .uk-label {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
 }
 
 /* team component */
@@ -849,7 +849,7 @@ body > div.in-loader div {
     width: 1rem;
     height: 1rem;
     margin: 2rem 0.3rem;
-    background: #fd6a4f;
+    background: #ac1929;
     border-radius: 50%;
     -webkit-animation: 0.9s bounce infinite alternate;
     animation: 0.9s bounce infinite alternate;
@@ -1052,7 +1052,7 @@ a.in-generic-email:hover {
 }
 
 .in-icon-wrap.primary-color {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     color: #fff;
 }
 
@@ -1238,7 +1238,7 @@ a.in-generic-email:hover {
     position: fixed;
     right: 40px;
     bottom: 40px;
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     border-radius: 50%;
     opacity: 0;
 }
@@ -7180,7 +7180,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-1 .fas {
-    color: #fd6a4f;
+    color: #ac1929;
     font-size: 22px;
 }
 
@@ -7232,11 +7232,11 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-2 .in-pricing-1 .uk-button-link {
-    color: #fd6a4f;
+    color: #ac1929;
 }
 
 .in-profit-2 .in-heading-extra {
-    border-left: 7px solid #fd6a4f;
+    border-left: 7px solid #ac1929;
     padding-left: 18px;
     position: relative;
     top: -120px;
@@ -7321,7 +7321,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-3 h1.uk-heading-bullet {
-    color: #fd6a4f;
+    color: #ac1929;
 }
 
 @media (min-width: 640px) and (max-width: 960px) {
@@ -7376,7 +7376,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-5 .in-pricing-1 .uk-card-header i.circle {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
 }
 
 .in-profit-5 .uk-card-default {
@@ -7391,7 +7391,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-6 h1.uk-text-primary {
-    border: 1px solid #fd6a4f;
+    border: 1px solid #ac1929;
     border-radius: 12px;
     padding: 10px 18px;
 }
@@ -7464,7 +7464,7 @@ readers do not read off random characters that represent icons */
 
 .in-profit-9 .fas,
 .in-profit-9 .fab {
-    color: #fd6a4f;
+    color: #ac1929;
     font-size: 24px;
 }
 
@@ -7488,7 +7488,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-11.uk-section-secondary:not(.uk-preserve-color) .uk-label {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     color: #fff;
 }
 
@@ -7499,12 +7499,12 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-11 .uk-card-primary .uk-button-primary {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     color: #fff;
 }
 
 .in-profit-11 .uk-card-primary .uk-button-primary:hover {
-    background-color: #fd5536;
+    background-color: #7e1704;
     color: #fff;
 }
 
@@ -7574,7 +7574,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-13 .in-icon-wrap {
-    color: #fd6a4f;
+    color: #ac1929;
 }
 
 .in-profit-13 .uk-width-5-6\@m p {
@@ -7601,7 +7601,7 @@ readers do not read off random characters that represent icons */
 }
 
 .in-profit-15 .in-icon-wrap {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     color: #fff;
     position: relative;
 }
@@ -7637,12 +7637,12 @@ readers do not read off random characters that represent icons */
 
 .in-profit-16 .in-create-account {
     padding: 0 34px 30px;
-    border: 1px solid #fd6a4f;
+    border: 1px solid #ac1929;
     border-radius: 12px;
 }
 
 .in-profit-16 .in-create-account .uk-label {
-    background-color: #fd6a4f;
+    background-color: #ac1929;
     margin-top: -18px;
 }
 

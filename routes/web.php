@@ -296,6 +296,10 @@ Route::middleware(['auth'])->group(function () {
     // paycly payments
     Route::any('dashboard/start_paycly_charge', 'UserController@startPaycly')->name('startpayclycharge');
     Route::post('dashboard/verify_paycly_charge', 'UserController@handlePaycly')->name('verifypayclycharge');
+
+    // ragapay payments
+    Route::any('dashboard/success_ragapay_charge', 'UserController@successRagapay')->name('successragapaycharge');
+    Route::post('dashboard/cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');

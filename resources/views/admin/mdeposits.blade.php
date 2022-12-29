@@ -3,7 +3,7 @@
 @section('title', 'Manage Deposits')
 
 @section('manage-dw', 'c-show')
-@section('deposits', 'c-active')
+@section('deposits', 'active')
 
 @section('content')
 
