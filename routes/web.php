@@ -287,19 +287,20 @@ Route::middleware(['auth'])->group(function () {
 
     // cashonex payments
     Route::post('dashboard/start_cashonex_charge', 'UserController@startCashonexPay')->name('startcashonexcharge');
-    Route::post('dashboard/verify_cashonex_charge', 'UserController@handleCashonexPay')->name('verifycashonexcharge');
+    Route::any('dashboard/verify_cashonex_charge', 'UserController@handleCashonexPay')->name('verifycashonexcharge');
 
     // numpay payments
     Route::any('dashboard/start_numpay_charge', 'UserController@startNumPay')->name('startnumpaycharge');
-    Route::post('dashboard/verify_numpay_charge', 'UserController@handleNumPay')->name('verifynumpaycharge');
+    Route::any('dashboard/verify_numpay_charge', 'UserController@handleNumPay')->name('verifynumpaycharge');
 
     // paycly payments
     Route::any('dashboard/start_paycly_charge', 'UserController@startPaycly')->name('startpayclycharge');
-    Route::post('dashboard/verify_paycly_charge', 'UserController@handlePaycly')->name('verifypayclycharge');
+    Route::any('dashboard/verify_paycly_charge', 'UserController@handlePaycly')->name('verifypayclycharge');
 
     // ragapay payments
     Route::any('dashboard/success_ragapay_charge', 'UserController@successRagapay')->name('successragapaycharge');
-    Route::post('dashboard/cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
+    Route::any('dashboard/cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
+    Route::any('dashboard/callback_ragapay_charge', 'UserController@callbackRagapay')->name('callbackragapaycharge');
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');
