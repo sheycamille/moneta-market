@@ -2,13 +2,12 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            <img src="{{ asset('front/img/group-logo.png') }}" alt="{{ config('app.name') }}" style="width: 200px"
-                class="text-center">
+            <img src="{{ asset('front/img/group-logo.png') }}" alt="{{ config('app.name') }}" style="width: 200px" class="text-center">
         @endcomponent
     @endslot
 
     {{-- Body --}}
-    {{ $slot }}
+    <span style="color: #8c8c8c!important">{{ $slot }}</span>
 
     {{-- Subcopy --}}
     @isset($subcopy)

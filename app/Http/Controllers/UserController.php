@@ -18,7 +18,6 @@ use App\Mail\UserUpload;
 use App\Mail\NewNotification;
 
 use App\Libraries\MobiusTrader;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

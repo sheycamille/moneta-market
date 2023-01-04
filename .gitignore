@@ -1,0 +1,6 @@
+# Ignored folders
+/vendor/
+/node_modules/
+/public/storage
+.env
+.env.example

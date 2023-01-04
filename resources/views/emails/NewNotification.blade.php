@@ -1,7 +1,6 @@
 @component('mail::message')
-    # Greetings!
 
-    {!! $demo->message !!}
+    <span style="color:#8c8c8c!important;">{!! $demo->message !!}</span>
 
 
     @if (isset($demo->link))
