@@ -1988,4 +1988,6 @@ class UserController extends Controller
         Session::flash('message', $msg);
         return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
+
+    
 }

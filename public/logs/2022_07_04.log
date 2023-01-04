@@ -1,0 +1,4 @@
+2022.07.04 16:34:57	2	WebAPI:incorrect header read,   bytes
+2022.07.04 16:34:57	2	WebAPI:answer auth start is empty
+2022.07.04 16:34:57	2	WebAPI:auth start failed: [7]Network error
+2022.07.04 16:35:12	2	WebAPI:auth answer failed: [1001]Invalid account
