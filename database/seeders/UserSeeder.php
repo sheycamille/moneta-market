@@ -44,6 +44,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('SecreT12345'),
             'phone' => '+237679286569',
             'email' => 'admin@monetamarket.ca',
+            //'email' => 'wisdomcamille@gmail.com',
             'acnt_type_active' => 'active',
             'dashboard_style' => "dark",
             'status' => 'active',

@@ -9,6 +9,7 @@ use App\Models\Wdmethod;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -363,20 +364,20 @@ class SettingsController extends Controller
         }
 
         $method->update([
-                'name' => $request->name,
-                'logo' => $logoname,
-                'setting_key' => $request->setting_key,
-                'exchange_symbol' => $request->exchange_symbol,
-                'minimum' => $request->minimum,
-                'maximum' => $request->maximum,
-                'charges_fixed' => $request->charges_fixed,
-                'country_ids' => $countries,
-                'charges_percentage' => $request->charges_percentage,
-                'duration' => $request->duration,
-                'type' => $request->type,
-                'status' => $request->status,
-                'details' => $request->details,
-            ]);
+            'name' => $request->name,
+            'logo' => $logoname,
+            'setting_key' => $request->setting_key,
+            'exchange_symbol' => $request->exchange_symbol,
+            'minimum' => $request->minimum,
+            'maximum' => $request->maximum,
+            'charges_fixed' => $request->charges_fixed,
+            'country_ids' => $countries,
+            'charges_percentage' => $request->charges_percentage,
+            'duration' => $request->duration,
+            'type' => $request->type,
+            'status' => $request->status,
+            'details' => $request->details,
+        ]);
         return redirect()->back()
             ->with('message', 'Action Successful');
     }
