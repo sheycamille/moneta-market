@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
@@ -205,6 +206,7 @@ Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::middleware(['auth'])->group(function () {
+
     // Two Factor Authentication
     Route::post('dashboard/changetheme', 'UserController@changetheme')->name('changetheme');
     Route::get('dashboard/refreshAccounts', 'UserController@refreshAccounts')->name('refreshaccounts');
@@ -301,6 +303,8 @@ Route::middleware(['auth'])->group(function () {
     Route::any('dashboard/success_ragapay_charge', 'UserController@successRagapay')->name('successragapaycharge');
     Route::any('dashboard/cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
     Route::any('dashboard/callback_ragapay_charge', 'UserController@callbackRagapay')->name('callbackragapaycharge');
+
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');
+

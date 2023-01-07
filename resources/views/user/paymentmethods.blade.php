@@ -62,11 +62,15 @@
 
                             <div class="mb-5">
                                 <div class="row text-center d-flex p-4">
-                                    {{-- <div class="bs-example widget-shadow table-responsive"
+                                    {{-- <div class="bs-example widget-shadow table-responsive
                                     data-example-id="hoverable-table"> --}}
                                     @forelse($pmethods as $pmethod)
                                         <div class="col-lg-4 p-4">
                                             <div class="pricing-table purple border">
+                                                <img height="150px" width="150px"
+                                                    style="margin-left: auto; margin-right:auto; padding-top:5px;"
+                                                    src="{{ asset('storage/logos/' . $pmethod->logo) }}"
+                                                    alt="{{ $pmethod->logo }}">
                                                 <h2 class="">{{ $pmethod->name }}</h2>
                                                 <div class="pricing-features">
                                                     <div class="feature">
