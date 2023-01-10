@@ -908,8 +908,8 @@ return [
         'forgot' => '¿Has olvidado tu contraseña? No hay problema. Sólo dinos tu dirección de correo electrónico y te enviaremos un enlace de restablecimiento de contraseña que te permitirá elegir una nueva.',
         'link' => 'Enlace de restablecimiento de contraseña por correo electrónico',
         'repeat' => 'Repetir inicio de sesión',
-        '' => '',
-        '' => '',
+        'ha' => '¿Tiene una cuenta?',
+        'lgn' => 'Conéctese aquí',
         '' => '',
         '' => '',
         '' => '',
@@ -1078,4 +1078,28 @@ return [
     'launch_webtrader' => 'Iniciar WebTrader',
     '' => '',
     '' => '',
+
+    'login' => [
+        'lgn' => 'CConéctese a su cuenta',
+        'new' => "¿No tiene cuenta?",
+        'newa' => 'Regístrese aquí',
+        'rmbr' => 'Acuérdate de mí',
+        'frgt' => '¿Ha olvidado su contraseña?',
+        'sign_in' => 'Iniciar sesión',
+        'newp' => 'Create new password',
+        'rstp' => 'Reset Password',
+        'verfy' => 'Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionó durante el registro.',
+
+    ],
+
+    '2fa' => [
+        'tfa' => 'Verificación de dos factores',
+        'email' => "Ha recibido un correo electrónico con el código de acceso de dos factores.
+        Si no lo ha recibido, pulse",
+        'here' => 'aquí',
+        'rgst' => 'Regístrese aquí',
+        'code' => 'Código de dos factores',
+
+
+    ],
 ];

@@ -40,6 +40,8 @@
     <link href="{{ asset('front/css/vendors/uikit.min.css') }}" rel="stylesheet">
     <link href="{{ asset('front/css/style.css') }}" rel="stylesheet">
 
+    
+
     @yield('stylesheets')
 
 </head>
@@ -54,9 +56,10 @@
     <!-- preloader end -->
 
     <main class="container">
+        
         @yield('content')
     </main>
-
+    
     <div class="uk-visible@m">
         <a href="#" class="in-totop fas fa-chevron-up uk-animation-slide-top" data-uk-scroll=""
             style="opacity: 1;"></a>

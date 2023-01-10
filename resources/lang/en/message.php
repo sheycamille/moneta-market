@@ -1081,8 +1081,8 @@ return [
         'forgot' => 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.',
         'link' => 'Email Password Reset Link',
         'repeat' => 'Repeat Login',
-        '' => '',
-        '' => '',
+        'ha' => 'Have an account?',
+        'lgn' => 'Login here',
         '' => '',
         '' => '',
         '' => '',
@@ -1251,4 +1251,29 @@ return [
     'launch_webtrader' => 'Launch WebTrader',
     '' => '',
     '' => '',
+
+    'login' => [
+        'lgn' => 'Log into your account',
+        'new' => "Don't have an account?",
+        'newa' => 'Register here',
+        'rmbr' => 'Remember me',
+        'frgt' => 'Forgot password?',
+        'sign_in' => 'Sign in',
+        'newp' => 'Create new password',
+        'rstp' => 'Reset Password',
+        'verfy' => 'A new verification link has been sent to the email address you provided during
+        registration.',
+
+    ],
+
+    '2fa' => [
+        'tfa' => 'Two Factor Verification',
+        'email' => "You have received an email which contains two factor login code.
+        If you haven't received it, press",
+        'here' => 'here',
+        'rgst' => 'Register here',
+        'code' => 'Two Factor Code',
+
+
+    ],
 ];

@@ -2,6 +2,32 @@
 
 @section('title', 'Admin Login')
 
+<style>
+    .ul {
+        text-align: right;
+        padding-top: 8px;
+    }
+
+    li{
+        display: inline;
+    }
+    .li-1{
+        background-color: #ffab2e;
+        padding: 8px;
+    }
+    .li-2{
+        background-color: #ff3ca6;
+        padding: 8px;
+    }
+
+    li a{
+        color: #fff;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        padding: 0.375rem 0.75rem;
+    }
+</style>
+
 @section('content')
 
     <!-- section content begin -->
@@ -15,6 +41,31 @@
                     <div class="uk-grid uk-flex-center">
                         <div class="uk-width-3-5@m">
                             <div class="in-padding-horizontal@s">
+                                <div class="">
+                                    <ul class="ul">
+                                        @if (App::getLocale() == 'en')
+                                            <li><a class="li-1" href="{{ route('switchlang', 'fr') }}">FR</a>
+                                            </li>
+                                            <li><a class="li-2"
+                                                    href="{{ route('switchlang', 'es') }}">ES</a>
+                                            </li>
+                                        @elseif (App::getLocale() == 'fr')
+                                            <li><a class="li-1"
+                                                    href="{{ route('switchlang', 'en') }}">EN</a>
+                                            </li>
+                                            <li><a class="li-2"
+                                                    href="{{ route('switchlang', 'es') }}">ES</a>
+                                            </li>
+                                        @else
+                                            <li><a class="li-1"
+                                                    href="{{ route('switchlang', 'en') }}">EN</a>
+                                            </li>
+                                            <li><a class="li-2"
+                                                    href="{{ route('switchlang', 'FR') }}">FR</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
                                 <!-- module logo begin -->
                                 <a class="uk-logo" href="{{ route('home') }}">
                                     <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
@@ -38,11 +89,10 @@
                                 <!-- form begin -->
                                 <form method="POST" action="{{ route('verify.store') }}" class="mt-5 card__form">
                                     {{ csrf_field() }}
-                                    <h1>Two Factor Verification</h1>
+                                    <h1>@lang('message.2fa.tfa')</h1>
                                     <p class="text-muted">
-                                        You have received an email which contains two factor login code.
-                                        If you haven't received it, press <a
-                                            href="{{ route('admin.verify.resend') }}">here</a>.
+                                        @lang('message.2fa.email') <a
+                                            href="{{ route('admin.verify.resend') }}">@lang('message.2fa.here')</a>.
                                     </p>
 
                                     @if ($errors->has('two_factor_code'))
@@ -56,13 +106,13 @@
                                         <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
                                         <input name="two_factor_code"
                                             class="uk-input uk-border-rounded {{ $errors->has('two_factor_code') ? ' is-invalid' : '' }}"
-                                            required autofocus placeholder="Two Factor Code" required
+                                            required autofocus placeholder="@lang('message.2fa.code')" required
                                             value="{{ old('two_factor_code') }}" id="two_factor_code">
                                     </div>
                                     <div class="uk-margin-small uk-width-1-1">
                                         <button
                                             class="uk-button uk-width-1-1 uk-button-primary uk-border-rounded uk-float-left"
-                                            type="submit" name="submit">Verify</button>
+                                            type="submit" name="submit">@lang('message.2fa.rgst')</button>
                                     </div>
                                 </form>
                                 <!-- form end -->
