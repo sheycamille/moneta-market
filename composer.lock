@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfd9843afdf3d09a8ebd5470c114cfec",
+    "content-hash": "9900d09593b6c166b755a9a4d1dc77a6",
+
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -725,6 +726,7 @@
             "time": "2022-02-09T13:33:34+00:00"
         },
         {
+
             "name": "fruitcake/laravel-cors",
             "version": "v3.0.0",
             "source": {
@@ -804,6 +806,7 @@
             "time": "2022-02-23T14:53:22+00:00"
         },
         {
+
             "name": "fruitcake/php-cors",
             "version": "v1.2.0",
             "source": {

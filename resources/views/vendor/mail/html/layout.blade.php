@@ -8,6 +8,10 @@
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
     <style>
+        .icons {
+            padding: 20px;
+        }
+
         @media only screen and (max-width: 600px) {
             .inner-body {
                 width: 100% !important;
@@ -38,7 +42,8 @@
 
             <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
                 <table class="content" cellpadding="0" cellspacing="0" role="presentation"
-                    style="width:94%;max-width:650px; margin:auto; border:1px solid #edf2f7 !important;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#8c8c8c;">
+                    style="width:94%;max-width:885px; margin:auto; border:1px solid #edf2f7 !important;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:black;">
+
 
                     <!-- Email header -->
 
@@ -52,9 +57,13 @@
                                 style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;">
                                 Greetings!
                             </h1>
-                            <span style="color: #8c8c8c!important">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
+                            <<<<<<< HEAD <span style="color:black;">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
+                                =======
+                                <span
+                                    style="color: #8c8c8c!important">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
+                                >>>>>>> main
 
-                            {{ $subcopy ?? '' }}
+                                {{ $subcopy ?? '' }}
                         </td>
                     </tr>
 
