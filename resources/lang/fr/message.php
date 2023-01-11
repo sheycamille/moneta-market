@@ -1217,6 +1217,8 @@ return [
         'forgot' => "Vous avez oublié votre mot de passe ? Aucun problème. Indiquez-nous simplement votre adresse électronique et nous vous enverrons un lien de réinitialisation du mot de passe qui vous permettra d'en choisir un nouveau.",
         'link' => "Lien de réinitialisation du mot de passe de l'e-mail",
         'repeat' => 'Répéter la connexion',
+        'ha' => 'Vous avez un compte ?',
+        'lgn' => 'Connectez-vous ici',
 
     ],
     'verify' => [
@@ -1378,9 +1380,27 @@ return [
     'more_freedom' => 'Obtenir plus de libertés sur les marchés financiers',
     'launch_webtrader' => 'Lancer le WebTrader',
 
+    'login' => [
+        'lgn' => 'Connectez-vous à votre compte',
+        'new' => "Vous n'avez pas de compte ?",
+        'newa' => 'Inscrivez-vous ici',
+        'rmbr' => 'Rappelez-vous de moi',
+        'frgt' => 'Mot de passe oublié ?',
+        'sign_in' => 'Se connecter',
+        'newp' => 'Create new password',
+        'rstp' => 'Reset Password',
+        'verfy' => "Un nouveau lien de vérification a été envoyé à l'adresse électronique que vous avez fournie lors de l'inscription.",
+
+    ],
+
+    '2fa' => [
+        'tfa' => 'Vérification à deux facteurs',
+        'email' => "Vous avez reçu un email qui contient le code de connexion à deux facteurs.
+        Si vous ne l'avez pas reçu, appuyez sur",
+        'here' => 'ici',
+        'rgst' => 'Inscrivez-vous ici',
+        'code' => 'Code à deux facteurs',
 
 
-
-
-
+    ],
 ];

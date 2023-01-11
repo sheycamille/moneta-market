@@ -2,6 +2,32 @@
 
 @section('title', 'Forgot Password')
 
+<style>
+    .ul {
+        text-align: right;
+        padding-top: 8px;
+    }
+
+    li{
+        display: inline;
+    }
+    .li-1{
+        background-color: #ffab2e;
+        padding: 8px;
+    }
+    .li-2{
+        background-color: #ff3ca6;
+        padding: 8px;
+    }
+
+    li a{
+        color: #fff;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        padding: 0.375rem 0.75rem;
+    }
+</style>
+
 @section('content')
 
     <!-- section content begin -->
@@ -15,6 +41,31 @@
                     <div class="uk-grid uk-flex-center">
                         <div class="uk-width-3-5@m">
                             <div class="in-padding-horizontal@s">
+                                <div class="">
+                                    <ul class="ul">
+                                        @if (App::getLocale() == 'en')
+                                            <li><a class="li-1" href="{{ route('switchlang', 'fr') }}">FR</a>
+                                            </li>
+                                            <li><a class="li-2"
+                                                    href="{{ route('switchlang', 'es') }}">ES</a>
+                                            </li>
+                                        @elseif (App::getLocale() == 'fr')
+                                            <li><a class="li-1"
+                                                    href="{{ route('switchlang', 'en') }}">EN</a>
+                                            </li>
+                                            <li><a class="li-2"
+                                                    href="{{ route('switchlang', 'es') }}">ES</a>
+                                            </li>
+                                        @else
+                                            <li><a class="li-1"
+                                                    href="{{ route('switchlang', 'en') }}">EN</a>
+                                            </li>
+                                            <li><a class="li-2"
+                                                    href="{{ route('switchlang', 'FR') }}">FR</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
                                 <!-- module logo begin -->
                                 <a class="uk-logo" href="{{ route('home') }}">
                                     <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
@@ -24,8 +75,8 @@
                                 <!-- module logo begin -->
 
                                 <p class="uk-text-lead uk-margin-top uk-margin-remove-bottom">@lang('message.forgot_pass.pasreset')</p>
-                                <p class="uk-text-small uk-margin-remove-top uk-margin-medium-bottom">Have an account?
-                                    <a href="{{ route('login') }}">Login here</a>
+                                <p class="uk-text-small uk-margin-remove-top uk-margin-medium-bottom">@lang('message.forgot_pass.ha')
+                                    <a href="{{ route('login') }}">@lang('message.forgot_pass.lgn')</a>
                                 </p>
 
                                 <!-- form begin -->
