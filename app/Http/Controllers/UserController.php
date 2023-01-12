@@ -238,11 +238,12 @@ class UserController extends Controller
 
         //get user
         $user = User::where('id', Auth::user()->id)->first();
+        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
 
         //send email notification
         $objDemo = new \stdClass();
         $objDemo->message = "\r Hello Admin, \r\n" .
-            "\r This is to inform you of a successfull Deposit of $currency$request->amount, that just occured on your system. \r\n" .
+            "\r This is to inform you that $name just made a successfull Deposit of $currency$request->amount, on your system. \r\n" .
             "\r Please login to review and take the neccesary action. \r\n";
         $objDemo->sender = $site_name;
         $objDemo->date = Carbon::Now();
