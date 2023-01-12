@@ -54,17 +54,15 @@
                         <td class="body" width="100%" cellpadding="0" cellspacing="0"
                             style="padding:35px 30px 11px 30px;font-size:0;background-color:#ffffff;border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
                             <h1
-                                style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;">
+                                style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em; color:black;">
                                 Greetings!
                             </h1>
-                            <<<<<<< HEAD <span style="color:black;">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
-                                =======
-                                <span
-                                    style="color: #8c8c8c!important">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
-                                >>>>>>> main
 
-                                {{ $subcopy ?? '' }}
-                        </td>
+                            <span style="color:black;">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
+
+                            {{ $subcopy ?? '' }}
+                        </td>   
+
                     </tr>
 
                     <!-- Email footer -->
