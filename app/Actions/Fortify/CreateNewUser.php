@@ -123,7 +123,7 @@ class CreateNewUser implements CreatesNewUsers
             $data['phone'],
             $data['zip_code'],
             $data['state'],
-            'SKG-Creation'
+            'MM-Creation'
         );
 
         // set password

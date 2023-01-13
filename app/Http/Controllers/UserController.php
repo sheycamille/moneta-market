@@ -328,11 +328,12 @@ class UserController extends Controller
         }
 
         $payment_mode = $method->name;
+        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
 
         // send email notification
         $objDemo = new \stdClass();
         $objDemo->message = "\r Hello Admin, \r\n " .
-            "\r This is to inform you that you a user has made a withdrawal request of $currency$request->amount. \r\n" .
+            "\r This is to inform you that $name has made a withdrawal request of $currency$request->amount. \r\n" .
             "\r Please kindly login to your account and review and take the neccesary action. \r\n";
         $objDemo->sender = $site_name;
         $objDemo->date = Carbon::Now();
@@ -369,7 +370,7 @@ class UserController extends Controller
 
         $t7 = Trader7::find($t7_id);
 
-        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-PayPal', 'SKY-Auto-'.$request->orderid, 'deposit', 'balance');
+        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-PayPal', 'MM-AUTOPP-'.$request->orderid, 'deposit', 'balance');
         if(gettype($resp) !== 'integer') {
             return json_encode(['message' => 'Sorry an error occured, report this to support!']);
         } else {
@@ -991,7 +992,7 @@ class UserController extends Controller
 
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayPound', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayPound', 'MM-AUTOPPD', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1045,7 +1046,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayPound', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayPound', 'MM-AUTOPPD', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
@@ -1104,7 +1105,7 @@ class UserController extends Controller
 
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayStudio', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayStudio', 'MM-AUTOPS', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
@@ -1158,7 +1159,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-PayStudio', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayStudio', 'MM-AUTOPS', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1217,7 +1218,7 @@ class UserController extends Controller
 
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-ChargeMoney', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-ChargeMoney', 'MM-AUTOCM', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1271,7 +1272,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-ChargeMoney', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-ChargeMoney', 'MM-AUTOCM', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1335,7 +1336,7 @@ class UserController extends Controller
 
         if ($resp['status'] == 'C') {
             $amt = $resp['amount'];
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-YWallit', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-YWallit', 'MM-AUTOYWP', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1387,7 +1388,7 @@ class UserController extends Controller
 
         if ($data['status'] == 'C') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-YWallit', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-YWallit', 'MM-AUTOYWP', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1457,7 +1458,7 @@ class UserController extends Controller
 
         if ($resp->responseCode == '0') {
             $amt = $resp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-VirtualPay', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-VirtualPay', 'MM-AUTOVP', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1511,7 +1512,7 @@ class UserController extends Controller
 
         if ($data['responseCode'] == '0') {
             $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-VirtualPay', 'SKY-Auto', 'deposit', 'balance');
+            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-VirtualPay', 'MM-AUTOVP', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
@@ -1605,7 +1606,7 @@ class UserController extends Controller
                     $message_text = $tresponse->getMessages()[0]->getDescription() . ", Transaction ID: " . $tresponse->getTransId();
 
                     $amt = $data['amount'];
-                    $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-AuthorizeNet', 'SKY-Auto', 'deposit', 'balance');
+                    $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-AuthorizeNet', 'MM-AUTOAN', 'deposit', 'balance');
                     if(gettype($respTrans) !== 'integer') {
                         return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
                     } else {
@@ -1715,7 +1716,7 @@ class UserController extends Controller
 
         if($resp['data']['gatewayStatus']=='APPROVED') {
             $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'SKY-Auto-'.$paymentId, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Cashonex', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
@@ -1787,7 +1788,7 @@ class UserController extends Controller
             } elseif ($request->status == 'APPROVED') {
                 $amount = $deposit->amount;
                 $paymentId =$request->paymentId;
-                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Cashonex', 'SKY-Auto-'.$paymentId, 'deposit', 'balance');
+                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Cashonex', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
 
                 if(gettype($respT7) !== 'integer') {
                     return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
@@ -1855,7 +1856,7 @@ class UserController extends Controller
 
         if($request->status == 'Success') {
             if($request->paid_amount) $amount = $request->paid_amount;
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-NUMPAY', 'SKY-Auto-'.$paymentId, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-NUMPAY', 'MM-AUTONP-'.$paymentId, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 return redirect(route('account.liveaccounts'))->with('message', 'Sorry an error occured, report this to support!');
@@ -1950,7 +1951,7 @@ class UserController extends Controller
         $msg = 'We are processing your payment, check back later. ' . $request->reason;
 
         if(strtolower($request->status) == 'success') {
-            $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'SKG-Ragapay', 'SKY-Auto-'.$txn_id, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Ragapay', 'MM-AUTORP-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';

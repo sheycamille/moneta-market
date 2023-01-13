@@ -147,7 +147,7 @@ class LogicController extends Controller
         $t7 = Trader7::find($deposit->account_id);
 
         // do the deposit on the Trader7 account
-        $respTrans = $this->performTransaction($t7->currency, $t7->number, $deposit->amount, 'SKG-Admin', 'MM-Auto', 'deposit', 'balance');
+        $respTrans = $this->performTransaction($t7->currency, $t7->number, $deposit->amount, 'MM-Admin', 'MM-AUTO', 'deposit', 'balance');
 
         if(gettype($respTrans) !== 'integer') {
             return redirect()->back()->with('message', 'Sorry an error occured, report this to IT!');
@@ -191,7 +191,7 @@ class LogicController extends Controller
 
         // do the withdrawal from on the Trader7 account
         $t7 = Trader7::find($withdrawal->account_id);
-        $respTrans = $this->performTransaction($t7->currency, $t7->number, $withdrawal->amount, 'SKG-Admin', 'MM-Auto', 'withdrawal');
+        $respTrans = $this->performTransaction($t7->currency, $t7->number, $withdrawal->amount, 'MM-Admin', 'MM-AUTO', 'withdrawal');
 
         if(gettype($respTrans) !== 'integer') {
             return redirect()->back()->with('message', 'Sorry an error occured, report this to IT!');

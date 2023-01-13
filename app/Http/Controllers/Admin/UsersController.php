@@ -390,13 +390,13 @@ class UsersController extends Controller
                 return redirect()->back()->with('message', 'Trader7 account not found');
 
             if ($request->type == "Bonus") {
-                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-Admin', 'MM-Auto', 'deposit', 'bonus');
+                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-Admin', 'MM-AUTO', 'deposit', 'bonus');
                 $t7->bonus += $amt;
             } elseif ($request->type == "Credit") {
-                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-Admin', 'MM-Auto', 'deposit', 'credit');
+                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-Admin', 'MM-AUTO', 'deposit', 'credit');
                 $t7->bonus += $amt;
             } elseif ($request->type == "Balance") {
-                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-Admin', 'MM-Auto', 'deposit', 'balance');
+                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-Admin', 'MM-AUTO', 'deposit', 'balance');
                 $t7->balance += $amt;
             }
 
@@ -422,10 +422,10 @@ class UsersController extends Controller
                 return redirect()->back()->with('message', 'Trader7 account not found');
 
             if ($request->type == "Bonus") {
-                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-Admin', 'MM-Auto', 'withdrawal', 'bonus');
+                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-Admin', 'MM-AUTO', 'withdrawal', 'bonus');
                 $t7->bonus -= $amt;
             } elseif ($request->type == "Balance") {
-                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'SKG-Admin', 'MM-Auto', 'withdrawal', 'balance');
+                $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-Admin', 'MM-AUTO', 'withdrawal', 'balance');
                 $t7->balance -= $amt;
             }
 
