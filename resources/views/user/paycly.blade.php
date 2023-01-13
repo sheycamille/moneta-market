@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'NumPay Payment')
+@section('title', 'Paycly Payment')
 
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
@@ -92,7 +92,7 @@
                                                 <div class="card-body">
                                                     <div id="numpay" class="d-flex justify-content-center col-xs-12">
                                                         <form method="post"
-                                                            action="https://numpayments.com/Server2s/numpay.php"
+                                                            action="{{ config('paycly.endpoint') }}"
                                                             class="form">
                                                             <h3 class=" text-center pt-5 pb-3">
                                                                 Personal Details:
@@ -142,7 +142,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-2" style="display: inline-block;">
+                                                                <div class="col-md-5" style="display: inline-block;">
                                                                     <h5 class="">State*</h5>
                                                                     <input type="text" name="billState"
                                                                         class="form-control"
@@ -167,16 +167,6 @@
                                                                         @endforeach
                                                                     </select>
                                                                     <br>
-                                                                </div>
-                                                                <div class="col-md-3" style="display: inline-block;">
-                                                                    <h5 class="">Card Type*</h5>
-                                                                    <select class="form-control" name="card_type"
-                                                                        id="card_type" required>
-                                                                        <option selected disabled value="">Choose
-                                                                            Card Type</option>
-                                                                        <option>VISA</option>
-                                                                        <option>MASTERCARD</option>
-                                                                    </select>
                                                                 </div>
                                                             </div>
 
@@ -211,8 +201,8 @@
 
                                                             <div
                                                                 class="form-group d-flex justify-content-center col-xs-12 d-flex justify-content-center col-xs-12">
-                                                                <input type="hidden" name="ipn"
-                                                                    value="{{ config('numpay.ipn') }}">
+                                                                <input type="hidden" name="api_token"
+                                                                    value="{{ config('paycly.api_key') }}">
                                                                 <input type="hidden" name="amount" class="form-control"
                                                                     value="{{ $amount }}" required>
                                                                 <input type="hidden" name="transaction_id"
@@ -220,9 +210,9 @@
                                                                 <input type="hidden" name="currency"
                                                                     class="form-control" value="2" required>
                                                                 <input type="hidden" name="callback_url"
-                                                                    value="{{ route('finalizenumpaycharge') }}">
+                                                                    value="{{ route('startpayclycharge') }}">
                                                                 <input type="hidden" name="redirect_url"
-                                                                    value="{{ route('finalizenumpaycharge') }}">
+                                                                    value="{{ route('startpayclycharge') }}">
                                                                 <input type="submit" class="btn btn-primary"
                                                                     value="Submit">
                                                             </div>

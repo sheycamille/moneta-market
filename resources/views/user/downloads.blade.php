@@ -32,11 +32,11 @@
                         </div>
                         <div class="card-body">
                             <h4>Desktop Apps</h4>
-                            <a href="https://mobius-trader.s3.eu-north-1.amazonaws.com/SkyGoldMarkets/SkyGoldMarkets-Mobius.win.exe"
+                            <a href="https://mobius-trader.s3.eu-north-1.amazonaws.com/MonetaMarket/MonetaMarket-Mobius.win.exe"
                                 class="btn btn-primary">@lang('message.body.windows')</a>
-                            <a href="https://mobius-trader.s3.eu-north-1.amazonaws.com/SkyGoldMarkets/SkyGoldMarkets-Mobius.mac.dmg"
+                            <a href="https://mobius-trader.s3.eu-north-1.amazonaws.com/MonetaMarket/MonetaMarket-Mobius.mac.dmg"
                                 class="btn btn-primary">@lang('MacOS')</a>
-                            <a href="https://mobius-trader.s3.eu-north-1.amazonaws.com/SkyGoldMarkets/SkyGoldMarkets-Mobius.linux.AppImage"
+                            <a href="https://mobius-trader.s3.eu-north-1.amazonaws.com/MonetaMarket/MonetaMarket-Mobius.linux.AppImage"
                                 class="btn btn-primary">@lang('Linux')</a>
                         </div>
                     </div>

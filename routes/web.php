@@ -292,7 +292,7 @@ Route::middleware(['auth'])->group(function () {
     Route::any('dashboard/verify_cashonex_charge', 'UserController@handleCashonexPay')->name('verifycashonexcharge');
 
     // numpay payments
-    Route::any('dashboard/start_numpay_charge', 'UserController@startNumPay')->name('startnumpaycharge');
+    Route::any('dashboard/finalize_numpay_charge', 'UserController@finalizeNumPay')->name('finalizenumpaycharge');
     Route::any('dashboard/verify_numpay_charge', 'UserController@handleNumPay')->name('verifynumpaycharge');
 
     // paycly payments
@@ -302,9 +302,10 @@ Route::middleware(['auth'])->group(function () {
     // ragapay payments
     Route::any('dashboard/success_ragapay_charge', 'UserController@successRagapay')->name('successragapaycharge');
     Route::any('dashboard/cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
-    Route::any('dashboard/callback_ragapay_charge', 'UserController@callbackRagapay')->name('callbackragapaycharge');
-
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');
 
+// ragapay payments
+Route::any('dashboard/callback_ragapay_charge', 'UserController@callbackRagapay')->name('callbackragapaycharge');
+Route::any('dashboard/pay_notifications', 'FrontController@payNotifications')->name('pay_notifications');

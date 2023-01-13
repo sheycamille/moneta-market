@@ -95,93 +95,12 @@
                                                         </td>
                                                         <td>{{ \Carbon\Carbon::parse($account->created_at)->toDayDateTimeString() }}
                                                         </td>
-                                                        <td>
+                                                        <td style="position: unset!important;">
                                                             <a class="btn btn-primary btn-xs" href="#"
                                                                 data-toggle="modal"
                                                                 data-target="#accountDepositModal{{ $account->id }}">Deposit</a>
-                                                            <div id="accountDepositModal{{ $account->id }}"
-                                                                class="modal fade" role="dialog">
-                                                                <div class="modal-dialog">
-                                                                    <!-- Modal content-->
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h4 class="modal-title">Make new
-                                                                                deposit</h4>
-                                                                            <button type="button" class="close"
-                                                                                data-dismiss="modal">&times;</button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form style="padding:3px;" role="form"
-                                                                                method="get"
-                                                                                action="{{ route('selectpaymentmethod') }}">
-                                                                                <input style="padding:5px;"
-                                                                                    class="form-control"
-                                                                                    placeholder="Enter amount here"
-                                                                                    type="number" name="amount"
-                                                                                    min="{{ \App\Models\Setting::getValue('min_dw') }}"
-                                                                                    required>
-                                                                                <br />
-                                                                                <input type="hidden" name="account_id"
-                                                                                    value="{{ $account->id }}">
-                                                                                <input type="hidden" name="_token"
-                                                                                    value="{{ csrf_token() }}">
-                                                                                <input type="submit"
-                                                                                    class="btn btn-primary"
-                                                                                    value="Continue">
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                {{-- <a href="#" data-toggle="modal"
-                                                            data-target="#newResetMT5PasswordModal{{ $account->id }}"
-                                                            class="m-2 btn btn-danger btn-xs">Reset Password</a> --}}
                                                         </td>
                                                     </tr>
-
-                                                    <!-- Reset MT5 Account Password modal -->
-                                                    <div id="newResetMT5PasswordModal{{ $account->id }}"
-                                                        class="modal fade" role="dialog">
-                                                        <div class="modal-dialog">
-                                                            <!-- Modal content-->
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title text-left text-white">Trader7
-                                                                        Reset
-                                                                        Password</h4>
-                                                                    <button type="button"
-                                                                        class="close text-left text-white"
-                                                                        data-dismiss="modal">&times;</button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form role="form" method="post"
-                                                                        action="{{ route('account.resett7password', $account->id) }}">
-                                                                        @csrf
-                                                                        <h5 class="text-left text-white ">Trader7 Password*:
-                                                                        </h5>
-                                                                        <input style="padding:5px;"
-                                                                            class="form-control text-left text-white"
-                                                                            type="text" name="password" required><br />
-                                                                        <h5 class="text-left text-white ">Confirm Password*:
-                                                                        </h5>
-                                                                        <input style="padding:5px;"
-                                                                            class="form-control text-left text-white"
-                                                                            type="text" name="confirm_password"
-                                                                            required><br />
-
-                                                                        <div
-                                                                            class="d-flex justify-content-start align-content-start input-wrapper">
-                                                                            <input class="form-control text-left checkbox"
-                                                                                type="checkbox" name="master_password">
-                                                                            <label>Reset Investor Password</label>
-                                                                        </div>
-
-                                                                        <input type="submit" class="btn btn-primary"
-                                                                            value="Submit">
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 @empty
                                                     <tr>
                                                         <td colspan="9">No data available</td>
@@ -203,6 +122,34 @@
         </div>
     </div>
 
+    @foreach ($accounts as $account)
+        <div style="position: absolute!important;z-index:999999!important;">
+            <div id="accountDepositModal{{ $account->id }}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Make new
+                                deposit</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form style="padding:3px;" role="form" method="get"
+                                action="{{ route('selectpaymentmethod') }}">
+                                <input style="padding:5px;" class="form-control" placeholder="Enter amount here"
+                                    type="number" name="amount" min="{{ \App\Models\Setting::getValue('min_dw') }}"
+                                    required>
+                                <br />
+                                <input type="hidden" name="account_id" value="{{ $account->id }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="submit" class="btn btn-primary" value="Continue">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
     @include('user.modals')
 @endsection
 

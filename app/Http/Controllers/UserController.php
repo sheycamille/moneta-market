@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', [ 'except' => [ 'callbackRagapay']]);
     }
 
 
@@ -787,6 +787,8 @@ class UserController extends Controller
         $method = Wdmethod::find($methodId);
         $amount = $request->session()->get('amount');
         $countries = Country::orderBy('name')->whereStatus('active')->get();
+        $user = Auth::user();
+        $t7_id = $request->session()->get('t7_account_id');
 
         $data = [];
         if (strpos(strtolower($method->name), 'bank') > -1) {
@@ -875,29 +877,56 @@ class UserController extends Controller
                 'dmethod' => $method,
                 'transaction_id' => $transaction_id,
             ];
-        } elseif (strpos(strtolower($method->setting_key), 'ragapay') > -1) {
-            $view = 'ragapay';
-            $title = 'Make RagaPay Payment';
-            $txn_id = rand();
-            $request->session()->put('ragapay_transaction_id', $txn_id);
+        } elseif (strpos(strtolower($method->setting_key), 'paycly') > -1) {
+            $depo = new Deposit();
+            $depo->amount = number_format((float)$amount, 2, '.', '');;
+            $depo->payment_mode = 'Paycly';
+            $depo->user = $user->id;
+            $depo->account_id = $t7_id;
+            $depo->status = 'Pending';
+            $depo->save();
+
+            $view = 'paycly';
+            $title = 'Make Paycly Payment';
+
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
-                'transaction_id' => $txn_id,
+                'transaction_id' => $depo->id,
+            ];
+        } elseif (strpos(strtolower($method->setting_key), 'ragapay') > -1) {
+            $depo = new Deposit();
+            $depo->amount = number_format((float)$amount, 2, '.', '');;
+            $depo->payment_mode = 'Ragapay';
+            $depo->user = $user->id;
+            $depo->account_id = $t7_id;
+            $depo->status = 'Pending';
+            $depo->save();
+
+            $order_number = 'order-'.$depo->id.'-'.$t7_id;
+
+            $request->session()->put('ragapay_order_number', $order_number);
+
+            $view = 'ragapay';
+            $title = 'Make RagaPay Payment';
+
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+                'transaction_id' => $order_number,
             ];
 
             // make an auth request to Ragapay
             $desc = 'Payment of goods';
-            $user = Auth::user();
             $amount = number_format((float)$amount, 2, '.', '');
-            $to_md5 = sha1(md5(strtoupper('order-'.$txn_id . $amount . 'usd' . $desc . config('ragapay.api_secret'))));
+            $to_md5 = sha1(md5(strtoupper($order_number . $amount . 'usd' . $desc . config('ragapay.api_secret'))));
 
             $input = [
                 'merchant_key'=> config('ragapay.api_key'),
                 'operation'=> 'purchase',
                 'methods'=> [],
                 'order'=> [
-                    'number'=> 'order-'.$txn_id,
+                    'number'=> $order_number,
                     'amount'=> $amount,
                     'currency'=> 'USD',
                     'description'=> $desc,
@@ -1796,7 +1825,7 @@ class UserController extends Controller
     }
 
 
-    public function startNumPay(Request $request)
+    public function finalizeNumPay(Request $request)
     {
         $data = $request->all();
         $stringD = implode(', ', $data);
@@ -1866,57 +1895,23 @@ class UserController extends Controller
 
     public function successRagapay(Request $request)
     {
-        $t7_id = $request->session()->get('t7_account_id');
-        $txn_id = $request->session()->get('ragapay_transaction_id');
+        $data = $request->all();
+        $order_number = $request->session()->get('ragapay_order_number');
+        $txn_id = $data['id'];
 
+        $t7_id = explode('-', $order_number)[2];
         $t7 = Trader7::find($t7_id);
         $user = Auth::user();
-        $amount = $request->order_amount;
 
-        $deposit = new Deposit();
+        $deposit = Deposit::find(explode('-', $order_number)[1]);
         $deposit->status = 'Pending';
         $deposit->payment_mode = 'RagaPay';
         $deposit->user = $user->id;
-        $deposit->amount = $amount;
         $deposit->account_id = $t7_id;
         $deposit->txn_id = $txn_id;
         $deposit->save();
 
         $msg = 'We are processing your payment, check back later. ' . $request->reason;
-
-        if(strtolower($request->status) == 'success') {
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Ragapay', 'SKY-Auto-'.$txn_id, 'deposit', 'balance');
-
-            if(gettype($respT7) !== 'integer') {
-                $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';
-                return redirect()->back()->with('message', $msg);
-            } else {
-                $t7->balance += $amount;
-                $t7->save();
-                $deposit->amount = $amount;
-                $deposit->status = 'Processed';
-                $deposit->save();
-
-                //save transaction
-                $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
-
-                //send email notification
-                $currency = Setting::getValue('currency');
-                $site_name = Setting::getValue('site_name');
-                $objDemo = new \stdClass();
-
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
-                $objDemo->message = "\r Hello $name, \r\n
-
-                \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
-                $objDemo->sender = "$site_name";
-                $objDemo->date = Carbon::Now();
-                $objDemo->subject = "Deposit Processed!";
-
-                Mail::bcc($user->email)->send(new NewNotification($objDemo));
-                $msg = 'Your deposit was successfully processed!';
-            }
-        }
 
         Session::flash('message', $msg);
         return redirect(route('account.liveaccounts'))->with('message', $msg);
@@ -1934,14 +1929,16 @@ class UserController extends Controller
 
     public function callbackRagapay(Request $request)
     {
-        $t7_id = $request->session()->get('t7_account_id');
-        $txn_id = $request->session()->get('ragapay_transaction_id');
+        $data = $request->all();
+        $order_number = $data['order_number'];
+        $txn_id = $data['id'];
 
+        $t7_id = explode('-', $order_number)[2];
         $t7 = Trader7::find($t7_id);
         $user = Auth::user();
         $amount = $request->order_amount;
 
-        $deposit = new Deposit();
+        $deposit = Deposit::find(explode('-', $order_number)[1]);
         $deposit->status = 'Pending';
         $deposit->payment_mode = 'RagaPay';
         $deposit->user = $user->id;
@@ -1953,7 +1950,7 @@ class UserController extends Controller
         $msg = 'We are processing your payment, check back later. ' . $request->reason;
 
         if(strtolower($request->status) == 'success') {
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'SKG-Ragapay', 'SKY-Auto-'.$txn_id, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'SKG-Ragapay', 'SKY-Auto-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';
@@ -1961,7 +1958,6 @@ class UserController extends Controller
             } else {
                 $t7->balance += $amount;
                 $t7->save();
-                $deposit->amount = $amount;
                 $deposit->status = 'Processed';
                 $deposit->save();
 
@@ -1989,6 +1985,4 @@ class UserController extends Controller
         Session::flash('message', $msg);
         return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
-
-    
 }

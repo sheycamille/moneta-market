@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountType;
-use App\Models\Faq;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\State;
@@ -232,4 +231,26 @@ class FrontController extends Controller
             ->get();
         return response()->json($cities);
     }
+
+    public function payNotifications(Request $request)
+    {
+        $data = $request->all();
+        $currency = Setting::getValue('currency');
+        $site_name = Setting::getValue('site_name');
+        $deposit_email = Setting::getValue('deposit_email');
+
+        //send email notification
+        $objDemo = new \stdClass();
+        $objDemo->message = "\r Hello Admin, \r\n" .
+            "\r This is to inform you of a successful deposit of $currency $request->order_amount, that just occured on your system through Ragapay. \r\n" .
+            "\r Please login to review and take the neccesary action. \r\n" . json_encode($data);
+        $objDemo->sender = 'RagaPay Deposit: ' . $site_name;
+        $objDemo->date = Carbon::Now();
+        $objDemo->subject = "Action Needed: Successful RagaPay Deposit";
+        Mail::mailer('smtp')->bcc($deposit_email)->send(new NewNotification($objDemo));
+
+        return json_encode(['status' => true]);
+    }
 }
+
+//IDU@20@#

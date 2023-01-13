@@ -1,21 +1,55 @@
 .topbar .navbar-collapse {
- padding-right: 0!important;
+    padding-right: 0 !important;
 }
 
 .topbar .customize-input .form-control {
-    color: white!important
+    color: white !important;
 }
 
-.breadcrumb-item+.breadcrumb-item:before {
-    color: white!important;
+.breadcrumb-item + .breadcrumb-item:before {
+    color: white !important;
 }
 
 .sidebar-nav ul .sidebar-item.selected .sidebar-link {
     border-radius: 0px 60px 60px 0px;
-    color: #fff!important;
-    background: -webkit-gradient(linear, left top, right top, from(#4051f6), color-stop(#475cf3), color-stop(#4f65ef), color-stop(#586eea), to(#6177e5));
-    background: -webkit-linear-gradient(left, #4051f6, #475cf3, #4f65ef, #586eea, #6177e5);
-    background: -o-linear-gradient(left, #4051f6, #475cf3, #4f65ef, #586eea, #6177e5);
-    background: linear-gradient(to right, #4051f6, #475cf3, #4f65ef, #586eea, #6177e5);
+    color: #fff !important;
+    background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        from(#4051f6),
+        color-stop(#475cf3),
+        color-stop(#4f65ef),
+        color-stop(#586eea),
+        to(#6177e5)
+    );
+    background: -webkit-linear-gradient(
+        left,
+        #4051f6,
+        #475cf3,
+        #4f65ef,
+        #586eea,
+        #6177e5
+    );
+    background: -o-linear-gradient(
+        left,
+        #4051f6,
+        #475cf3,
+        #4f65ef,
+        #586eea,
+        #6177e5
+    );
+    background: linear-gradient(
+        to right,
+        #4051f6,
+        #475cf3,
+        #4f65ef,
+        #586eea,
+        #6177e5
+    );
     opacity: 1;
+}
+
+.dataTables_filter label {
+    float: right;
 }
