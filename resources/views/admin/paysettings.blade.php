@@ -165,7 +165,7 @@
                                                             <input name="logo" class="form-control" type="file">
                                                             @if ($method->logo)
                                                                 <img width="150px"
-                                                                    src="{{ asset('storage/logos/' . $method->logo) }}">
+                                                                    src="{{ asset('storage/photos/logos/' . $method->logo) }}">
                                                             @endif
                                                         </div><br />
                                                         <input type="hidden" name="type" value="withdrawal">
@@ -304,7 +304,7 @@
                                                             <input name="logo" class="form-control" type="file">
                                                             @if ($method->logo)
                                                                 <img width="150px"
-                                                                    src="{{ asset('storage/logos/' . $method->logo) }}">
+                                                                    src="{{ asset('storage/photos/logos/' . $method->logo) }}">
                                                             @endif
                                                         </div><br />
                                                         <input type="hidden" name="type" value="deposit">

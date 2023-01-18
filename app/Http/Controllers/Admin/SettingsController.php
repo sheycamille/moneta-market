@@ -326,7 +326,7 @@ class SettingsController extends Controller
         if ($request->hasfile('logo')) {
             $file = $request->file('logo');
             $logoname = $strtxt . $file->getClientOriginalName();
-            $path = $file->storeAs('public/logos', $logoname);
+            $path = $file->storeAs('public/photos/logos', $logoname);
         }
 
         $method = new Wdmethod();
@@ -344,6 +344,10 @@ class SettingsController extends Controller
         $method->status = $request->status;
         $method->details = $request->details;
         $method->save();
+
+        $method->logo = $logoname;
+        $method->save();
+
         return redirect()->back()->with('message', 'Method added successful!');
     }
 
@@ -360,7 +364,7 @@ class SettingsController extends Controller
         if ($request->hasfile('logo')) {
             $file = $request->file('logo');
             $logoname = $strtxt . $file->getClientOriginalName();
-            $path = $file->storeAs('public/logos', $logoname);
+            $path = $file->storeAs('public/photos/logos', $logoname);
         }
 
         $method->update([
@@ -378,6 +382,10 @@ class SettingsController extends Controller
             'status' => $request->status,
             'details' => $request->details,
         ]);
+
+        $method->logo = $logoname;
+        $method->save();
+
         return redirect()->back()
             ->with('message', 'Action Successful');
     }

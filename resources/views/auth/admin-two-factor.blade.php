@@ -2,127 +2,46 @@
 
 @section('title', 'Admin Login')
 
-<style>
-    .ul {
-        text-align: right;
-        padding-top: 8px;
-    }
-
-    li{
-        display: inline;
-    }
-    .li-1{
-        background-color: #ffab2e;
-        padding: 8px;
-    }
-    .li-2{
-        background-color: #ff3ca6;
-        padding: 8px;
-    }
-
-    li a{
-        color: #fff;
-        border-radius: 2px;
-        border: 1px solid transparent;
-        padding: 0.375rem 0.75rem;
-    }
-</style>
-
 @section('content')
 
-    <!-- section content begin -->
-    <div class="uk-section uk-padding-remove-vertical">
-        <div class="uk-container uk-container-expand">
-            <div class="uk-grid" data-uk-height-viewport="expand: true">
-                <div class="uk-width-3-5@m uk-background-cover uk-background-center-right uk-visible@m uk-box-shadow-xlarge"
-                    style="background-image: url({{ asset('front/img/in-signin-image.jpeg') }});">
-                </div>
-                <div class="uk-width-expand@m uk-flex uk-flex-middle">
-                    <div class="uk-grid uk-flex-center">
-                        <div class="uk-width-3-5@m">
-                            <div class="in-padding-horizontal@s">
-                                <div class="">
-                                    <ul class="ul">
-                                        @if (App::getLocale() == 'en')
-                                            <li><a class="li-1" href="{{ route('switchlang', 'fr') }}">FR</a>
-                                            </li>
-                                            <li><a class="li-2"
-                                                    href="{{ route('switchlang', 'es') }}">ES</a>
-                                            </li>
-                                        @elseif (App::getLocale() == 'fr')
-                                            <li><a class="li-1"
-                                                    href="{{ route('switchlang', 'en') }}">EN</a>
-                                            </li>
-                                            <li><a class="li-2"
-                                                    href="{{ route('switchlang', 'es') }}">ES</a>
-                                            </li>
-                                        @else
-                                            <li><a class="li-1"
-                                                    href="{{ route('switchlang', 'en') }}">EN</a>
-                                            </li>
-                                            <li><a class="li-2"
-                                                    href="{{ route('switchlang', 'FR') }}">FR</a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                                <!-- module logo begin -->
-                                <a class="uk-logo" href="{{ route('home') }}">
-                                    <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
-                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="180"
-                                        height="36" data-uk-img>
-                                </a>
-                                <!-- module logo begin -->
-
-                                <div class="uk-grid uk-flex">
-                                    @if (Session::has('message'))
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert"
-                                            style="margin: auto;">
-                                            <p class="alert-message">{!! Session::get('message') !!}</p>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <!-- form begin -->
-                                <form method="POST" action="{{ route('verify.store') }}" class="mt-5 card__form">
-                                    {{ csrf_field() }}
-                                    <h1>@lang('message.2fa.tfa')</h1>
-                                    <p class="text-muted">
-                                        @lang('message.2fa.email') <a
-                                            href="{{ route('admin.verify.resend') }}">@lang('message.2fa.here')</a>.
-                                    </p>
-
-                                    @if ($errors->has('two_factor_code'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('two_factor_code') }}</strong>
-                                        </span>
-                                    @endif
-                                    <br>
-
-                                    <div class="uk-margin-small uk-width-1-1 uk-inline">
-                                        <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
-                                        <input name="two_factor_code"
-                                            class="uk-input uk-border-rounded {{ $errors->has('two_factor_code') ? ' is-invalid' : '' }}"
-                                            required autofocus placeholder="@lang('message.2fa.code')" required
-                                            value="{{ old('two_factor_code') }}" id="two_factor_code">
-                                    </div>
-                                    <div class="uk-margin-small uk-width-1-1">
-                                        <button
-                                            class="uk-button uk-width-1-1 uk-button-primary uk-border-rounded uk-float-left"
-                                            type="submit" name="submit">@lang('message.2fa.rgst')</button>
-                                    </div>
-                                </form>
-                                <!-- form end -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="uk-grid uk-flex">
+        @if (Session::has('message'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: auto;">
+                <p class="alert-message">{!! Session::get('message') !!}</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </div>
+        @endif
     </div>
-    <!-- section content end -->
+
+    <!-- form begin -->
+    <form method="POST" action="{{ route('verify.store') }}" class="mt-5 card__form">
+        {{ csrf_field() }}
+        <h1>@lang('message.2fa.tfa')</h1>
+        <p class="text-muted">
+            @lang('message.2fa.email') <a href="{{ route('admin.verify.resend') }}">@lang('message.2fa.here')</a>.
+        </p>
+
+        @if ($errors->has('two_factor_code'))
+            <span class="help-block">
+                <strong>{{ $errors->first('two_factor_code') }}</strong>
+            </span>
+        @endif
+        <br>
+
+        <div class="uk-margin-small uk-width-1-1 uk-inline">
+            <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
+            <input name="two_factor_code"
+                class="uk-input uk-border-rounded {{ $errors->has('two_factor_code') ? ' is-invalid' : '' }}" required
+                autofocus placeholder="@lang('message.2fa.code')" required value="{{ old('two_factor_code') }}"
+                id="two_factor_code">
+        </div>
+        <div class="uk-margin-small uk-width-1-1">
+            <button class="uk-button uk-width-1-1 uk-button-primary uk-border-rounded uk-float-left" type="submit"
+                name="submit">@lang('message.2fa.rgst')</button>
+        </div>
+    </form>
+    <!-- form end -->
 
 @endsection

@@ -56,8 +56,8 @@
 
                         <div class="row">
                             <div class="col">
-                                <a href="{{ route('fetchmobiususers') }}" class="btn btn-success btn-md mb-2">Fetch Mobius
-                                    Users</a>
+                                {{-- <a href="{{ route('fetchmobiususers') }}" class="btn btn-success btn-md mb-2">Fetch Mobius
+                                    Users</a> --}}
 
                                 @if (auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin'))
                                     <a href="#" data-toggle="modal" data-target="#sendmailModal"
@@ -112,7 +112,6 @@
                                 </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -2,157 +2,75 @@
 
 @section('title', 'Reset Password')
 
-<style>
-    .ul {
-        text-align: right;
-        padding-top: 8px;
-    }
-
-    li{
-        display: inline;
-    }
-    .li-1{
-        background-color: #ffab2e;
-        padding: 8px;
-    }
-    .li-2{
-        background-color: #ff3ca6;
-        padding: 8px;
-    }
-
-    li a{
-        color: #fff;
-        border-radius: 2px;
-        border: 1px solid transparent;
-        padding: 0.375rem 0.75rem;
-    }
-</style>
-
 @section('content')
 
-    <!-- section content begin -->
-    <div class="uk-section uk-padding-remove-vertical">
-        <div class="uk-container uk-container-expand">
-            <div class="uk-grid" data-uk-height-viewport="expand: true">
-                <div class="uk-width-3-5@m uk-background-cover uk-background-center-right uk-visible@m uk-box-shadow-xlarge"
-                    style="background-image: url({{ asset('front/img/in-signin-image.jpeg') }});">
-                </div>
-                <div class="uk-width-expand@m uk-flex uk-flex-middle">
-                    <div class="uk-grid uk-flex-center">
-                        <div class="uk-width-3-5@m">
-                            <div class="in-padding-horizontal@s">
-                                <div class="">
-                                    <ul class="ul">
-                                        @if (App::getLocale() == 'en')
-                                            <li><a class="li-1" href="{{ route('switchlang', 'fr') }}">FR</a>
-                                            </li>
-                                            <li><a class="li-2"
-                                                    href="{{ route('switchlang', 'es') }}">ES</a>
-                                            </li>
-                                        @elseif (App::getLocale() == 'fr')
-                                            <li><a class="li-1"
-                                                    href="{{ route('switchlang', 'en') }}">EN</a>
-                                            </li>
-                                            <li><a class="li-2"
-                                                    href="{{ route('switchlang', 'es') }}">ES</a>
-                                            </li>
-                                        @else
-                                            <li><a class="li-1"
-                                                    href="{{ route('switchlang', 'en') }}">EN</a>
-                                            </li>
-                                            <li><a class="li-2"
-                                                    href="{{ route('switchlang', 'FR') }}">FR</a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                                <!-- module logo begin -->
-                                <a class="uk-logo" href="{{ route('home') }}">
-                                    <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
-                                        data-src="{{ asset('front/img/group-logo.png') }}" alt="logo" width="180"
-                                        height="36" data-uk-img>
-                                </a>
-                                <!-- module logo begin -->
+    <p class="uk-text-lead uk-margin-top uk-margin-remove-bottom">@lang('message.login.newp')</p>
 
-                                <p class="uk-text-lead uk-margin-top uk-margin-remove-bottom">@lang('message.login.newp')</p>
-
-                                <div class="mb-4 text-center">
-                                    @if (Session::has('status'))
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert"
-                                            style="margin: auto;">
-                                            {{ session('status') }}
-                                        </div>
-                                    @endif
-                                </div>
-
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-
-                                    </div>
-                                @endif
-
-                                <!-- form begin -->
-                                <form class="uk-grid uk-form" action="{{ route('password.update') }}" method="post">
-                                    @csrf
-
-                                    <input type="hidden" name="token" value="{{ $request->token }}">
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
-                                    <br>
-                                    <div class="uk-margin-small uk-width-1-1 uk-inline">
-                                        <span class="uk-form-icon uk-form-icon-flip fas fa-user fa-sm"></span>
-                                        <input name="email" class="uk-input uk-border-rounded" id="email"
-                                            value="{{ $request->email ?? old('email') }}" type="hidden"
-                                            placeholder="email@gmail.com" required>
-                                    </div>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                    <br>
-                                    <div class="uk-margin-small uk-width-1-1 uk-inline">
-                                        <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
-                                        <input name="password" class="uk-input uk-border-rounded" id="password"
-                                            value="" type="password" placeholder="Password" required>
-                                    </div>
-
-                                    @if ($errors->has('password_confirmation'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                        </span>
-                                    @endif
-                                    <br>
-                                    <div class="uk-margin-small uk-width-1-1 uk-inline">
-                                        <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
-                                        <input name="password_confirmation" class="uk-input uk-border-rounded"
-                                            id="password_confirmation" value="" type="password" placeholder="Password"
-                                            required>
-                                    </div>
-
-                                    <div class="uk-margin-small uk-width-1-1">
-                                        <button
-                                            class="uk-button uk-width-1-1 uk-button-primary uk-border-rounded uk-float-left"
-                                            type="submit" name="submit">@lang('message.login.rstp')</button>
-                                    </div>
-                                </form>
-                                <!-- form end -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="mb-4 text-center">
+        @if (Session::has('status'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: auto;">
+                {{ session('status') }}
             </div>
-        </div>
+        @endif
     </div>
-    <!-- section content end -->
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+
+        </div>
+    @endif
+
+    <!-- form begin -->
+    <form class="uk-grid uk-form" action="{{ route('password.update') }}" method="post">
+        @csrf
+
+        <input type="hidden" name="token" value="{{ $request->token }}">
+        @if ($errors->has('email'))
+            <span class="help-block">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+        @endif
+        <br>
+        <div class="uk-margin-small uk-width-1-1 uk-inline">
+            <span class="uk-form-icon uk-form-icon-flip fas fa-user fa-sm"></span>
+            <input name="email" class="uk-input uk-border-rounded" id="email"
+                value="{{ $request->email ?? old('email') }}" type="hidden" placeholder="email@gmail.com" required>
+        </div>
+
+        @if ($errors->has('password'))
+            <span class="help-block">
+                <strong>{{ $errors->first('password') }}</strong>
+            </span>
+        @endif
+        <br>
+        <div class="uk-margin-small uk-width-1-1 uk-inline">
+            <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
+            <input name="password" class="uk-input uk-border-rounded" id="password" value="" type="password"
+                placeholder="Password" required>
+        </div>
+
+        @if ($errors->has('password_confirmation'))
+            <span class="help-block">
+                <strong>{{ $errors->first('password_confirmation') }}</strong>
+            </span>
+        @endif
+        <br>
+        <div class="uk-margin-small uk-width-1-1 uk-inline">
+            <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm"></span>
+            <input name="password_confirmation" class="uk-input uk-border-rounded" id="password_confirmation" value=""
+                type="password" placeholder="Password" required>
+        </div>
+
+        <div class="uk-margin-small uk-width-1-1">
+            <button class="uk-button uk-width-1-1 uk-button-primary uk-border-rounded uk-float-left" type="submit"
+                name="submit">@lang('message.login.rstp')</button>
+        </div>
+    </form>
+    <!-- form end -->
 
 @endsection

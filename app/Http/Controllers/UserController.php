@@ -630,6 +630,7 @@ class UserController extends Controller
     //Save verification documents requests
     public function savevdocs(Request $request)
     {
+        $user = Auth::user();
         $this->validate($request, [
             'idcard' => 'mimes:jpg,jpeg,png|max:4000|image',
             'idcard_back' => 'mimes:jpg,jpeg,png|max:4000|image',
@@ -637,10 +638,10 @@ class UserController extends Controller
             'address_document' => 'mimes:jpg,jpeg,png|max:4000|image',
         ]);
 
-        $cardname = Auth::user()->id_card;
-        $cardname1 = Auth::user()->id_card_back;
-        $passname = Auth::user()->passport;
-        $addressname = Auth::user()->address_document;
+        $cardname = $user->id_card;
+        $cardname1 = $user->id_card_back;
+        $passname = $user->passport;
+        $addressname = $user->address_document;
 
         $location = Setting::getValue('location');
         $site_name = Setting::getValue('site_name');
@@ -726,8 +727,9 @@ class UserController extends Controller
         }
 
         //send email notification
+        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
         $objDemo = new \stdClass();
-        $objDemo->message = "\r This is to inform you of a user submitting their KYC Documents. \r\n" .
+        $objDemo->message = "\r This is to inform you of $name submitting their KYC Documents. \r\n" .
             "\r Please login to review documents. \r \n";
         $objDemo->sender = $site_name;
         $objDemo->date = Carbon::Now();

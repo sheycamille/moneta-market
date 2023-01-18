@@ -503,6 +503,7 @@ class UsersController extends Controller
             ->with('message', 'Reseted KYC Sucessfully!');
     }
 
+
     // block user
     public function ublock($id)
     {
