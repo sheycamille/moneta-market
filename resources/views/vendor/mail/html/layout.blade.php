@@ -40,9 +40,9 @@
         <tr role="article" aria-roledescription="email" lang="en"
             style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#ffffff;">
 
-            <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
+            <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;">
                 <table class="content" cellpadding="0" cellspacing="0" role="presentation"
-                    style="width:94%;max-width:885px; margin:auto; border:1px solid #edf2f7 !important;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:black;">
+                    style="width:94%;max-width:885px; margin:auto; border:1px solid #edf2f7 !important;border-spacing:0;text-align:left;font-family:Montserrat,lato!important;font-size:16px;line-height:22px;color:#8c8c8c!important;">
 
 
                     <!-- Email header -->
@@ -53,12 +53,12 @@
                     <tr>
                         <td class="body" width="100%" cellpadding="0" cellspacing="0"
                             style="padding:35px 30px 11px 30px;font-size:0;background-color:#ffffff;border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
-                            <h1
-                                style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em; color:black;">
+                            <h3
+                                style="margin-top:0;margin-bottom:16px;font-size:23px;line-height:32px;letter-spacing:-0.02em; color:black !important; font-family:Montserrat, Lato;">
                                 Greetings!
-                            </h1>
+                            </h3>
 
-                            <span style="color:black;">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
+                            <span style="">{{ Illuminate\Mail\Markdown::parse($slot) }}</span>
 
                             {{ $subcopy ?? '' }}
                         </td>   
