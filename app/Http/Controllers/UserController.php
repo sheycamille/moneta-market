@@ -1988,4 +1988,174 @@ class UserController extends Controller
         Session::flash('message', $msg);
         return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
+
+
+
+    public function startPaycly(Request $request)
+    {
+        $endpoint = config('paycly.endpoint');
+
+        $t7_id = $request->session()->get('t7_account_id');
+        $t7 = Trader7::find($t7_id);
+        $user = Auth::user();
+        $amount = $request->amount;
+
+        $deposit = new Deposit();
+        $deposit->status = 'Pending';
+        $deposit->payment_mode = 'Paycly';
+        $deposit->amount = $amount;
+        $deposit->user = $user->id;
+        $deposit->account_id = $t7_id;
+        $deposit->save();
+
+        $postInput = [
+            'salt' => config('paycly.api_key'),
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'country' => $request->country,
+            'zip_code' => $request->zip_code,
+            'amount' => $amount,
+            'currency' => $request->currency,
+            'pay_by' => $request->pay_by,
+            'card_number' => $request->card_number,
+            'card_name' => $request->card_name,
+            'cvv_code' => $request->cvv_code,
+            'expiry_month' => $request->expiry_month,
+            'expiry_year' => $request->expiry_year,
+            'clientip' => $request->ip(),
+            'redirect_url' => route('verifycashonexcharge'),
+            'webhook_url' => route('verifycashonexcharge'),
+            'orderid' => $deposit->id,
+        ];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Idempotency-Key' => config('cashonex.api_secret')
+        ];
+
+        $response = Http::withHeaders($headers)->withBody(json_encode($postInput), 'application/json')->post($endpoint);
+
+        $resp = json_decode($response->getBody(), true);
+        // $msg = $resp['message'];
+
+        // if($resp['success'] ==  false) {
+        //     return redirect()->back()->with('message', $msg);
+        // }
+
+        if($resp['data']['gatewayStatus']=='APPROVED') {
+            $paymentId =$resp['data']['paymentId'];
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+
+            if(gettype($respT7) !== 'integer') {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
+            } else {
+                $t7->balance += $amount;
+                $t7->save();
+                $deposit->amount = $amount;
+                $deposit->txn_id = $paymentId;
+                $deposit->status = 'Processed';
+                $deposit->save();
+
+                //save transaction
+                $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
+
+                //send email notification
+                $currency = Setting::getValue('currency');
+                $site_name = Setting::getValue('site_name');
+                $objDemo = new \stdClass();
+
+                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                $objDemo->message = "\r Hello $name, \r\n
+
+                \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
+                $objDemo->sender = "$site_name";
+                $objDemo->date = Carbon::Now();
+                $objDemo->subject = "Deposit Processed!";
+
+                Mail::bcc($user->email)->send(new NewNotification($objDemo));
+                $msg = 'Your deposit was successfully processed!';
+            }
+        }
+
+        // If 3D
+        $url = $resp['data']['redirectUrl'];
+        // dd([$url, $response]);
+        if($url) {
+            $msg = 'Security Redirection by PSP! Redirecting...';
+            return redirect($url);
+        }
+
+        // If 2D
+        if($resp['data']['gatewayStatus']=='initiated') {
+            $msg = 'Deposit Initiated by PSP! Check back later...';
+        }
+
+        if($resp['data']['gatewayStatus']=='DECLINED') {
+            $msg = 'Deposit Declined by PSP!';
+        }
+
+        Session::flash('message', $msg);
+        return redirect(route('account.liveaccounts'))->with('message', $msg);
+    }
+
+
+    public function handlePaycly(Request $request)
+    {
+        $t7_id = $request->session()->get('t7_account_id');
+        $t7 = Trader7::find($t7_id);
+        $user = Auth::user();
+        $msg = $request->message;
+
+        $deposit = Deposit::find($request->orderId);
+        if($deposit) {
+            if($request->status == 'DECLINED') {
+                $deposit->status = 'Declined';
+                $deposit->save();
+
+                $msg = 'Sorry your payment was delined because for the following reason: ' . $request->message;
+            } elseif ($request->status == 'APPROVED') {
+                $amount = $deposit->amount;
+                $paymentId =$request->paymentId;
+                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+
+                if(gettype($respT7) !== 'integer') {
+                    return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
+                } else {
+                    $t7->balance += $amount;
+                    $t7->save();
+                    $deposit->txn_id = $paymentId;
+                    $deposit->status = 'Processed';
+                    $deposit->save();
+
+                    //save transaction
+                    $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
+
+                    //send email notification
+                    $currency = Setting::getValue('currency');
+                    $site_name = Setting::getValue('site_name');
+                    $objDemo = new \stdClass();
+
+                    $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                    $objDemo->message = "\r Hello $name, \r\n
+
+                    \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
+                    $objDemo->sender = "$site_name";
+                    $objDemo->date = Carbon::Now();
+                    $objDemo->subject = "Deposit Processed!";
+
+                    Mail::bcc($user->email)->send(new NewNotification($objDemo));
+                    $msg = 'Your deposit was successfully processed!';
+                }
+            }
+        }
+
+        Session::flash('message', $msg);
+        return redirect(route('account.liveaccounts'))->with('message', $msg);
+    }
+
 }
