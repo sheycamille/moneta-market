@@ -1,7 +1,7 @@
 <tr>
     <td class="row" style="padding:35px 30px 11px 30px;font-size:0;background-color:#ffffff; text-align:center;">
         <h1
-            style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:28px;font-weight:bold;letter-spacing:-0.02em; text-align:center;">
+            style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:28px;font-weight:bold;letter-spacing:-0.02em; text-align:center; font-family:Montserrat, Lato !important;">
             Download Your Platform!</h1>
         <p style="text-align:center;">Web & Mobile Apps</p>
 
@@ -10,7 +10,7 @@
             <a style="text-align:center;"
                 href="https://play.google.com/store/apps/details?id=com.mtrader7.terminal&hl=en">
                 <img class="" src="{{ URL::to('/') }}/dash/images/google_play_badge.png" alt="Andriod Download"
-                    tilte="Andriod Download" height="66" />
+                    tilte="Andriod Download"  />
                 <br><br>
                 <span>Download Now</span>
             </a>
@@ -21,7 +21,7 @@
             <a style="text-align:center;" href="https://apps.apple.com/gb/app/mobiustrader-7/id1355359598"
                 target="_blank">
                 <img src="{{ URL::to('/') }}/dash/images/app-store-en.png" alt="iPhone Download"
-                    tilte="iPhone Download" height="66" />
+                    tilte="iPhone Download"  />
                 <br><br>
                 <span>Download Now</span>
             </a>

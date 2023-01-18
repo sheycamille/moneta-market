@@ -9,7 +9,7 @@
 
     {{-- Body --}}
 
-    <span style="color:black;">{{ $slot }}</span>
+    <span style="color:#8c8c8c!important; font-family:Montserrat, lato!important;">{{ $slot }}</span>
 
 
     {{-- Subcopy --}}
