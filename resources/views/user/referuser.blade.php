@@ -16,7 +16,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header fw-bolder">
-                            Refer users to {{ \App\Models\Setting::getValue('site_name') }} community
+                            Refer users to {{ \App\Models\Setting::getValue('site_name') }}
                         </div>
                         <div class="card-body">
 

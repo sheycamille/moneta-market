@@ -52,7 +52,7 @@ class CreateNewUser implements CreatesNewUsers
 
         $referrer = session()->pull('ref_by') ? session()->pull('ref_by') : $input['ref_by'];
         $data = [
-            'name' => $input['first_name'],
+            'name' => $input['first_name'] . ' ' . $input['last_name'],
             'lastName' => $input['last_name'],
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],
