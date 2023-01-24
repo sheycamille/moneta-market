@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
        //
-       'dashboard/pay_notifications'
+       'dashboard/pay_notifications',
+       'dashboard/verify_paycly_charge',
     ];
 }

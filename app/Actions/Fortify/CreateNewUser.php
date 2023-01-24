@@ -79,7 +79,7 @@ class CreateNewUser implements CreatesNewUsers
             $user = User::create($data);
 
             // update the user's referral link and his referrer
-            $ref_link = request()->url() . '/' . $user->id;
+            $ref_link = 'https://' . request()->getHttpHost() . '/' . $user->id;
             $user->ref_link = $ref_link;
 
             if(!$user->ref_by) $user->ref_by = $referrer;

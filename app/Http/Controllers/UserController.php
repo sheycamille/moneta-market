@@ -2096,6 +2096,7 @@ class UserController extends Controller
 
     public function handlePaycly(Request $request)
     {
+        dd($request->all());
         $t7_id = $request->session()->get('t7_account_id');
         $t7 = Trader7::find($t7_id);
         $user = Auth::user();

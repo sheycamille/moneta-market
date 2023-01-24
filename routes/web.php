@@ -285,7 +285,6 @@ Route::middleware(['auth'])->group(function () {
 
         // paycly payments
         Route::any('start_paycly_charge', 'UserController@startPaycly')->name('startpayclycharge');
-        Route::any('verify_paycly_charge', 'UserController@handlePaycly')->name('handlepayclycharge');
 
         // ragapay payments
         Route::any('success_ragapay_charge', 'UserController@successRagapay')->name('successragapaycharge');
@@ -297,3 +296,7 @@ Route::middleware(['auth'])->group(function () {
 // ragapay payments
 Route::any('dashboard/callback_ragapay_charge', 'UserController@callbackRagapay')->name('callbackragapaycharge');
 Route::any('dashboard/pay_notifications', 'FrontController@payNotifications')->name('pay_notifications');
+
+
+// paycly payments
+Route::any('dashboard/verify_paycly_charge', 'UserController@handlePaycly')->name('handlepayclycharge');
