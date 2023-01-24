@@ -92,7 +92,7 @@
                                                 <div class="card-body">
                                                     <div id="numpay" class="d-flex justify-content-center col-xs-12">
                                                         <form method="post"
-                                                            action="{{ config('paycly.endpoint') }}"
+                                                            action="https://portal.online-epayment.com/checkout.do"
                                                             class="form">
                                                             <h3 class=" text-center pt-5 pb-3">
                                                                 Personal Details:
@@ -100,69 +100,64 @@
                                                             <div class="form-group d-flex justify-content-center col-xs-12">
                                                                 <div class="col-md-5" style="display: inline-block;">
                                                                     <h5 class="">First Name*</h5>
-                                                                    <input type="text" name="first_name"
+                                                                    <input type="text" name="fullname"
                                                                         class="form-control"
-                                                                        value="{{ Auth::user()->first_name }}" required>
+                                                                        value="{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}"
+                                                                        required>
                                                                 </div>
-                                                                <div class="col-md-5" style="display: inline-block;">
-                                                                    <h5 class="">Last Name*</h5>
-                                                                    <input type="text" name="last_name"
-                                                                        class="form-control"
-                                                                        value="{{ Auth::user()->last_name }}" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group d-flex justify-content-center col-xs-12">
+
                                                                 <div class="col-md-5" style="display: inline-block;">
                                                                     <h5 class="">Email*</h5>
                                                                     <input type="text" name="email"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->email }}" required>
                                                                 </div>
+                                                            </div>
+                                                            <div class="form-group d-flex justify-content-center col-xs-12">
+                                                                <div class="col-md-4" style="display: inline-block;">
+                                                                    <h5 class="">Address*</h5>
+                                                                    <input type="text" name="bill_street_1"
+                                                                        class="form-control"
+                                                                        value="{{ Auth::user()->address }}" required>
+                                                                </div>
 
-                                                                <div class="col-md-5" style="display: inline-block;">
+                                                                <div class="col-md-3" style="display: inline-block;">
+                                                                    <h5 class="">City*</h5>
+                                                                    <input type="text" name="bill_city"
+                                                                        class="form-control"
+                                                                        value="{{ Auth::user()->town }}" required>
+                                                                </div>
+
+                                                                <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Phone No*</h5>
-                                                                    <input type="text" name="phoneNum"
+                                                                    <input type="text" name="bill_phone"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->phone }}" required
                                                                         placeholder="+1...">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-5" style="display: inline-block;">
-                                                                    <h5 class="">Address*</h5>
-                                                                    <input type="text" name="billAddress"
-                                                                        class="form-control"
-                                                                        value="{{ Auth::user()->address }}" required>
-                                                                </div>
-                                                                <div class="col-md-5" style="display: inline-block;">
-                                                                    <h5 class="">City*</h5>
-                                                                    <input type="text" name="billCity"
-                                                                        class="form-control"
-                                                                        value="{{ Auth::user()->town }}" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-5" style="display: inline-block;">
+                                                                <div class="col-md-4" style="display: inline-block;">
                                                                     <h5 class="">State*</h5>
-                                                                    <input type="text" name="billState"
+                                                                    <input type="text" name="bill_state"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->state }}" required>
                                                                 </div>
-                                                                <div class="col-md-2" style="display: inline-block;">
+                                                                <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Zip Code*</h5>
-                                                                    <input type="text" name="billZip"
+                                                                    <input type="text" name="bill_zip"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->zip_code }}" required>
                                                                 </div>
                                                                 <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Country*</h5>
-                                                                    <select name="country" id="country"
+                                                                    <select name="bill_country" id="country"
                                                                         class="form-control country-select" required>
                                                                         <option>@lang('message.register.chs')</option>
                                                                         @foreach ($countries as $country)
                                                                             <option
                                                                                 @if (Auth::user()->country_id == $country->id || Auth::user()->country_id == $country->name) selected @endif
-                                                                                value="{{ $country->id }}">
+                                                                                value="{{ strtoupper($country->code) }}">
                                                                                 {{ ucfirst($country->name) }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -178,41 +173,58 @@
                                                                 class="form-group d-flex justify-content-center col-xs-12">
                                                                 <div class="col-md-4" style="display: inline-block;">
                                                                     <h5 class="">Card No*</h5>
-                                                                    <input type="text" name="ccnumber"
-                                                                        class="form-control" value="" required>
+                                                                    <input type="text" name="ccno"
+                                                                        class="form-control" value="4242424242424242"
+                                                                        required>
                                                                 </div>
                                                                 <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Expiry Month*</h5>
-                                                                    <input type="text" name="ccexpmon"
-                                                                        placeholder="01" class="form-control"
-                                                                        value="" required>
+                                                                    <input type="text" name="month" placeholder="01"
+                                                                        class="form-control" value="01" required>
                                                                 </div>
                                                                 <div class="col-md-2" style="display: inline-block;">
                                                                     <h5 class="">Expiry Year*</h5>
-                                                                    <input type="text" name="ccexpyr" placeholder="23"
-                                                                        class="form-control" value="" required>
+                                                                    <input type="text" name="year" placeholder="23"
+                                                                        class="form-control" value="30" required>
                                                                 </div>
                                                                 <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">CVV Number*</h5>
-                                                                    <input type="text" name="cvv"
-                                                                        class="form-control" value="" required>
+                                                                    <input type="text" name="ccvv"
+                                                                        class="form-control" value="123" required>
                                                                 </div>
                                                             </div>
 
                                                             <div
                                                                 class="form-group d-flex justify-content-center col-xs-12 d-flex justify-content-center col-xs-12">
+                                                                <input type="hidden" name="source_url"
+                                                                    value="{{ isset($_SERVER['HTTPS']) ? 'https://' : 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] }}">
+                                                                <input type="hidden" name="price"
+                                                                    value="{{ $amount }}">
                                                                 <input type="hidden" name="api_token"
                                                                     value="{{ config('paycly.api_key') }}">
-                                                                <input type="hidden" name="amount" class="form-control"
-                                                                    value="{{ $amount }}" required>
-                                                                <input type="hidden" name="transaction_id"
-                                                                    value="{{ $transaction_id }}">
-                                                                <input type="hidden" name="currency"
-                                                                    class="form-control" value="2" required>
-                                                                <input type="hidden" name="callback_url"
-                                                                    value="{{ route('startpayclycharge') }}">
-                                                                <input type="hidden" name="redirect_url"
-                                                                    value="{{ route('startpayclycharge') }}">
+                                                                <input type='hidden' name='website_id'
+                                                                    value='{{ config('paycly.website_id') }}' />
+                                                                <input type='hidden' name='acquirer_id'
+                                                                    value='AXESFORMATION' />
+                                                                <input type='hidden' name='action' value='product' />
+                                                                <input type='hidden' name='client_ip'
+                                                                    value='{{ $client_id }}' />
+                                                                <input type="hidden" name="curr" value="USD">
+                                                                <input type="hidden" name="product_name"
+                                                                    value="Training Pack {{ Auth::user()->id }}">
+                                                                <input type="hidden" name="id_order"
+                                                                    value="{{ $id_order }}">
+                                                                <input type="hidden" name="currency" value="USD">
+                                                                <input type="hidden" name="notify_url"
+                                                                    value="{{ route('handlepayclycharge') }}">
+                                                                <input type="hidden" name="error_url"
+                                                                    value="{{ route('handlepayclycharge') }}">
+                                                                <input type="hidden" name="success_url"
+                                                                    value="{{ route('handlepayclycharge') }}">
+                                                                <input type="hidden" name="checkout_url"
+                                                                    value="{{ route('handlepayclycharge') }}">
+                                                                <input type='hidden' name='notes'
+                                                                    value='Awesome service' />
                                                                 <input type="submit" class="btn btn-primary"
                                                                     value="Submit">
                                                             </div>

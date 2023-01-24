@@ -329,6 +329,7 @@ return [
         'con' => 'Retiradas',
         'down' => 'Descargas',
         'sup' => 'Soporte',
+        'my_referrals' => "Mis referidos",
     ],
     'topmenu' => [
         'ky' => 'KYC',

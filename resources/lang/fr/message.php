@@ -340,7 +340,6 @@ return [
         'withdraw' => 'Retirer',
         'withdraw_profits' => 'Retirer les bénéfices ou le solde total de votre compte à tout moment.',
         'open_an_account' => 'Ouvrir un compte',
-
     ],
     'dashboard' => [
         'dash' => 'Tableau de bord',
@@ -360,8 +359,7 @@ return [
         'with' => "Retraits d'argent",
         'down' => 'Téléchargements',
         'sup' => 'Soutien',
-
-
+        'my_referrals' => "Mes Références",
     ],
     'topmenu' => [
         'ky' => 'KYC',
@@ -371,8 +369,6 @@ return [
         'act_set' => 'Paramètres du compte',
         'log' => 'Déconnexion',
         'home' => 'Accueil',
-
-
     ],
     'privacy_policy' => [
         'policy' => 'Politique de confidentialité',
@@ -1166,6 +1162,7 @@ return [
         'zip' => 'Code postal',
         'enter_zip' => 'Entrez le code postal',
         'country' => 'Pays',
+        'chs' => 'Choisir le pays',
         'pass' => 'Mot de passe',
         'enter_pass' => 'Entrez le mot de passe',
         'confrm' => 'Confirmer le mot de passe',

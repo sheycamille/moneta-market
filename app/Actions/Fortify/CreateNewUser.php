@@ -50,6 +50,7 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
+        $referrer = session()->pull('ref_by') ? session()->pull('ref_by') : $input['ref_by'];
         $data = [
             'name' => $input['first_name'],
             'lastName' => $input['last_name'],
@@ -65,6 +66,7 @@ class CreateNewUser implements CreatesNewUsers
             'country_id' => $input['country'],
             'status' => 'active',
             'password' => $input['password'],
+            'ref_by' => $referrer,
         ];
 
         $mobiusResp = $this->createTrader($data);
@@ -73,7 +75,16 @@ class CreateNewUser implements CreatesNewUsers
             // hash the password before creating the user
             $data['password'] = Hash::make($data['password']);
             $data['account_number'] = $mobiusResp['data']['Id'];
+
             $user = User::create($data);
+
+            // update the user's referral link and his referrer
+            $ref_link = request()->url() . '/' . $user->id;
+            $user->ref_link = $ref_link;
+
+            if(!$user->ref_by) $user->ref_by = $referrer;
+
+            $user->save();
 
             // send verification email
             $this->notifyUser($user);

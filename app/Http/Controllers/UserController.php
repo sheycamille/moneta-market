@@ -48,26 +48,7 @@ class UserController extends Controller
 
     public function dashboard(Request $request)
     {
-        $files_key = Setting::getValue('files_key');
-
-        $key = $this->generate_string(5);
-
         $user = Auth::user();
-
-        //set files key if not set
-        if ($files_key == NULL) {
-            $setting = Setting::where('name', 'files_key')->first();
-            if ($setting) {
-                $setting->update([
-                    'files_key' => 'OT_' . $key,
-                ]);
-            } else {
-                $setting = new Setting();
-                $setting->name = 'files_key';
-                $setting->value = $key;
-                $setting->save();
-            }
-        }
 
         //Get bonus from users table
         $user = User::where('id', $user->id)->first();
@@ -78,8 +59,6 @@ class UserController extends Controller
             $request->session()->put('reged', 'yes');
             return redirect()->route('dashboard');
         }
-
-        //Also log user out if web dashboard is not enabled and user is not admin
 
         return view('user.dashboard')
             ->with(array(
@@ -477,8 +456,8 @@ class UserController extends Controller
     {
         $array = User::all();
         return view('user.referuser')->with(array(
-            'title' => 'Refer Users',
-            'team' => User::where('ref_by', 0)->get(),
+            'title' => 'My Referrals',
+            'team' => User::where('ref_by', Auth::user()->id)->get(),
         ));
     }
 
@@ -895,7 +874,8 @@ class UserController extends Controller
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
-                'transaction_id' => $depo->id,
+                'id_order' => $depo->id,
+                'client_id' => $request->ip(),
             ];
         } elseif (strpos(strtolower($method->setting_key), 'ragapay') > -1) {
             $depo = new Deposit();
@@ -1993,7 +1973,7 @@ class UserController extends Controller
 
     public function startPaycly(Request $request)
     {
-        $endpoint = config('paycly.endpoint');
+        $endpoint = config('paycly.endpoint') . '/checkout.do';
 
         $t7_id = $request->session()->get('t7_account_id');
         $t7 = Trader7::find($t7_id);
@@ -2009,38 +1989,48 @@ class UserController extends Controller
         $deposit->save();
 
         $postInput = [
-            'salt' => config('paycly.api_key'),
-            'last_name' => $request->last_name,
-            'first_name' => $request->first_name,
+            'website_id' => config('paycly.website_id'),
+            'api_token' => config('paycly.api_key'),
+            'cardsend' => 'CHECKOUT',
+            'client_ip' => $request->ip(),
+            'action' => 'producct',
+            'source' => 'Host-Redirect-Card-Payment (Core PHP)',
+            'source_url' => (isset($_SERVER["HTTPS"])?'https://':'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']),
+            'product_name' => 'Training Pack 1',
+            'fullname' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'country' => $request->country,
-            'zip_code' => $request->zip_code,
-            'amount' => $amount,
-            'currency' => $request->currency,
+            'bill_street_1' => $request->address,
+            'bill_street_2' => $request->address,
+            'bill_city' => $request->city,
+            'bill_state' => $request->state,
+            'bill_country' => $request->country,
+            'bill_zip' => $request->zip_code,
+            'bill_phone' => $request->phone,
+            'price' => $amount,
+            'curr' => $request->currency,
             'pay_by' => $request->pay_by,
             'card_number' => $request->card_number,
             'card_name' => $request->card_name,
-            'cvv_code' => $request->cvv_code,
-            'expiry_month' => $request->expiry_month,
-            'expiry_year' => $request->expiry_year,
-            'clientip' => $request->ip(),
-            'redirect_url' => route('verifycashonexcharge'),
-            'webhook_url' => route('verifycashonexcharge'),
-            'orderid' => $deposit->id,
+            'ccvv' => $request->cvv_code,
+            'month' => $request->expiry_month,
+            'year' => $request->expiry_year,
+            'notify_url' => route('handlepayclycharge'),
+            'success_url' => route('handlepayclycharge'),
+            'error_url' => route('handlepayclycharge'),
+            'id_order' => $deposit->id,
+            // '' => '',
+            // '' => '',
         ];
 
-        $headers = [
-            'Content-Type' => 'application/json',
-            'Idempotency-Key' => config('cashonex.api_secret')
-        ];
+        // $headers = [
+        //     'Content-Type' => 'application/json',
+        //     'Idempotency-Key' => config('cashonex.api_secret')
+        // ];
 
-        $response = Http::withHeaders($headers)->withBody(json_encode($postInput), 'application/json')->post($endpoint);
+        $response = Http::withBody(json_encode($postInput), 'application/json')->post($endpoint);
 
         $resp = json_decode($response->getBody(), true);
+        dd([$postInput, $resp]);
         // $msg = $resp['message'];
 
         // if($resp['success'] ==  false) {

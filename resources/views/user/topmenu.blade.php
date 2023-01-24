@@ -17,9 +17,9 @@
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="dark-logo" />
+                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="logo dark-logo" />
                             <!-- Light Logo icon -->
-                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="light-logo" />
+                            <img src="{{ asset('front/logo.png') }}" alt="homepage" class="logo light-logo" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->

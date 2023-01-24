@@ -74,6 +74,12 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    public function ftd()
+    {
+        return $this->dp()->where('status', 'Processed')->first();
+    }
+
+
     public function wd()
     {
         return $this->hasMany('App\Models\Withdrawal', 'user');
@@ -83,6 +89,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tuser()
     {
         return $this->belongsTo('App\Models\Admin', 'assign_to');
+    }
+
+    /**
+     * A user has a referrer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function referrer()
+    {
+        return $this->belongsTo(User::class, 'ref_by', 'id');
+    }
+
+
+    /**
+     * A user has many referrals.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'ref_by', 'id');
     }
 
 

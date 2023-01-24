@@ -33,35 +33,20 @@ class Controller extends BaseController
         return redirect()->route('dashboard');
     }
 
+
     // Controller self ref issue
     public function ref(Request $request, $id)
     {
         if (isset($id)) {
             $request->session()->flush();
-            if (count(User::where('id', $id)->first()) == 1) {
+            $user =  User::find($id);
+            if ($user) {
                 $request->session()->put('ref_by', $id);
             }
             return redirect()->route('register');
         }
     }
 
-    public function referuser()
-    {
-        return view('includes.referuser')->with(array(
-            'title' => 'Refer user',
-        ));
-    }
-
-    public function checkdate()
-    {
-        $dt = Carbon::Now();
-
-        if ($dt->isWeekday()) {
-            return "This is a week day";
-        } else {
-            return "Today is Weekend";
-        }
-    }
 
     protected function generate_string($strength = 16, $input = null)
     {
@@ -77,6 +62,7 @@ class Controller extends BaseController
 
         return $random_string;
     }
+
 
     protected function performTransaction($cur, $actNum, $amt, $paySysCode, $purse, $type, $account='balance')
     {
@@ -100,6 +86,7 @@ class Controller extends BaseController
         return $resp;
     }
 
+
     protected function saveRecord($user_id, $t7_id, $method, $amt, $type, $status, $proof = null)
     {
         if ($type == 'Deposit') {
@@ -120,6 +107,7 @@ class Controller extends BaseController
         return;
     }
 
+
     protected function saveTransaction($user_id, $amt, $purpose, $type)
     {
         $user = Auth::user();
@@ -131,6 +119,7 @@ class Controller extends BaseController
             'type' => $type,
         ]);
     }
+
 
     protected function updateaccounts($user)
     {
@@ -161,6 +150,7 @@ class Controller extends BaseController
         }
     }
 
+
     protected function setMobiusPassword($acc_id, $login, $password)
     {
         $m7 = new MobiusTrader(config('mobius'));
@@ -169,6 +159,7 @@ class Controller extends BaseController
         $resp = $m7->password_set($acc_id, $login, $password);
         return $resp;
     }
+
 
     protected function fetchAccountNumbers($acc_id)
     {

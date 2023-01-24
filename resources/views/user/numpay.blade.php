@@ -174,8 +174,8 @@
                                                                         id="card_type" required>
                                                                         <option selected disabled value="">Choose
                                                                             Card Type</option>
-                                                                        <option>VISA</option>
-                                                                        <option>MASTERCARD</option>
+                                                                        <option value="visa">VISA</option>
+                                                                        <option value="mastercard">MASTERCARD</option>
                                                                     </select>
                                                                 </div>
                                                             </div>

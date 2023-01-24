@@ -9,31 +9,11 @@
                 <p class="font-weight-light mb-0 font-18">{{ Auth::user()->name }}</p>
                 <span class="op-7 font-14"></span>
                 <div class="row border-top border-bottom mt-3 no-gutters">
-                    {{-- <div class="col-4 border-right">
-                        <a class="p-3 d-block menubar-height" href="javascript:void(0)" id="bell" data-display="static"
-                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span><i data-feather="bell" class="svg-icon op-7"></i></span>
-                            <span class="badge badge-danger badge-no rounded-circle">5</span>
-                        </a>
-                    </div>
-                    <div class="col-4 border-right">
-                        <a class="p-3 d-block menubar-height" id="bottom-sidebar" href="javascript:void(0)" role="button">
-                            <span><i data-feather="settings" class="svg-icon op-7"></i></span>
-                        </a>
-                    </div>
-                    <div class="col-4">
-                        <a class="p-3 d-block menubar-height" href="javascript:void(0)" role="button" data-display="static"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span><i data-feather="message-square" class="svg-icon op-7"></i></span>
-                        </a>
-                    </div> --}}
                 </div>
             </div>
         </div>
 
-        <!-- Sidebar scroll-->
         <div class="scroll-sidebar" data-sidebarbg="skin6">
-            <!-- Sidebar navigation-->
             <nav class="sidebar-nav">
                 <ul id="sidebarnav">
                     <li class="nav-small-cap"><span class="hide-menu">Menu</span></li>
@@ -112,8 +92,7 @@
                         <div class="dropdown sub-dropdown">
                             <a class="sidebar-link sidebar-link @yield('profile') @yield('changepassword') @yield('security') @yield('support') @yield('winfo') @yield('notifications')"
                                 data-toggle="dropdown" href="#" aria-expanded="false" type="button"
-                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
+                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i data-feather="user" class="user-icon"></i>
                                 <span class="hide-menu">@lang('message.dashboard.my_pfl')</span>
                                 <span class="badge rounded-circle profile-dd text-center mt-2"><i
@@ -140,15 +119,10 @@
                                     <i class="fas fa-circle font-12 mr-2"></i>
                                     @lang('message.dashboard.notif')
                                 </a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-circle text-success font-12 mr-2"></i>
-                                    @lang('message.topmenu.log')
+                                <a class="dropdown-item @yield('referrals')" href="{{ route('referrals') }}">
+                                    <i class="fas fa-circle font-12 mr-2"></i>
+                                    @lang('message.dashboard.my_referrals')
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
                             </div>
                         </div>
                     </li>
@@ -177,13 +151,20 @@
                             </div>
                         </div>
                     </li>
+
+                    <li class="sidebar-item @yield('support-li')">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                            <i data-feather="log-out" class="log-out-icon"></i>
+                            @lang('message.topmenu.log')
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </li>
+
                 </ul>
             </nav>
-            <!-- End Sidebar navigation -->
         </div>
-        <!-- End Sidebar scroll-->
     </aside>
-    <!-- ============================================================== -->
-    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
 @endsection

@@ -63,14 +63,7 @@
                                         </thead>
                                         <tbody>
                                             @forelse ($users as $user)
-                                                @php
-                                                    $dp = $user
-                                                        ->dp()
-                                                        ->where('status', 'Processed')
-                                                        ->first();
-                                                @endphp
-
-                                                @if (!$dp->amount)
+                                                @if (!$user->ftd()->amount)
                                                     @continue
                                                 @endif
 
