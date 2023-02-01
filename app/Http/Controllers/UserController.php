@@ -942,7 +942,7 @@ class UserController extends Controller
             $request->session()->put('xpro_order_number', $order_number);
 
             $view = 'xpro';
-            $title = 'Make RagaPay Payment';
+            $title = 'Make Xpro Payment';
 
             $data = [
                 'countries' => $countries,
@@ -958,7 +958,7 @@ class UserController extends Controller
             $input = [
                 'merchant_key'=> config('xpro.api_key'),
                 'operation'=> 'purchase',
-                'methods'=> [],
+                'methods'=> ['card'],
                 'order'=> [
                     'number'=> $order_number,
                     'amount'=> $amount,
