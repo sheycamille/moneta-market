@@ -68,7 +68,7 @@ return [
         'profile' => 'profil',
         'logout' => 'Déconnexion',
         'home' => 'Accueil',
-        'monetamarket_group' => 'Moneta Market 2022.',
+        'gestiondupatrimoine_group' => 'Moneta Market 2022.',
         'powered' => 'Réalisé par le groupe Moneta Market.',
     ],
     'forex' => [
@@ -420,7 +420,7 @@ return [
         appropriée. La Société vous informera si elle décide d'apporter des changements, soit en
         en publiant un avis à l'intention du public ou par courrier électronique.",
         'links' => 'Liens',
-        'b13' => "Notre site web, monetamarket.ca, peut contenir des liens vers d'autres sites web sur l'internet. Nous ne sommes, en
+        'b13' => "Notre site web, gestiondupatrimoine.net, peut contenir des liens vers d'autres sites web sur l'internet. Nous ne sommes, en
         Nous ne sommes en aucun cas responsables des pratiques de confidentialité ou de collecte de vos
         ces sites web. Notre politique ne s'applique qu'aux informations collectées par la Société. ",
         'questions' => 'Questions',
@@ -524,7 +524,7 @@ return [
         sur les conditions générales de vente d'Moneta Market. ",
         'contact' => 'Contact',
         'cus' => 'Département du support client',
-        'email' => 'Courriel :support@monetamarket.ca',
+        'email' => 'Courriel :support@gestiondupatrimoine.net',
 
     ],
     'risk_disclosure' => [
@@ -987,7 +987,7 @@ return [
                 d'aller de l'avant. Cela signifie que pour toutes les configurations du portefeuille du Client, ce dernier
                 porte l'entière responsabilité du moment où il n'a pas effectué les actions correspondantes
                 quel que soit l'impact ultérieur du profit ou de la perte sur le montant total du profit et de la perte. Le non-respect de ces actions est considéré comme une incapacité à atténuer les pertes. Le client doit soumettre toute réclamation à Moneta Market par écrit à l'adresse e-mail :
-                support@monetamarket.ca.",
+                support@gestiondupatrimoine.net.",
         'b4' => 'Dans un délai de trente (30) jours ouvrables, Moneta Market doit vérifier toute plainte écrite, si elle est suffisamment documentée, et présenter sa position à la Commission.
                 écrite si elle est suffisamment documentée, et présenter sa position au client.
                 client. ',
@@ -1272,7 +1272,7 @@ return [
     'trade_cdfs' => "Négociez des CFD sur un large éventail d'instruments, notamment les paires de devises les plus populaires, les contrats à terme, les indices, les métaux, les énergies et les actions, et découvrez les marchés mondiaux du bout des doigts",
     'open_acount' => 'Ouvrir un compte',
     'compliment_trading' => 'Complétez votre négociation avec nos outils exclusifs',
-    'monetamarket_clients' => "Les clients d'Moneta Market bénéficient d'un accès exclusif aux outils de trading, aux nouvelles et aux analyses.",
+    'gestiondupatrimoine_clients' => "Les clients d'Moneta Market bénéficient d'un accès exclusif aux outils de trading, aux nouvelles et aux analyses.",
     'calender' => 'Calendrier',
     'econs_earning' => 'Calendriers économiques et des gains',
     'analysis' => 'Analyse',
@@ -1305,7 +1305,7 @@ return [
     'discover' => 'Découvrez la plate-forme',
     'choose_platform' => 'Choisissez votre plateforme',
     'platforms' => 'Nous mettons à la disposition de nos clients un large éventail de plateformes de trading de bureau, web et mobiles, notamment la plateforme Moneta Market, Tradre 7 et WebTrader.',
-    'monetamarket_platform' => 'Plateforme Moneta Market',
+    'gestiondupatrimoine_platform' => 'Plateforme Moneta Market',
     'start_trading' => 'Commencer à négocier',
     'six_years' => '6 ans',
     'fifthteen' => '15 ans',

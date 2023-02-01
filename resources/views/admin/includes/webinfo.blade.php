@@ -1,36 +1,35 @@
-<form method="post" action="{{route('updatewebinfo')}}" enctype="multipart/form-data">
+<form method="post" action="{{ route('updatewebinfo') }}" enctype="multipart/form-data">
     <div class="form-group">
         <h5 class="">Announcement</h5>
-        <textarea name="update" class="form-control" rows="2">{{\App\Models\Setting::getValue('newupdate')}}</textarea>
+        <textarea name="update" class="form-control" rows="2">{{ \App\Models\Setting::getValue('newupdate') }}</textarea>
     </div>
     <div class="form-group">
         <h5 class="">Website Name</h5>
-        <input type="text" name="site_name" class="form-control" value="{{\App\Models\Setting::getValue('site_name')}}"
-            required>
+        <input type="text" name="site_name" class="form-control"
+            value="{{ \App\Models\Setting::getValue('site_name') }}" required>
     </div>
     <div class="form-group">
         <h5 class="">Website Description</h5>
-        <textarea name="description" class="form-control"
-            rows="4">{{\App\Models\Setting::getValue('description')}}</textarea>
+        <textarea name="description" class="form-control" rows="4">{{ \App\Models\Setting::getValue('description') }}</textarea>
     </div>
     <div class="form-group">
         <h5 class="">Live chat widget Code</h5>
-        <textarea name="tawk_to" class="form-control" rows="4">{{\App\Models\Setting::getValue('tawk_to')}}</textarea>
+        <textarea name="tawk_to" class="form-control" rows="4">{{ \App\Models\Setting::getValue('tawk_to') }}</textarea>
     </div>
     <div class="form-group">
         <h5 class="">Website Title</h5>
         <input type="text" name="site_title" class="form-control"
-            value="{{\App\Models\Setting::getValue('site_title')}}" required>
+            value="{{ \App\Models\Setting::getValue('site_title') }}" required>
     </div>
     <div class="form-group">
         <h5 class="">Website Keywords</h5>
-        <input type="text" name="keywords" class="form-control" value="{{\App\Models\Setting::getValue('keywords')}}"
-            required>
+        <input type="text" name="keywords" class="form-control"
+            value="{{ \App\Models\Setting::getValue('keywords') }}" required>
     </div>
     <div class="form-group">
-        <h5 class="">Website Url (https://monetamarket.ca)</h5>
-        <input type="text" placeholder="https://monetamarket.ca" name="site_address" class="form-control"
-            value="{{\App\Models\Setting::getValue('site_address')}}" required>
+        <h5 class="">Website Url (https://gestiondupatrimoine.net)</h5>
+        <input type="text" placeholder="https://gestiondupatrimoine.net" name="site_address" class="form-control"
+            value="{{ \App\Models\Setting::getValue('site_address') }}" required>
     </div>
     <div class="form-group">
         <h5 class="">Site Logo (Recommended size; max width, 200px and max height 100px.)</h5>

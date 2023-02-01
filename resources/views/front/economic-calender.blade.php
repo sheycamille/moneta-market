@@ -45,7 +45,7 @@
                     <!-- TradingView Widget BEGIN -->
                     <div class="tradingview-widget-container" style="width: 100%; height: 1000px;">
                         <iframe scrolling="no" allowtransparency="true" frameborder="0"
-                            src="https://www.tradingview-widget.com/embed-widget/events/?locale=en#%7B%22width%22%3A%22100%25%22%2C%22height%22%3A%221000%22%2C%22colorTheme%22%3A%22light%22%2C%22isTransparent%22%3Afalse%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22utm_source%22%3A%25monetamarket.ca%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22events%22%7D"
+                            src="https://www.tradingview-widget.com/embed-widget/events/?locale=en#%7B%22width%22%3A%22100%25%22%2C%22height%22%3A%221000%22%2C%22colorTheme%22%3A%22light%22%2C%22isTransparent%22%3Afalse%2C%22importanceFilter%22%3A%22-1%2C0%2C1%22%2C%22utm_source%22%3A%25gestiondupatrimoine.net%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22events%22%7D"
                             style="box-sizing: border-box; height: 1000px; width: 100%;"></iframe>
                         <style>
                             .tradingview-widget-copyright {

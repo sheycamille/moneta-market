@@ -39,8 +39,9 @@
                             </div>
                             <div>
                                 <h5 class="uk-margin-remove-bottom">@lang('message.register.email')</h5>
-                                <p class="uk-margin-small-top uk-margin-remove-bottom">support@monetamarket.ca</p>
-                                <p class="uk-text-small uk-text-muted uk-text-uppercase uk-margin-remove-top">@lang('message.contact.for_public_enquiries')</p>
+                                <p class="uk-margin-small-top uk-margin-remove-bottom">support@gestiondupatrimoine.net</p>
+                                <p class="uk-text-small uk-text-muted uk-text-uppercase uk-margin-remove-top">
+                                    @lang('message.contact.for_public_enquiries')</p>
                             </div>
                             <div>
                                 <h5 class="uk-margin-remove-bottom">@lang('message.contact.call')</h5>
@@ -52,7 +53,8 @@
                         </div>
                         <hr class="uk-margin-medium">
                         <h4 class="uk-margin-remove-bottom uk-text-muted uk-text-center">@lang('message.contact.have_a_question')?</h4>
-                        <h1 class="uk-margin-small-top uk-text-center">@lang('message.contact.lets') <span class="in-highlight">@lang('message.contact.get_in_touch')</span>
+                        <h1 class="uk-margin-small-top uk-text-center">@lang('message.contact.lets') <span
+                                class="in-highlight">@lang('message.contact.get_in_touch')</span>
                         </h1>
                         <form id="contact-form" class="uk-form uk-grid-small uk-margin-medium-top" data-uk-grid
                             action="{{ route('sendcontactmessage') }}">
@@ -61,7 +63,8 @@
                                 <input class="uk-input uk-border-rounded" id="name" name="name" type="text"
                                     placeholder="@lang('message.contact.name')">
                             </div>
-                            <div class="uk-width-1-2@s uk-inline">
+                            <div class="uk-width-1-2@s
+uk-inline">
                                 <span class="uk-form-icon fas fa-envelope fa-sm"></span>
                                 <input class="uk-input uk-border-rounded" id="email" name="email" type="email"
                                     placeholder="@lang('message.contact.email')">
@@ -72,7 +75,8 @@
                                     placeholder="@lang('message.contact.subject')">
                             </div>
                             <div class="uk-width-1-1">
-                                <textarea class="uk-textarea uk-border-rounded" id="message" name="message" rows="6" placeholder="@lang('message.contact.message')"></textarea>
+                                <textarea class="uk-textarea uk-border-rounded" id="message" name="message" rows="6"
+                                    placeholder="@lang('message.contact.message')"></textarea>
                             </div>
                             <div class="uk-width-1-1">
                                 <button class="uk-width-1-1 uk-button uk-button-primary uk-border-rounded" id="sendemail"

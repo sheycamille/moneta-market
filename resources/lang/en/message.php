@@ -456,7 +456,7 @@ return [
         'b20' => 'Moneta Market will accomodate Clients who acquired the Policy or sanctioned to take the Policy by electronic means or any other online transactions including those who have largely settled upon on the Trading Terms and Conditions of Moneta Market. ',
         'contact' => 'Contact',
         'cus' => 'Customer Support Department',
-        'email' => 'Email:support@monetamarket.ca ',
+        'email' => 'Email:support@gestiondupatrimoine.net ',
 
     ],
     'risk_disclosure' => [
@@ -831,7 +831,7 @@ return [
         of moving on. This means that for all configurations in the Customer’s portfolio, the Client
         bears full responsibility of the moment of failure to perform the corresponding actions
         regardless of further impact of profit or loss from the total amount of profit and loss. Noncompliance with these actions is seen as an inability to mitigate losses. The Client must submit any complaints to Moneta Market in writing to the email address:
-        support@monetamarket.ca. ',
+        support@gestiondupatrimoine.net. ',
         'b4' => 'Within thirty (30) business days, Moneta Market must verify any written
         complaint if it is sufficiently documented, and present its position to the
         Client. ',
@@ -1145,7 +1145,7 @@ return [
     'trade_cdfs' => 'Trade CFDs on a wide range of instruments, including popular FX pairs, Futures, Indices, Metals, Energies and Shares and experience the global markets at your fingertips.',
     'open_acount' => 'Open an Account',
     'compliment_trading' => 'Compliment your trading with our exclusive tools',
-    'monetamarket_clients' => 'Moneta Market clients are provided with exclusive access to trading tools, news and analysis.',
+    'gestiondupatrimoine_clients' => 'Moneta Market clients are provided with exclusive access to trading tools, news and analysis.',
     'calender' => 'Calender',
     'econs_earning' => 'Economic & Earnings Calendars',
     'analysis' => 'Analysis',
@@ -1178,7 +1178,7 @@ return [
     'discover' => 'Discover platform',
     'choose_platform' => 'Choose Your Platform',
     'platforms' => 'We provide our clients with a wide range of desktop, web and mobile trading platforms including Moneta Market platform Trader 7 and WebTrader.',
-    'monetamarket_platform' => 'Moneta Market Platform',
+    'gestiondupatrimoine_platform' => 'Moneta Market Platform',
     'start_trading' => 'Start trading',
     'six_years' => '6 years',
     'fifthteen' => '15 years',
