@@ -67,9 +67,9 @@
                                     @forelse($pmethods as $pmethod)
                                         <div class="col-lg-4 p-4">
                                             <div class="pricing-table purple border">
-                                                <img height="150px" width="150px"
+                                                <img width="150px"
                                                     style="margin-left: auto; margin-right:auto; padding-top:5px;"
-                                                    src="{{ asset('storage/logos/' . $pmethod->logo) }}"
+                                                    src="{{ asset('storage/photos/logos/' . $pmethod->logo) }}"
                                                     alt="{{ $pmethod->logo }}">
                                                 <h2 class="">{{ $pmethod->name }}</h2>
                                                 <div class="pricing-features">

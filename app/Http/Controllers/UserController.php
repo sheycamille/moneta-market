@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', [ 'except' => [ 'callbackRagapay']]);
+        $this->middleware('auth', [ 'except' => [ 'callbackRagapay', 'verify']]);
     }
 
 
@@ -874,8 +874,8 @@ class UserController extends Controller
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
-                'id_order' => $depo->id,
-                'client_id' => $request->ip(),
+                'id_order' => 'order-'.$depo->id.'-'.$t7_id,
+                'client_ip' => $request->ip(),
             ];
         } elseif (strpos(strtolower($method->setting_key), 'ragapay') > -1) {
             $depo = new Deposit();
@@ -927,6 +927,56 @@ class UserController extends Controller
 
             $data['url'] = $response['redirect_url'];
             // dd([$input, $response, $response['redirect_url']]);
+            return redirect($data['url']);
+        }  elseif (strpos(strtolower($method->setting_key), 'xpro') > -1) {
+            $depo = new Deposit();
+            $depo->amount = number_format((float)$amount, 2, '.', '');;
+            $depo->payment_mode = 'Xpro';
+            $depo->user = $user->id;
+            $depo->account_id = $t7_id;
+            $depo->status = 'Pending';
+            $depo->save();
+
+            $order_number = 'order-'.$depo->id.'-'.$t7_id;
+
+            $request->session()->put('xpro_order_number', $order_number);
+
+            $view = 'xpro';
+            $title = 'Make RagaPay Payment';
+
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+                'transaction_id' => $order_number,
+            ];
+
+            // make an auth request to Xpro
+            $desc = 'Payment of goods';
+            $amount = number_format((float)$amount, 2, '.', '');
+            $to_md5 = sha1(md5(strtoupper($order_number . $amount . 'usd' . $desc . config('xpro.api_secret'))));
+
+            $input = [
+                'merchant_key'=> config('xpro.api_key'),
+                'operation'=> 'purchase',
+                'methods'=> [],
+                'order'=> [
+                    'number'=> $order_number,
+                    'amount'=> $amount,
+                    'currency'=> 'USD',
+                    'description'=> $desc,
+                ],
+                'cancel_url'=> route('cancelxprocharge'),
+                'success_url'=> route('successxprocharge'),
+                'customer'=> [
+                    'name'=> $user->name,
+                    'email'=> $user->email,
+                ],
+                'hash'=> $to_md5
+            ];
+
+            $response = Http::post(config('xpro.endpoint'), $input);
+
+            $data['url'] = $response['redirect_url'];
             return redirect($data['url']);
         } else {
             $view = 'coins';
@@ -1186,11 +1236,15 @@ class UserController extends Controller
 
         $t7 = Trader7::find($t7_id);
 
+        $order_id = rand();
+        $request->session()->put('chargemoney_order_id', $order_id);
+
         $data = $request->all();
         $data['api_key'] = config('chargemoney.api_key');
         $data['ip_address'] = $request->ip();
         $data['response_url'] = route('verifychargemoneycharge');
-        $data['customer_order_id'] = $user->id;
+        $data['webhook_url'] = route('verifychargemoneycharge');
+        $data['customer_order_id'] = $t7_id . '-'.$order_id.'-'.$user->id;
 
         unset($data['_token']);
 
@@ -1202,7 +1256,7 @@ class UserController extends Controller
             $amt = $resp->data->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-ChargeMoney', 'MM-AUTOCM', 'deposit', 'balance');
             if(gettype($respTrans) !== 'integer') {
-                return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to support, we have received your payment! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
                 $t7->save();
@@ -1229,63 +1283,17 @@ class UserController extends Controller
             Mail::bcc($user->email)->send(new NewNotification($objDemo));
 
             return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
-        } elseif ($resp->status == 'fail') {
-            return redirect()->back()->with('message', $resp->message);
         } elseif ($resp->status == '3d_redirect') {
             // save and confirm the deposit
             $this->saveRecord($user->id, $t7_id, 'ChargeMoney', $amt, 'Deposit', 'Pending', 'ChargeMoney Order Id: ' . $resp->data->order_id);
 
             return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
         } else {
-            return redirect()->back()->with('message', $resp->message);
-        }
-    }
-
-
-    public function verifyChargeMoneyCharge(Request $request)
-    {
-        $data = $request->all();
-        $user = User::find($data['customer_order_id']);
-        $dp = $user->dp()->latest()->first();
-
-        $t7_id = $request->session()->get('t7_account_id');
-
-        $t7 = Trader7::find($t7_id);
-
-        if ($data['status'] == 'success') {
-            $amt = $dp->amount;
-            $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-ChargeMoney', 'MM-AUTOCM', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
-                return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
-            } else {
-                $t7->balance = $t7->balance + $amt;
-                $t7->save();
+            $msg = $resp->message;
+            foreach($resp->errors as $field => $error) {
+                $msg .= implode(", ", $error);
             }
-
-            // save transaction
-            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
-
-            // update the deposit
-            $dp->status = "Processed";
-            $dp->save();
-
-            // send email notification
-            $currency = Setting::getValue('currency');
-            $site_name = Setting::getValue('site_name');
-
-            $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
-            $objDemo->message = "\r Hello $name, \r\n
-                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
-            $objDemo->sender = "$site_name";
-            $objDemo->date = Carbon::Now();
-            $objDemo->subject = "Deposit Processed!";
-
-            Mail::bcc($user->email)->send(new NewNotification($objDemo));
-
-            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
-        } else {
-            return redirect()->back()->with('message', $data['message']);
+            return redirect()->back()->with('message', $msg);
         }
     }
 
@@ -1910,67 +1918,6 @@ class UserController extends Controller
     }
 
 
-    public function callbackRagapay(Request $request)
-    {
-        $data = $request->all();
-        $order_number = $data['order_number'];
-        $txn_id = $data['id'];
-
-        $t7_id = explode('-', $order_number)[2];
-        $t7 = Trader7::find($t7_id);
-        $user = Auth::user();
-        $amount = $request->order_amount;
-
-        $deposit = Deposit::find(explode('-', $order_number)[1]);
-        $deposit->status = 'Pending';
-        $deposit->payment_mode = 'RagaPay';
-        $deposit->user = $user->id;
-        $deposit->account_id = $t7_id;
-        $deposit->amount = $amount;
-        $deposit->txn_id = $txn_id;
-        $deposit->save();
-
-        $msg = 'We are processing your payment, check back later. ' . $request->reason;
-
-        if(strtolower($request->status) == 'success') {
-            $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Ragapay', 'MM-AUTORP-'.$txn_id, 'deposit', 'balance');
-
-            if(gettype($respT7) !== 'integer') {
-                $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';
-                return redirect()->back()->with('message', $msg);
-            } else {
-                $t7->balance += $amount;
-                $t7->save();
-                $deposit->status = 'Processed';
-                $deposit->save();
-
-                //save transaction
-                $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
-
-                //send email notification
-                $currency = Setting::getValue('currency');
-                $site_name = Setting::getValue('site_name');
-                $objDemo = new \stdClass();
-
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
-                $objDemo->message = "\r Hello $name, \r\n
-
-                \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
-                $objDemo->sender = "$site_name";
-                $objDemo->date = Carbon::Now();
-                $objDemo->subject = "Deposit Processed!";
-
-                Mail::bcc($user->email)->send(new NewNotification($objDemo));
-                $msg = 'Your deposit was successfully processed!';
-            }
-        }
-
-        Session::flash('message', $msg);
-        return redirect(route('account.liveaccounts'))->with('message', $msg);
-    }
-
-
-
     public function startPaycly(Request $request)
     {
         $endpoint = config('paycly.endpoint') . '/checkout.do';
@@ -2094,59 +2041,36 @@ class UserController extends Controller
     }
 
 
-    public function handlePaycly(Request $request)
+    public function successXpro(Request $request)
     {
-        dd($request->all());
-        $t7_id = $request->session()->get('t7_account_id');
+        $data = $request->all();
+        $order_number = $request->session()->get('xpro_order_number');
+        $txn_id = $data['id'];
+
+        $t7_id = explode('-', $order_number)[2];
         $t7 = Trader7::find($t7_id);
         $user = Auth::user();
-        $msg = $request->message;
 
-        $deposit = Deposit::find($request->orderId);
-        if($deposit) {
-            if($request->status == 'DECLINED') {
-                $deposit->status = 'Declined';
-                $deposit->save();
+        $deposit = Deposit::find(explode('-', $order_number)[1]);
+        $deposit->status = 'Pending';
+        $deposit->payment_mode = 'Xpro';
+        $deposit->user = $user->id;
+        $deposit->account_id = $t7_id;
+        $deposit->txn_id = $txn_id;
+        $deposit->save();
 
-                $msg = 'Sorry your payment was delined because for the following reason: ' . $request->message;
-            } elseif ($request->status == 'APPROVED') {
-                $amount = $deposit->amount;
-                $paymentId =$request->paymentId;
-                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
-
-                if(gettype($respT7) !== 'integer') {
-                    return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
-                } else {
-                    $t7->balance += $amount;
-                    $t7->save();
-                    $deposit->txn_id = $paymentId;
-                    $deposit->status = 'Processed';
-                    $deposit->save();
-
-                    //save transaction
-                    $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
-
-                    //send email notification
-                    $currency = Setting::getValue('currency');
-                    $site_name = Setting::getValue('site_name');
-                    $objDemo = new \stdClass();
-
-                    $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
-                    $objDemo->message = "\r Hello $name, \r\n
-
-                    \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
-                    $objDemo->sender = "$site_name";
-                    $objDemo->date = Carbon::Now();
-                    $objDemo->subject = "Deposit Processed!";
-
-                    Mail::bcc($user->email)->send(new NewNotification($objDemo));
-                    $msg = 'Your deposit was successfully processed!';
-                }
-            }
-        }
+        $msg = 'We are processing your payment, check back later. ' . $request->reason;
 
         Session::flash('message', $msg);
         return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
 
+
+    public function cancelXpro(Request $request)
+    {
+        $msg = "Sorry, we couldn't complete the process successfully, retry the payment and maybe use another payment option";
+
+        Session::flash('message', $msg);
+        return redirect(route('account.liveaccounts'))->with('message', $msg);
+    }
 }

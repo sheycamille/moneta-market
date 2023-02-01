@@ -5,6 +5,36 @@
 @section('dw-li', 'selected')
 @section('deposits', 'active')
 
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <style>
+        span.select2.select2-container.select2-container--default {
+            max-width: 100%;
+            width: 100%;
+            border: 0 none;
+            border-radius: 5px;
+            padding: 3px 0;
+            background: white;
+            color: #768192;
+            font-size: .941rem;
+            border: 1px solid #ddd;
+            transition: .2s ease-in-out;
+            transition-property: color, background-color, border;
+        }
+
+        .select2-selection {
+            border: 0 none !important;
+            border-radius: none !important;
+            background-color: white !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #768192;
+            line-height: 28px;
+        }
+    </style>
+@endsection
+
 @section('content')
 
     @include('user.sidebar')
@@ -48,9 +78,9 @@
                             @endif
 
                             <div class="row">
-                                <div class="col p-2 d-flex justify-content-center">
+                                <div class="col p-1 d-flex justify-content-center">
                                     <div class="d-flex justify-content-center">
-                                        <div class="col-md-8">
+                                        <div class="col-md-12">
                                             <div class="text-center">
                                                 <h3 class="">Pay
                                                     <strong>{{ \App\Models\Setting::getValue('currency') }}{{ $amount }}
@@ -66,49 +96,49 @@
                                                                 Personal Details:
                                                             </h3>
                                                             <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-5" style="display: inline-block;">
+                                                                <div class="col-md-4" style="display: inline-block;">
                                                                     <h5 class="">First Name*</h5>
                                                                     <input type="text" name="first_name"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->first_name }}" required>
                                                                 </div>
-                                                                <div class="col-md-5" style="display: inline-block;">
+
+                                                                <div class="col-md-4" style="display: inline-block;">
                                                                     <h5 class="">Last Name*</h5>
                                                                     <input type="text" name="last_name"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->last_name }}" required>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-5" style="display: inline-block;">
+
+                                                                <div class="col-md-4" style="display: inline-block;">
                                                                     <h5 class="">Email*</h5>
                                                                     <input type="text" name="email"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->email }}" required>
                                                                 </div>
-                                                                {{-- </div>
-                                                        <div class="form-group d-flex justify-content-center col-xs-12">
-                                                            <div class="col-md-5" style="display: inline-block;">
-                                                                <h5 class="">Country Phone Code</h5>
-                                                                <input type="text" name="country_code"
-                                                                    class="form-control" value="">
-                                                            </div> --}}
+                                                            </div>
 
-                                                                <div class="col-md-5" style="display: inline-block;">
+                                                            <div class="form-group d-flex justify-content-center col-xs-12">
+                                                                <div class="col-md-3" style="display: inline-block;">
+                                                                    <h5 class="">Country Phone Code</h5>
+                                                                    <input type="text" name="country_code"
+                                                                        class="form-control" value="+1">
+                                                                </div>
+
+                                                                <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Phone No*</h5>
                                                                     <input type="text" name="phone_no"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->phone }}" required>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-5" style="display: inline-block;">
+
+                                                                <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Address*</h5>
                                                                     <input type="text" name="address"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->address }}" required>
                                                                 </div>
-                                                                <div class="col-md-5" style="display: inline-block;">
+                                                                <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">City*</h5>
                                                                     <input type="text" name="city"
                                                                         class="form-control"
@@ -116,30 +146,30 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group d-flex justify-content-center col-xs-12">
-                                                                <div class="col-md-5" style="display: inline-block;">
+                                                                <div class="col-md-4" style="display: inline-block;">
                                                                     <h5 class="">State*</h5>
                                                                     <input type="text" name="state"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->state }}" required>
                                                                 </div>
-                                                                <div class="col-md-2" style="display: inline-block;">
+                                                                <div class="col-md-3" style="display: inline-block;">
                                                                     <h5 class="">Zip Code*</h5>
                                                                     <input type="text" name="zip"
                                                                         class="form-control"
                                                                         value="{{ Auth::user()->zip_code }}" required>
                                                                 </div>
-                                                                <div class="col-md-3" style="display: inline-block;">
+                                                                <div class="col-md-5" style="display: inline-block;">
                                                                     <h5 class="">Country*</h5>
                                                                     {{-- <input type="text" name="country"
                                                                     class="form-control"
                                                                     value="{{ Auth::user()->country }}" required> --}}
-                                                                    <select class="form-control" name="country"
-                                                                        id="country" required>
+                                                                    <select class="form-control country-select"
+                                                                        name="country" id="country" required>
                                                                         <option selected disabled>Choose Country</option>
                                                                         @foreach ($countries as $country)
                                                                             <option
                                                                                 @if (Auth::user()->country->id == $country->id) selected @endif
-                                                                                value="{{ $country->id }}">
+                                                                                value="{{ strtoupper($country->code) }}">
                                                                                 {{ $country->name }}</option>
                                                                         @endforeach
                                                                     </select> <br>
@@ -210,4 +240,17 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('javascript')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer>
+    </script>
+    <script type="text/javascript">
+        $(function() {
+            $('.country-select').select2({
+                placeholder: 'Select a country',
+                allowClear: true
+            })
+        })
+    </script>
 @endsection

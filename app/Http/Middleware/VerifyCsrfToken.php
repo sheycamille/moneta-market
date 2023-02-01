@@ -13,7 +13,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
        //
-       'dashboard/pay_notifications',
-       'dashboard/verify_paycly_charge',
+       'ragapay_notifications',
+       'verify_paycly_charge',
+       'verify_cashonex_charge',
+       'xpro_notifications',
     ];
 }

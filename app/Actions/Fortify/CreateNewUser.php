@@ -51,8 +51,10 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         $referrer = session()->pull('ref_by') ? session()->pull('ref_by') : $input['ref_by'];
+        $name = $input['first_name'];
+        $name .= $input['last_name'] ? $input['last_name'] : '';
         $data = [
-            'name' => $input['first_name'] . ' ' . $input['last_name'],
+            'name' => $name,
             'lastName' => $input['last_name'],
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],

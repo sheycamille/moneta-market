@@ -261,7 +261,6 @@ Route::middleware(['auth'])->group(function () {
 
         // chargemoney payments
         Route::post('start_chargemoney_charge', 'UserController@startChargeMoneyCharge')->name('startchargemoneycharge');
-        Route::get('verify_chargemoney_charge', 'UserController@verifyChargeMoneyCharge')->name('verifychargemoneycharge');
 
         // ywallitpay payments
         Route::post('start_ywallitpay_charge', 'UserController@startYWallitPayCharge')->name('startywallitpaycharge');
@@ -289,14 +288,22 @@ Route::middleware(['auth'])->group(function () {
         // ragapay payments
         Route::any('success_ragapay_charge', 'UserController@successRagapay')->name('successragapaycharge');
         Route::any('cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
+
+        // xpro payments
+        Route::any('success_xpro_charge', 'UserController@successRagapay')->name('successxprocharge');
+        Route::any('cancel_xpro_charge', 'UserController@cancelRagapay')->name('cancelxprocharge');
     });
 });
 
 
-// ragapay payments
-Route::any('dashboard/callback_ragapay_charge', 'UserController@callbackRagapay')->name('callbackragapaycharge');
-Route::any('dashboard/pay_notifications', 'FrontController@payNotifications')->name('pay_notifications');
+// chargemoney payments
+Route::get('verify_chargemoney_charge', 'FrontController@verifyChargeMoneyCharge')->name('verifychargemoneycharge');
 
+// ragapay payments notifications
+Route::any('ragapay_notifications', 'FrontController@ragapayNotifications')->name('ragapay_notifications');
 
 // paycly payments
-Route::any('dashboard/verify_paycly_charge', 'UserController@handlePaycly')->name('handlepayclycharge');
+Route::any('verify_paycly_charge', 'UserOutDoorController@handlePaycly')->name('handlepayclycharge');
+
+// xpro payments notifications
+Route::any('xpro_notifications', 'UserOutDoorController@xproNotifications')->name('xpro_notifications');

@@ -123,13 +123,13 @@
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-envelope fa-sm" for="email"></span>
                 <input type="email" class="uk-input uk-border-rounded" name="email"
-                    value="{{ old('email', request()->email) }}" id="email" placeholder="@lang('message.register.email')*">
+                    value="{{ old('email', request()->email) }}" id="email" placeholder="@lang('message.register.email')*" required>
             </div>
 
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-phone fa-sm" for="phone"></span>
                 <input type="mumber" class="uk-input uk-border-rounded" name="phone"
-                    value="{{ old('phone', request()->phone) }}" id="phone" placeholder="@lang('message.register.enter_num')*">
+                    value="{{ old('phone', request()->phone) }}" id="phone" placeholder="@lang('message.register.enter_num')*" required>
             </div>
         </div>
 
@@ -166,7 +166,7 @@
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-address-card fa-sm" for="address"></span>
                 <input type="text" class="uk-input uk-border-rounded" name="address" value="{{ old('address') }}"
-                    id="address" placeholder="@lang('message.register.addrs')*">
+                    id="address" placeholder="@lang('message.register.addrs')*" required>
             </div>
         </div>
 
@@ -191,13 +191,13 @@
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-city fa-sm" for="town"></span>
                 <input type="text" class="uk-input uk-border-rounded" name="town" value="{{ old('town') }}"
-                    id="town" placeholder="@lang('message.register.town')*">
+                    id="town" placeholder="@lang('message.register.town')*" required>
             </div>
 
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-map-marker fa-sm" for="zip_code"></span>
                 <input type="text" class="uk-input uk-border-rounded" name="zip_code" value="{{ old('zip_code') }}"
-                    id="zip_code" placeholder="@lang('message.register.enter_zip')*">
+                    id="zip_code" placeholder="@lang('message.register.enter_zip')*" required>
             </div>
         </div>
 
@@ -223,7 +223,7 @@
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-file fa-sm" for="state"></span>
                 <input type="text" class="uk-input uk-border-rounded" name="state" value="{{ old('state') }}"
-                    id="state" placeholder="@lang('message.register.enter_stt')*">
+                    id="state" placeholder="@lang('message.register.enter_stt')*" required>
             </div>
 
             <div class="uk-width-1-2 uk-inline">
@@ -260,12 +260,12 @@
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm" for="password"></span>
                 <input type="password" class="uk-input uk-border-rounded" name="password" id="password"
-                    placeholder="@lang('message.register.enter_pass')*">
+                    placeholder="@lang('message.register.enter_pass')*" required>
             </div>
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-lock fa-sm" for="confirm-password"></span>
                 <input type="password" class="uk-input uk-border-rounded" name="password_confirmation"
-                    value="{{ old('password_confirmation') }}" id="confirm-password" placeholder="@lang('message.register.confirm')*">
+                    value="{{ old('password_confirmation') }}" id="confirm-password" placeholder="@lang('message.register.confirm')*" required>
             </div>
         </div>
 
