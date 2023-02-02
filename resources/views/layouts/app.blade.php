@@ -71,7 +71,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center text-muted"> © 2023 <a href="https://www.gestiondupatrimoine.net/">Moneta
+            <footer class="footer text-center text-muted"> © 2023 <a href="https://www.monetamarket.ca/">Moneta
                     Markets</a>
             </footer>
             <!-- ============================================================== -->
