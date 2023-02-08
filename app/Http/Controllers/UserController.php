@@ -30,6 +30,8 @@ use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 
 use Carbon\Carbon;
+use Exception;
+use Stripe;
 
 
 class UserController extends Controller
@@ -978,6 +980,13 @@ class UserController extends Controller
 
             $data['url'] = $response['redirect_url'];
             return redirect($data['url']);
+        } elseif (strpos(strtolower($method->setting_key), 'stripe') > -1) {
+            $view = 'stripe';
+            $title = 'Make Stripe Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+            ];
         } else {
             $view = 'coins';
             $wallet_address = Setting::where('name', $method->setting_key)->first()->value;
@@ -2071,6 +2080,106 @@ class UserController extends Controller
         $msg = "Sorry, we couldn't complete the process successfully, retry the payment and maybe use another payment option";
 
         Session::flash('message', $msg);
+        return redirect(route('account.liveaccounts'))->with('message', $msg);
+    }
+
+
+    public function stripePost(Request $request)
+    {
+        $user = Auth::user();
+        $amount = $request->amount;
+
+        Stripe\Stripe::setApiKey(config('stripe.api_secret'));
+
+        $msg = 'Payment successful!';
+
+        try {
+
+            $customer = Stripe\Customer::create(array(
+                "address" => [
+                    "line1" => $user->address,
+                    "postal_code" => $user->zip_code,
+                    "city" => $user->town,
+                    "state" => $user->state,
+                    "country" => strtoupper($user->country->code),
+                ],
+                "email" => $user->email,
+                "name" => $user->name,
+                "source" => $request->stripeToken
+            ));
+
+            $charge = Stripe\Charge::create([
+                "amount" => $amount*100,
+                "currency" => "usd",
+                "customer" => $customer->id,
+                "description" => "Purchase of Product",
+                "shipping" => [
+                    "name" => $user->name,
+                    "address" => [
+                        "line1" => $user->address,
+                        "postal_code" => $user->zip_code,
+                        "city" => $user->town,
+                        "state" => $user->state,
+                        "country" => strtoupper($user->country->code),
+                    ],
+                ]
+            ]);
+        } catch(Exception $e) {
+            $msg = $e->getMessage() . ' Please check your card details';
+            return redirect()->back()->with('message', $msg);
+        }
+
+        if($charge->status !== 'succeeded') {
+            $msg = 'An error has occured: ';
+
+        } else {
+            $t7_id = $request->session()->get('t7_account_id');
+            $t7 = Trader7::find($t7_id);
+            $user = Auth::user();
+
+            $deposit = new Deposit();
+            $deposit->status = 'Pending';
+            $deposit->payment_mode = 'Stripe';
+            $deposit->amount = $amount;
+            $deposit->user = $user->id;
+            $deposit->account_id = $t7_id;
+            $deposit->save();
+
+            $paymentId = $charge->id;
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Stripe', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+
+            if(gettype($respT7) !== 'integer') {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
+            } else {
+                $t7->balance += $amount;
+                $t7->save();
+                $deposit->txn_id = $paymentId;
+                $deposit->status = 'Processed';
+                $deposit->save();
+
+                //save transaction
+                $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
+
+                //send email notification
+                $currency = Setting::getValue('currency');
+                $site_name = Setting::getValue('site_name');
+                $objDemo = new \stdClass();
+
+                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                $objDemo->message = "\r Hello $name, \r\n
+
+                \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
+                $objDemo->sender = "$site_name";
+                $objDemo->date = Carbon::Now();
+                $objDemo->subject = "Deposit Processed!";
+
+                Mail::bcc($user->email)->send(new NewNotification($objDemo));
+                $msg = 'Your deposit was successfully processed!';
+            }
+        }
+
+        Session::flash('success', $msg);
+
         return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
 }

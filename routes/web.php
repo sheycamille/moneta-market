@@ -292,6 +292,9 @@ Route::middleware(['auth'])->group(function () {
         // xpro payments
         Route::any('success_xpro_charge', 'UserController@successRagapay')->name('successxprocharge');
         Route::any('cancel_xpro_charge', 'UserController@cancelRagapay')->name('cancelxprocharge');
+
+        // stripe payments
+        Route::post('stripe', 'UserController@stripePost')->name('stripe.post');
     });
 });
 
