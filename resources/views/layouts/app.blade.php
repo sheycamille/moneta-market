@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+
+    @include('includes.analytics')
+    
     @yield('loadPaypal')
 
     <meta charset="UTF-8">
