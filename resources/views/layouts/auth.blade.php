@@ -13,7 +13,7 @@
     <meta name="author" content="gestiondupatrimoine.net">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f2f3f5" />
+    <meta name="theme-color" content="#f2f3f5"/>
 
     <link rel="icon" href="{{ asset('front/favicon.png') }}" type="image/png" />
 
