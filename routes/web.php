@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\File;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
