@@ -2182,4 +2182,21 @@ class UserController extends Controller
 
         return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
+
+    //Logout the user
+    public function perform(Request $request)
+    {
+        //$request->session()->regenerateToken();
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        if ($request->wantsJson()) {
+        return response()->json([], 204);
+        }
+
+        return redirect('/login');
+    
+    }
 }

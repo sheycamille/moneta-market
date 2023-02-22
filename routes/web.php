@@ -187,6 +187,9 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::get('/forgot-password', 'FrontController@forgotpassword')->name('password.request');
 Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name('dashboard');
 
+//logout
+Route::get('/logout', 'UserController@perform')->name('logout.perform');
+
 Route::get('ref/{id}', 'Controller@ref')->name('ref');
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function () {
