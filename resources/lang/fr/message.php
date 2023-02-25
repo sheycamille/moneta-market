@@ -1118,6 +1118,12 @@ return [
         'dp' => 'Dépôt',
         'suite' => "Aucun mode de paiement approprié n'a été trouvé, veuillez contacter l'administrateur",
         'credit' => 'Credit',
+        '2fa' => 'Authentification à deux facteurs',
+        '2fa_enabled' => "Vous avez activé l'authentification à deux facteurs",
+        '2fm_enabled' => "Lorsque l'authentification à deux facteurs est activée, un code à six chiffres sécurisé et aléatoire vous sera demandé lors de l'authentification. Vous pouvez récupérer ce code dans votre boîte aux lettres électronique.",
+        'enable2fa' => 'Activer ',
+        'disable2fa' => 'Désactiver ',
+        '2fm' => "Ajoutez une sécurité supplémentaire à votre compte grâce à l'authentification à deux facteurs.",
 
     ],
     'withdrawal_details' => [

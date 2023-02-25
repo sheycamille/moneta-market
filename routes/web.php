@@ -190,21 +190,24 @@ Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name
 //logout
 Route::get('/logout', 'UserController@perform')->name('logout.perform');
 
-Route::get('ref/{id}', 'Controller@ref')->name('ref');
+Route::get('ref/{id}', 'Controller@ref')->name('ref'); 
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-Route::middleware(['auth'])->group(function () {
 
+Route::prefix('userlogin')->group(function () {
     Route::post('sendcontact', 'FrontController@sendcontact')->name('enquiry');
-    Route::get('2fa', 'TwoFactorController@showTwoFactorForm')->name('2fa');
-    Route::post('2fa', 'TwoFactorController@verifyTwoFactor');
+    Route::get('resend', 'TwoFactorController@resend')->name('user-2fa-resend');
+    Route::resource('verify', 'TwoFactorController')->only(['index', 'store']);
+});
 
-    Route::prefix('dashboard')->group(function() {
+    Route::group(['prefix' => 'dashboard',  'middleware' => ['auth', 'prevent-back-history']], function () {
 
         // Two Factor Authentication
         Route::post('changetheme', 'UserController@changetheme')->name('changetheme');
         Route::get('refreshAccounts', 'UserController@refreshAccounts')->name('refreshaccounts');
         Route::post('savedocs', 'UserController@savevdocs')->name('kycsubmit');
+
+        Route::get('check', 'TwoFactorController@check2FA')->name('check2fa');
 
         Route::get('skip_account', 'Controller@skip_account');
         Route::get('tradinghistory', 'UserController@tradinghistory')->name('tradinghistory');
@@ -298,7 +301,6 @@ Route::middleware(['auth'])->group(function () {
         // stripe payments
         Route::post('stripe', 'UserController@stripePost')->name('stripe.post');
     });
-});
 
 
 // chargemoney payments

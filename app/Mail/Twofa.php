@@ -30,6 +30,7 @@ class Twofa extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.twofa');
+        return $this->subject('Two factor code')
+        ->markdown('emails.twofa');
     }
 }

@@ -14,6 +14,9 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use App\Models\User;
+
+
 use Carbon\Carbon;
 
 
@@ -22,15 +25,21 @@ class TwoFactorController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    public function verifyTwoFactor(Request $request)
+    public function index()
+    {
+        return view('auth.user_two_factor');
+    }
+
+
+    public function store(Request $request)
     {
         $request->validate([
-            '2fa' => 'required',
+            'two_factor_code' => 'required',
         ]);
 
-        if ($request->input('2fa') == Auth::user()->token_2fa) {
+        if ($request->input('two_factor_code') == Auth::user()->token_2fa) {
             $user = Auth::user();
-            $user->token_2fa_expiry = Carbon::now()->addMinutes(config('session.lifetime'));
+            $user->updated_at = Carbon::now();
             $user->save();
 
             $site_name = Setting::getValue('site_name');
@@ -51,8 +60,35 @@ class TwoFactorController extends BaseController
     }
 
 
-    public function showTwoFactorForm()
+    public function resend()
     {
-        return view('auth.two_factor');
+        auth()->user()->resendCode();
+
+        return redirect()->back()->withMessage('Check your email, the two factor code has been sent again');
+    }
+
+
+    public function check2FA(){
+
+        if(Auth::user()->enable_2fa == 'no'){
+
+            $id = auth()->user()->id;
+
+            User::where('id', $id)
+                ->update(['enable_2fa' => 'yes']);
+
+            return redirect()->back();
+
+        }else{
+
+            $id = auth()->user()->id;
+
+            User::where('id', $id)
+                ->update(['enable_2fa' => 'no']);
+
+            return redirect()->back();
+
+        }
+
     }
 }

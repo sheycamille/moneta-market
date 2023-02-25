@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->text('zip_code')->nullable();
 
             $table->string('dashboard_style')->default('dark');
+            $table->string('enable_2fa')->default('no');
             $table->string('bank_name')->nullable();
             $table->string('bank_address')->nullable();
             $table->string('swift_code')->nullable();

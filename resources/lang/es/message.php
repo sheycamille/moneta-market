@@ -789,6 +789,12 @@ return [
         'dp' => 'Depósito',
         'suite' => 'No se ha encontrado un método de pago adecuado, por favor contacte con admin',
         'credit' => 'Crédito',
+        '2fa' => 'Autenticación de dos factores',
+        '2fa_enabled' => 'Ha activado la autenticación de dos factores',
+        '2fm_enabled' => 'Cuando la autenticación de dos factores está activada, se le pedirá un código seguro y aleatorio de seis dígitos durante la autenticación. Puede recuperar este código en la bandeja de entrada de su correo electrónico.When Two Factor Authentication is enabled, you will be prompted for a secure, random six digit code during authentication. You may retrieve this code from you email inbox.',
+        'enable2fa' => 'Activar 2FA',
+        'disable2fa' => 'Desactivar 2FA',
+        '2fm' => 'Añada seguridad adicional a su cuenta mediante la autenticación de dos factores',
 
     ],
     'withdrawal_details' => [

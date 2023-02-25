@@ -49,7 +49,7 @@ class CreateSettingsTable extends Migration
             // $table->string('signup_bonus')->nullable();
             // $table->string('files_key')->nullable();
             // $table->string('tawk_to')->nullable();
-            // $table->string('enable_2fa')->default('no');
+            //$table->string('enable_2fa')->default('no');
             // $table->string('enable_kyc')->default('no');
             // $table->string('enable_with')->nullable();
             // $table->string('enable_verification')->default('true');

@@ -2186,15 +2186,10 @@ class UserController extends Controller
     //Logout the user
     public function perform(Request $request)
     {
-        //$request->session()->regenerateToken();
-
         Auth::logout();
 
         $request->session()->invalidate();
-
-        if ($request->wantsJson()) {
-        return response()->json([], 204);
-        }
+        $request->session()->regenerateToken();
 
         return redirect('/login');
     
