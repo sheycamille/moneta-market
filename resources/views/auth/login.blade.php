@@ -4,6 +4,17 @@
 
 @section('content')
 
+    <div class="uk-grid uk-flex">
+        @if (Session::has('message'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: auto;">
+                <p class="alert-message">{!! Session::get('message') !!}</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
+
     <p class="uk-text-lead uk-margin-top uk-margin-remove-bottom">@lang('message.login.lgn')</p>
     <p class="uk-text-small uk-margin-remove-top uk-margin-medium-bottom">
         @lang('message.login.new')
@@ -52,7 +63,9 @@
             <button class="uk-button uk-width-1-1 uk-button-primary uk-border-rounded uk-float-left" type="submit"
                 name="submit">@lang('message.login.sign_in')</button>
         </div>
-    </form>
+    </form> 
     <!-- form end -->
 
 @endsection
+
+

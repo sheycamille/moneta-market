@@ -192,6 +192,30 @@
                                                     </form>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <h1 class="title1 text-start">@lang('message.body.2fa') </h1>
+                                                <p class="text-capitalize">
+                                                    @lang('message.body.2fm')
+                                                </p>
+                                                @if(auth()->user()->enable_2fa == 'yes' )
+                                                <a href="{{ route('check2fa') }}"
+                                                class="btn btn-danger btn-lg">@lang('message.body.disable2fa')
+                                                </a><br><br>
+                                                <h3 class="title1 text-start">@lang('message.body.2fa_enabled') </h3>
+                                                <p class="text-capitalize">
+                                                    @lang('message.body.2fm_enabled')
+                                                </p>
+                                                @else
+                                                <a href="{{ route('check2fa') }}"
+                                                class="btn btn-primary btn-lg">@lang('message.body.enable2fa')
+                                                </a>
+                                                @endif
+                                                <br><br>
+                                               <!-- <p class="text-capitalize">
+                                                    @lang('message.body.2fm')
+                                                </p>-->
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -213,5 +237,6 @@
                 allowClear: true
             })
         })
+        
     </script>
 @endsection

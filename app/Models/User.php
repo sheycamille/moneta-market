@@ -16,6 +16,14 @@ use App\Libraries\MobiusTrader;
 
 use Spatie\Permission\Traits\HasRoles;
 
+use Illuminate\Support\Facades\Auth;
+
+use Mail;
+use App\Mail\Twofa;
+
+
+use Carbon\Carbon;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
@@ -25,13 +33,20 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
     use HasRoles;
 
+    protected $dates = [
+        'updated_at',
+        'created_at',
+        'email_verified_at',
+        'token_2fa_expiry',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'first_name', 'last_name', 'email', 'phone', 'country_id', 'password', 'phone_password', 'address', 'town', 'state', 'dashboard_style', 'account_type', 'zip_code', 'status', 'token_2fa_expiry', 'bank_name', 'account_name', 'account_number', 'swift_code', 'bank_address', 'btc_address', 'eth_address', 'xrp_address', 'usdt_address', 'usdc_address', 'bch_address', 'bnb_address', 'interac', 'paypal_email'
+        'name', 'first_name', 'last_name', 'email', 'phone', 'country_id', 'password', 'phone_password', 'address', 'town', 'state', 'dashboard_style', 'account_type', 'zip_code', 'status', 'token_2fa_expiry', 'bank_name', 'account_name', 'account_number', 'swift_code', 'bank_address', 'btc_address', 'eth_address', 'xrp_address', 'usdt_address', 'usdc_address', 'bch_address', 'bnb_address', 'interac', 'paypal_email', 'token_2fa', 'token_2fa_expiry', 'created_at', 'updated_at'
     ];
 
 
@@ -67,6 +82,33 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    public function resetTwoFactorCode()
+{
+    $this->timestamps = false;
+    $this->token_2fa = null;
+    $this->token_2fa_expiry = null;
+    $this->save();
+}
+
+    public function resendCode()
+    {
+        $user = Auth::user();
+        $user->token_2fa = mt_rand(100000, 999999);
+        $user->token_2fa_expiry = now()->addMinutes(10);
+        $username = $user->name;
+        $user->save();
+
+        // send 2fa email notification
+        $site_name = Setting::getValue('site_name');
+        $demo = new \stdClass();
+        $demo->message = $user->token_2fa;
+        $demo->sender = $site_name;
+        $demo->receiver_name = $username;
+        $demo->subject = "Two Factor Code";
+        $demo->date = Carbon::Now();
+
+        Mail::bcc($user->email)->send(new Twofa($demo));
+    }
 
     public function dp()
     {
@@ -117,7 +159,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo('App\Models\AccountType', 'account_type');
     }
-
 
     public function country()
     {
@@ -189,4 +230,5 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return $total;
     }
+
 }

@@ -47,7 +47,6 @@ class CreateNewUser implements CreatesNewUsers
             'state' => ['required', 'string',],
             'zip_code' => ['required', 'string',],
             'country' => ['required', 'string',],
-            // 'g-recaptcha-response' => 'required|captcha',
             'g-recaptcha-response' => ['required', new ReCaptcha],
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
