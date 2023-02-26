@@ -775,7 +775,7 @@ class UserController extends Controller
         $t7_id = $request->session()->get('t7_account_id');
 
         $data = [];
-        if (strpos(strtolower($method->name), 'bank') > -1) {
+        if (strpos(strtolower($method->name), 'bank') > -1 || strpos(strtolower($method->setting_key), 'bank') > -1 ) {
             $view = 'banktransfer';
             $title = 'Make Bank Payment';
             $data = [
@@ -2192,6 +2192,6 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
-    
+
     }
 }
