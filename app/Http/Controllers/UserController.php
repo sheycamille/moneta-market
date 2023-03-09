@@ -1762,7 +1762,7 @@ class UserController extends Controller
         }
 
         if($resp['data']['gatewayStatus']=='DECLINED') {
-            $msg = 'Deposit Declined by PSP!';
+            $msg = 'Deposit Declined by PSP!' . $resp['data']['gatewayResponse'];
         }
 
         Session::flash('message', $msg);

@@ -190,14 +190,14 @@ Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name
 //logout
 Route::get('/logout', 'UserController@perform')->name('logout.perform');
 
-Route::get('ref/{id}', 'Controller@ref')->name('ref'); 
+Route::get('ref/{id}', 'Controller@ref')->name('ref');
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 Route::prefix('userlogin')->group(function () {
     Route::post('sendcontact', 'FrontController@sendcontact')->name('enquiry');
     Route::get('resend', 'TwoFactorController@resend')->name('user-2fa-resend');
-    Route::resource('verify', 'TwoFactorController')->only(['index', 'store']);
+    Route::resource('verify', 'TwoFactorController')->only(['index', 'store'])->name('index', 'user.verify.index')->name('store', 'user.verify.check');
 });
 
     Route::group(['prefix' => 'dashboard',  'middleware' => ['auth', 'prevent-back-history']], function () {
@@ -295,8 +295,8 @@ Route::prefix('userlogin')->group(function () {
         Route::any('cancel_ragapay_charge', 'UserController@cancelRagapay')->name('cancelragapaycharge');
 
         // xpro payments
-        Route::any('success_xpro_charge', 'UserController@successRagapay')->name('successxprocharge');
-        Route::any('cancel_xpro_charge', 'UserController@cancelRagapay')->name('cancelxprocharge');
+        Route::any('success_xpro_charge', 'UserController@successXpro')->name('successxprocharge');
+        Route::any('cancel_xpro_charge', 'UserController@cancelXpro')->name('cancelxprocharge');
 
         // stripe payments
         Route::post('stripe', 'UserController@stripePost')->name('stripe.post');
