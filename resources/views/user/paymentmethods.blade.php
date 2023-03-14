@@ -66,8 +66,8 @@
                                     data-example-id="hoverable-table"> --}}
                                     @forelse($pmethods as $pmethod)
                                         <div class="col-lg-4 p-4">
-                                            <div class="pricing-table purple border">
-                                                <img width="150px"
+                                            <div class="pricing-table purple">
+                                                <img width="140px" height="140px"
                                                     style="margin-left: auto; margin-right:auto; padding-top:5px;"
                                                     src="{{ asset('storage/photos/logos/' . $pmethod->logo) }}"
                                                     alt="{{ $pmethod->logo }}">
