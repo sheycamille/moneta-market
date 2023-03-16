@@ -34,11 +34,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-    
+
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
-                  
+
               if (Auth::check()) {
 
                     if(Auth::user()->enable_2fa == 'yes'){
@@ -48,7 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
                         $user->token_2fa_expiry = now()->addMinutes(60);
                         $username = $user->name;
                         $user->save();
-                
+
                         // send 2fa email notification
                         $site_name = Setting::getValue('site_name');
                         $demo = new \stdClass();
@@ -60,15 +60,12 @@ class FortifyServiceProvider extends ServiceProvider
 
                         Mail::bcc($user->email)->send(new Twofa($demo));
 
-                        return redirect()->route('verify.index');
+                        return redirect()->route('user.verify.index');
 
                     }else{
-                        
                         return redirect('/dashboard');
                     }
                 }
-
-                                     
             }
         });
     }

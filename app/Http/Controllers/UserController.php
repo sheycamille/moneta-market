@@ -2184,7 +2184,7 @@ class UserController extends Controller
     }
 
     //Logout the user
-    public function perform(Request $request)
+    public function logout(Request $request)
     {
         Auth::logout();
 

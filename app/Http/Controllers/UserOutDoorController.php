@@ -40,7 +40,7 @@ class UserOutDoorController extends Controller
 
         $msg = 'We are processing your payment, check back later. ' . $data['reason'];
 
-        if(strtolower($data['status']) == 'success' && $deposit->status == 'Pending') {
+        if(strtolower($data['type'] == 'sale' && $data['status']) == 'success' && $deposit->status == 'Pending') {
             $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Ragapay', 'MM-AUTORP-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
@@ -159,7 +159,7 @@ class UserOutDoorController extends Controller
             } elseif ($data['status'] == 'Success' || $data['status'] == 'Test') {
                 $amount = $data['amount'];
                 $paymentId =$data['transaction_id'];
-                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOPAYCLY-'.$paymentId, 'deposit', 'balance');
 
                 if(gettype($respT7) !== 'integer') {
                     return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
@@ -223,8 +223,8 @@ class UserOutDoorController extends Controller
 
         $msg = 'We are processing your payment, check back later. ' . $data['reason'];
 
-        if(strtolower($data['status']) == 'success' && $deposit->status == 'Pending') {
-            $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Xpro', 'MM-AUTORP-'.$txn_id, 'deposit', 'balance');
+        if(strtolower($data['type'] == 'sale' && $data['status']) == 'success' && $deposit->status == 'Pending') {
+            $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Xpro', 'MM-AUTOXPRO-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';

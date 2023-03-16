@@ -186,8 +186,9 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <i data-feather="user" class="user-icon"></i>
                                 <span class="hide-menu">@lang('message.dashboard.my_pfl')</span>
-                                <span class="badge rounded-circle profile-dd text-center mt-2"><i
-                                        class="fas fa-angle-down"></i></span>
+                                <span class="badge rounded-circle profile-dd text-center mt-2">
+                                    <i class="fas fa-angle-down"></i>
+                                </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item @yield('profile')" href="{{ route('adminchangepass') }}">
@@ -199,7 +200,7 @@
                                     <i class="fas fa-circle text-success font-12 mr-2"></i>
                                     @lang('message.topmenu.log')
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                <form id="logout-form" action="{{ route('adminlogout') }}" method="POST"
                                     style="display: none;">
                                     {{ csrf_field() }}
                                 </form>

@@ -28,10 +28,10 @@ class TwoFactorVerify
                     ->with('message', 'The two factor code has expired. Please login again.');
             }
 
-            /*if(!$request->is('verify*'))
+            if(!$request->is('verify*'))
             {
-                return redirect()->route('verify.index');
-            }*/
+                return redirect()->route('user.verify.index');
+            }
         }
 
         return $next($request);

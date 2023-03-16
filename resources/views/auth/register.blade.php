@@ -294,9 +294,9 @@
 @section('scripts')
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer>
-        < script src = 'https://www.google.com/recaptcha/api.js' >
     </script>
-    </script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
     <script type="text/javascript">
         $(function() {
             $('.country-select').select2({

@@ -66,7 +66,7 @@ Route::prefix('adminlogin')->group(function () {
     Route::post('logout', 'Admin\Auth\LoginController@logout')->name('adminlogout');
     Route::get('dashboard', 'Admin\Auth\LoginController@validate_admin')->name('validate_admin');
     Route::get('verify/resend', 'Admin\Auth\TwoFactorController@resend')->name('admin.verify.resend');
-    Route::resource('verify', 'Admin\Auth\TwoFactorController')->only(['index', 'store'])->name('get', 'admin.verify');
+    Route::resource('verify', 'Admin\Auth\TwoFactorController')->only(['index', 'store'])->name('index', 'admin.verify.index')->name('store', 'admin.verify.check');
 });
 
 Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], function () {
@@ -188,7 +188,7 @@ Route::get('/forgot-password', 'FrontController@forgotpassword')->name('password
 Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name('dashboard');
 
 //logout
-Route::get('/logout', 'UserController@perform')->name('logout.perform');
+Route::get('/logout', 'UserController@logout')->name('logout.perform');
 
 Route::get('ref/{id}', 'Controller@ref')->name('ref');
 
