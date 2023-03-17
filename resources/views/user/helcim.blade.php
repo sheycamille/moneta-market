@@ -77,7 +77,7 @@
                                                             <input type="hidden" id="token"
                                                                 value="c75c73700ca026213c3692">
                                                             <input type="hidden" id="language" value="en">
-                                                            {{-- <input type="hidden" id="test" value="1"> --}}
+                                                            <input type="hidden" id="test" value="1">
 
                                                             <!--CARD-INFORMATION-->
                                                             <div class="form-group d-flex justify-content-start col-xs-12">
