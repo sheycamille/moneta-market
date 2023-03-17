@@ -930,7 +930,7 @@ class UserController extends Controller
             $data['url'] = $response['redirect_url'];
             // dd([$input, $response, $response['redirect_url']]);
             return redirect($data['url']);
-        }  elseif (strpos(strtolower($method->setting_key), 'xpro') > -1) {
+        } elseif (strpos(strtolower($method->setting_key), 'xpro') > -1) {
             $depo = new Deposit();
             $depo->amount = number_format((float)$amount, 2, '.', '');;
             $depo->payment_mode = 'Xpro';
@@ -985,6 +985,12 @@ class UserController extends Controller
             $title = 'Make Stripe Payment';
             $data = [
                 'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->setting_key), 'helcim') > -1) {
+            $view = 'helcim';
+            $title = 'Make Helcim Payment';
+            $data = [
                 'dmethod' => $method,
             ];
         } else {
@@ -2193,5 +2199,53 @@ class UserController extends Controller
 
         return redirect('/login');
 
+    }
+
+
+    public function startHelcim(Request $request)
+    {
+        $data = $request->all();
+        dd($data);
+
+        $amount = $request->session()->get('amount');
+
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $t7_id = $request->session()->get('t7_account_id');
+
+        $t7 = Trader7::find($t7_id);
+
+        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Helcim', 'MM-AUTOPP-'.$request->orderid, 'deposit', 'balance');
+        if(gettype($resp) !== 'integer') {
+            return json_encode(['message' => 'Sorry an error occured, report this to support!']);
+        } else {
+            $t7->balance += $amount;
+            $t7->save();
+        }
+
+        //save transaction
+        $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
+
+        //save and confirm the deposit
+        $this->saveRecord($user->id, $t7_id, 'Helcim', $amount, 'Deposit', 'Processed', 'Helcim');
+
+        //send email notification
+        $currency = Setting::getValue('currency');
+        $site_name = Setting::getValue('site_name');
+        $objDemo = new \stdClass();
+
+        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+        $objDemo->message = "\r Hello $name, \r\n
+
+        \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
+        $objDemo->sender = "$site_name";
+        $objDemo->date = Carbon::Now();
+        $objDemo->subject = "Deposit Processed!";
+
+        Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+        $msg = 'Your deposit was successfully processed!';
+        Session::flash('message', $msg);
+        return redirect(route('account.liveaccounts'))->with('message', $msg);
     }
 }

@@ -298,6 +298,11 @@ Route::prefix('userlogin')->group(function () {
         Route::any('success_xpro_charge', 'UserController@successXpro')->name('successxprocharge');
         Route::any('cancel_xpro_charge', 'UserController@cancelXpro')->name('cancelxprocharge');
 
+        // helcim payments
+        Route::post('helcim_charge', 'UserController@startHelcim')->name('starthelcimcharge');
+        Route::any('success_helcim_charge', 'UserController@successHelcim')->name('successhelcimcharge');
+        Route::any('cancel_helcim_charge', 'UserController@cancelHelcim')->name('cancelhelcimcharge');
+
         // stripe payments
         Route::post('stripe', 'UserController@stripePost')->name('stripe.post');
     });
@@ -314,3 +319,6 @@ Route::any('verify_paycly_charge', 'UserOutDoorController@handlePaycly')->name('
 
 // xpro payments notifications
 Route::any('xpro_notifications', 'UserOutDoorController@xproNotifications')->name('xpro_notifications');
+
+// helcim payments notifications
+Route::any('helcim_notifications', 'UserOutDoorController@helcimNotifications')->name('helcim_notifications');
