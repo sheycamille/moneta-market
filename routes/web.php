@@ -200,30 +200,30 @@ Route::prefix('userlogin')->group(function () {
     Route::resource('verify', 'TwoFactorController')->only(['index', 'store'])->name('index', 'user.verify.index')->name('store', 'user.verify.check');
 });
 
-    Route::group(['prefix' => 'dashboard',  'middleware' => ['auth', 'prevent-back-history']], function () {
+Route::group(['prefix' => 'dashboard',  'middleware' => ['auth', 'prevent-back-history']], function () {
 
-        // Two Factor Authentication
-        Route::post('changetheme', 'UserController@changetheme')->name('changetheme');
-        Route::get('refreshAccounts', 'UserController@refreshAccounts')->name('refreshaccounts');
-        Route::post('savedocs', 'UserController@savevdocs')->name('kycsubmit');
+    // Two Factor Authentication
+    Route::post('changetheme', 'UserController@changetheme')->name('changetheme');
+    Route::get('refreshAccounts', 'UserController@refreshAccounts')->name('refreshaccounts');
+    Route::post('savedocs', 'UserController@savevdocs')->name('kycsubmit');
 
-        Route::get('check', 'TwoFactorController@check2FA')->name('check2fa');
+    Route::get('check', 'TwoFactorController@check2FA')->name('check2fa');
 
-        Route::get('skip_account', 'Controller@skip_account');
-        Route::get('tradinghistory', 'UserController@tradinghistory')->name('tradinghistory');
-        Route::get('accounthistory', 'UserController@accounthistory')->name('account.history');
+    Route::get('skip_account', 'Controller@skip_account');
+    Route::get('tradinghistory', 'UserController@tradinghistory')->name('tradinghistory');
+    Route::get('accounthistory', 'UserController@accounthistory')->name('account.history');
 
-        // Upadating user profile info
-        Route::get('profile', 'UserController@profile')->name('account.profile');
-        Route::post('profileinfo', 'UserController@updateprofile')->name('userprofile');
-        Route::post('updatepass', 'UserController@updatepass')->name('updatepass');
-        Route::get('changepassword', 'UserController@changepassword')->name('changepassword');
-        Route::get('verify-account', 'UserController@verifyaccount')->name('account.verify');
-        Route::get('manage-account-security', 'UserController@security')->name('account.security');
-        Route::get('withdrawaldetails', 'UserController@withdrawaldetails')->name('withdrawaldetails');
-        Route::post('updatewithdrawaldetails', 'UserController@updatewithdrawaldetails')->name('updatewithdrawaldetails');
+    // Upadating user profile info
+    Route::get('profile', 'UserController@profile')->name('account.profile');
+    Route::post('profileinfo', 'UserController@updateprofile')->name('userprofile');
+    Route::post('updatepass', 'UserController@updatepass')->name('updatepass');
+    Route::get('changepassword', 'UserController@changepassword')->name('changepassword');
+    Route::get('verify-account', 'UserController@verifyaccount')->name('account.verify');
+    Route::get('manage-account-security', 'UserController@security')->name('account.security');
+    Route::get('withdrawaldetails', 'UserController@withdrawaldetails')->name('withdrawaldetails');
+    Route::post('updatewithdrawaldetails', 'UserController@updatewithdrawaldetails')->name('updatewithdrawaldetails');
 
-        // Withdrawals & Deposits
+    // Withdrawals & Deposits
         Route::get('deposits', 'UserController@deposits')->name('account.deposits');
         Route::post('paypalverify/{amount}', 'UserController@paypalverify')->name('paypalverify');
         Route::get('withdrawals', 'UserController@withdrawals')->name('account.withdrawals');
@@ -232,7 +232,6 @@ Route::prefix('userlogin')->group(function () {
 
         Route::post('chngemail', 'UserController@chngemail');
         Route::post('savedeposit', 'UserController@savedeposit')->name('savedeposit');
-
 
         Route::get('support', 'UserController@support')->name('account.support');
         Route::get('downloads', 'UserController@downloads')->name('account.downloads');
@@ -305,7 +304,7 @@ Route::prefix('userlogin')->group(function () {
 
         // stripe payments
         Route::post('stripe', 'UserController@stripePost')->name('stripe.post');
-    });
+});
 
 
 // chargemoney payments

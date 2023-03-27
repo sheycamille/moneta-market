@@ -25,6 +25,14 @@ class UserOutDoorController extends Controller
         $site_name = Setting::getValue('site_name');
         $deposit_email = Setting::getValue('deposit_email');
 
+        // $objDemo = new \stdClass();
+        // $objDemo->sender = "Test Xpro";
+        // $objDemo->date = Carbon::Now();
+        // $objDemo->subject = "Data from RagaPay on calling our callback url.";
+        // $objDemo->message = json_encode($data);
+
+        // Mail::bcc($deposit_email)->send(new NewNotification($objDemo));
+
         $order_number = explode('-', $data['order_number']);
         $txn_id = $data['id'];
 
@@ -40,12 +48,12 @@ class UserOutDoorController extends Controller
 
         $msg = 'We are processing your payment, check back later. ' . $data['reason'];
 
-        if(strtolower($data['type'] == 'sale' && $data['status']) == 'success' && $deposit->status == 'Pending') {
+        if(strtolower($data['type']) == 'sale' && $data['status'] == 'success' && $deposit->status == 'Pending') {
             $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Ragapay', 'MM-AUTORP-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';
-                return redirect()->back()->with('message', $msg);
+                return json_encode(['status' => false, 'message' => $msg]);
             } else {
                 $deposit->status = 'Processed';
                 $deposit->save();
@@ -55,7 +63,7 @@ class UserOutDoorController extends Controller
                 //save transaction
                 $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
 
-                //send email notification
+                //send email notification to user
                 $currency = Setting::getValue('currency');
                 $site_name = Setting::getValue('site_name');
                 $objDemo = new \stdClass();
@@ -83,13 +91,22 @@ class UserOutDoorController extends Controller
             }
         }
 
-        return json_encode(['status' => true]);
+        return json_encode(['status' => true, 'message' => $msg]);
     }
 
 
     public function verifyChargeMoneyCharge(Request $request)
     {
         $data = $request->all();
+        $deposit_email = Setting::getValue('deposit_email');
+
+        // $objDemo = new \stdClass();
+        // $objDemo->sender = "Test Xpro";
+        // $objDemo->date = Carbon::Now();
+        // $objDemo->subject = "Data from ChargeMoney on calling our callback url.";
+        // $objDemo->message = json_encode($data);
+
+        // Mail::bcc($deposit_email)->send(new NewNotification($objDemo));
 
         $order_number = explode('-', $data['customer_order_id']);
         $user = User::find($order_number[2]);
@@ -116,7 +133,7 @@ class UserOutDoorController extends Controller
             $dp->status = "Processed";
             $dp->save();
 
-            // send email notification
+            // send email notification to user
             $currency = Setting::getValue('currency');
             $site_name = Setting::getValue('site_name');
 
@@ -129,6 +146,16 @@ class UserOutDoorController extends Controller
             $objDemo->subject = "Deposit Processed!";
 
             Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            //send email notification to admin
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello Admin, \r\n" .
+                "\r This is to inform you of a successful deposit of $currency$amt with deposit id $order_number[1] to account number $t7->number by user $name, that just occured on your system through Ragapay. \r\n" .
+                "\r Please no extra action is needed at this time(auto-deposit) \r\n";
+            $objDemo->sender = 'RagaPay Deposit: ' . $site_name;
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Action Needed: Successful RagaPay Deposit";
+            Mail::mailer('smtp')->bcc($deposit_email)->send(new NewNotification($objDemo));
 
             return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
         } else {
@@ -143,6 +170,15 @@ class UserOutDoorController extends Controller
         $order_number = explode('-', $data['id_order']);
         $t7_id = $order_number[2];
         $t7 = Trader7::find($t7_id);
+        $deposit_email = Setting::getValue('deposit_email');
+
+        // $objDemo = new \stdClass();
+        // $objDemo->sender = "Test Xpro";
+        // $objDemo->date = Carbon::Now();
+        // $objDemo->subject = "Data from Paycly on calling our callback url.";
+        // $objDemo->message = json_encode($data);
+
+        // Mail::bcc($deposit_email)->send(new NewNotification($objDemo));
 
         $deposit = Deposit::find($order_number[1]);
 
@@ -173,7 +209,7 @@ class UserOutDoorController extends Controller
                     //save transaction
                     $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
 
-                    //send email notification
+                    //send email notification to user
                     $currency = Setting::getValue('currency');
                     $site_name = Setting::getValue('site_name');
                     $objDemo = new \stdClass();
@@ -187,6 +223,17 @@ class UserOutDoorController extends Controller
                     $objDemo->subject = "Deposit Processed!";
 
                     Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+                    //send email notification to admin
+                    $objDemo = new \stdClass();
+                    $objDemo->message = "\r Hello Admin, \r\n" .
+                        "\r This is to inform you of a successful deposit of $currency$amount with deposit id $order_number[1] to account number $t7->number by user $name, that just occured on your system through Ragapay. \r\n" .
+                        "\r Please no extra action is needed at this time(auto-deposit) \r\n";
+                    $objDemo->sender = 'RagaPay Deposit: ' . $site_name;
+                    $objDemo->date = Carbon::Now();
+                    $objDemo->subject = "Action Needed: Successful RagaPay Deposit";
+                    Mail::mailer('smtp')->bcc($deposit_email)->send(new NewNotification($objDemo));
+
                     $msg = 'Your deposit was successfully processed!';
                 }
             } elseif($data['status'] == 'Pending') {
@@ -208,6 +255,14 @@ class UserOutDoorController extends Controller
         $site_name = Setting::getValue('site_name');
         $deposit_email = Setting::getValue('deposit_email');
 
+        // $objDemo = new \stdClass();
+        // $objDemo->sender = "Test Xpro";
+        // $objDemo->date = Carbon::Now();
+        // $objDemo->subject = "Data from Xpro on calling our callback url 1.";
+        // $objDemo->message = json_encode($data);
+
+        // Mail::bcc($deposit_email)->send(new NewNotification($objDemo));
+
         $order_number = explode('-', $data['order_number']);
         $txn_id = $data['id'];
 
@@ -223,12 +278,12 @@ class UserOutDoorController extends Controller
 
         $msg = 'We are processing your payment, check back later. ' . $data['reason'];
 
-        if(strtolower($data['type'] == 'sale' && $data['status']) == 'success' && $deposit->status == 'Pending') {
+        if(strtolower($data['type']) == 'sale' && $data['status'] == 'success' && $deposit->status == 'Pending') {
             $respT7 = $this->performTransaction($data['order_currency'], $t7->number, $amount, 'MM-Xpro', 'MM-AUTOXPRO-'.$txn_id, 'deposit', 'balance');
 
             if(gettype($respT7) !== 'integer') {
                 $msg = 'Please contact support immediately, an unexpected error has occured but we got your funds.';
-                return redirect()->back()->with('message', $msg);
+                return json_encode(['status' => false, 'message' => $msg]);
             } else {
                 $deposit->status = 'Processed';
                 $deposit->save();
@@ -238,7 +293,7 @@ class UserOutDoorController extends Controller
                 //save transaction
                 $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
 
-                //send email notification
+                //send email notification to user
                 $currency = Setting::getValue('currency');
                 $site_name = Setting::getValue('site_name');
                 $objDemo = new \stdClass();
@@ -266,6 +321,6 @@ class UserOutDoorController extends Controller
             }
         }
 
-        return json_encode(['status' => true]);
+        return json_encode(['status' => true, 'message' => $msg]);
     }
 }
