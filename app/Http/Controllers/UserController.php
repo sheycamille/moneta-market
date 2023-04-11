@@ -17,6 +17,8 @@ use App\Mail\KycUpload;
 use App\Mail\UserUpload;
 use App\Mail\NewNotification;
 
+use App\Http\Controllers\QueueEmails;
+
 use App\Libraries\MobiusTrader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +46,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', [ 'except' => [ 'callbackRagapay', 'verify']]);
+        $this->middleware('auth', ['except' => ['callbackRagapay', 'verify']]);
     }
 
 
@@ -114,8 +116,8 @@ class UserController extends Controller
     public function deposits()
     {
         $deposits = Deposit::where('user', Auth::user()->id)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('user.deposits')
             ->with(array(
                 'title' => 'Deposits',
@@ -220,7 +222,7 @@ class UserController extends Controller
 
         //get user
         $user = User::where('id', Auth::user()->id)->first();
-        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+        $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
 
         //send email notification
         $objDemo = new \stdClass();
@@ -310,7 +312,7 @@ class UserController extends Controller
         }
 
         $payment_mode = $method->name;
-        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+        $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
 
         // send email notification
         $objDemo = new \stdClass();
@@ -352,8 +354,8 @@ class UserController extends Controller
 
         $t7 = Trader7::find($t7_id);
 
-        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-PayPal', 'MM-AUTOPP-'.$request->orderid, 'deposit', 'balance');
-        if(gettype($resp) !== 'integer') {
+        $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-PayPal', 'MM-AUTOPP-' . $request->orderid, 'deposit', 'balance');
+        if (gettype($resp) !== 'integer') {
             return json_encode(['message' => 'Sorry an error occured, report this to support!']);
         } else {
             $t7->balance += $amount;
@@ -366,8 +368,12 @@ class UserController extends Controller
         //save and confirm the deposit
         $this->saveRecord($user->id, $t7_id, 'PayPal', $amount, 'Deposit', 'Processed', 'PayPal');
 
+        // dispatch email
+        $process_emls = new QueueEmails();
+        $this->$process_emls->dispatchEmail();
+
         //send email notification
-        $currency = Setting::getValue('currency');
+        /*$currency = Setting::getValue('currency');
         $site_name = Setting::getValue('site_name');
         $objDemo = new \stdClass();
 
@@ -379,7 +385,7 @@ class UserController extends Controller
         $objDemo->date = Carbon::Now();
         $objDemo->subject = "Deposit Processed!";
 
-        Mail::bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::bcc($user->email)->send(new NewNotification($objDemo));*/
 
         Session::flash('message', 'Your deposit was successfully processed!');
 
@@ -427,7 +433,7 @@ class UserController extends Controller
 
         // set the password
         $resp =  $this->setMobiusPassword($user->account_number, $user->email, $password);
-        if($resp['status'] == MobiusTrader::STATUS_OK) {
+        if ($resp['status'] == MobiusTrader::STATUS_OK) {
             $msg = "Your password has been updated.";
             $user->forceFill([
                 'password' => Hash::make($password),
@@ -709,7 +715,7 @@ class UserController extends Controller
         }
 
         //send email notification
-        $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+        $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
         $objDemo = new \stdClass();
         $objDemo->message = "\r This is to inform you of $name submitting their KYC Documents. \r\n" .
             "\r Please login to review documents. \r \n";
@@ -776,7 +782,7 @@ class UserController extends Controller
         $t7_id = $request->session()->get('t7_account_id');
 
         $data = [];
-        if (strpos(strtolower($method->name), 'bank') > -1 || strpos(strtolower($method->setting_key), 'bank') > -1 ) {
+        if (strpos(strtolower($method->name), 'bank') > -1 || strpos(strtolower($method->setting_key), 'bank') > -1) {
             $view = 'banktransfer';
             $title = 'Make Bank Payment';
             $data = [
@@ -877,7 +883,7 @@ class UserController extends Controller
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
-                'id_order' => 'order-'.$depo->id.'-'.$t7_id,
+                'id_order' => 'order-' . $depo->id . '-' . $t7_id,
                 'client_ip' => $request->ip(),
             ];
         } elseif (strpos(strtolower($method->setting_key), 'ragapay') > -1) {
@@ -889,7 +895,7 @@ class UserController extends Controller
             $depo->status = 'Pending';
             $depo->save();
 
-            $order_number = 'order-'.$depo->id.'-'.$t7_id;
+            $order_number = 'order-' . $depo->id . '-' . $t7_id;
 
             $request->session()->put('ragapay_order_number', $order_number);
 
@@ -908,22 +914,22 @@ class UserController extends Controller
             $to_md5 = sha1(md5(strtoupper($order_number . $amount . 'usd' . $desc . config('ragapay.api_secret'))));
 
             $input = [
-                'merchant_key'=> config('ragapay.api_key'),
-                'operation'=> 'purchase',
-                'methods'=> [],
-                'order'=> [
-                    'number'=> $order_number,
-                    'amount'=> $amount,
-                    'currency'=> 'USD',
-                    'description'=> $desc,
+                'merchant_key' => config('ragapay.api_key'),
+                'operation' => 'purchase',
+                'methods' => [],
+                'order' => [
+                    'number' => $order_number,
+                    'amount' => $amount,
+                    'currency' => 'USD',
+                    'description' => $desc,
                 ],
-                'cancel_url'=> route('cancelragapaycharge'),
-                'success_url'=> route('successragapaycharge'),
-                'customer'=> [
-                    'name'=> $user->name,
-                    'email'=> $user->email,
+                'cancel_url' => route('cancelragapaycharge'),
+                'success_url' => route('successragapaycharge'),
+                'customer' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
                 ],
-                'hash'=> $to_md5
+                'hash' => $to_md5
             ];
 
             $response = Http::post(config('ragapay.endpoint'), $input);
@@ -940,7 +946,7 @@ class UserController extends Controller
             $depo->status = 'Pending';
             $depo->save();
 
-            $order_number = 'order-'.$depo->id.'-'.$t7_id;
+            $order_number = 'order-' . $depo->id . '-' . $t7_id;
 
             $request->session()->put('xpro_order_number', $order_number);
 
@@ -959,22 +965,22 @@ class UserController extends Controller
             $to_md5 = sha1(md5(strtoupper($order_number . $amount . 'usd' . $desc . config('xpro.api_secret'))));
 
             $input = [
-                'merchant_key'=> config('xpro.api_key'),
-                'operation'=> 'purchase',
-                'methods'=> ['card'],
-                'order'=> [
-                    'number'=> $order_number,
-                    'amount'=> $amount,
-                    'currency'=> 'USD',
-                    'description'=> $desc,
+                'merchant_key' => config('xpro.api_key'),
+                'operation' => 'purchase',
+                'methods' => ['card'],
+                'order' => [
+                    'number' => $order_number,
+                    'amount' => $amount,
+                    'currency' => 'USD',
+                    'description' => $desc,
                 ],
-                'cancel_url'=> route('cancelxprocharge'),
-                'success_url'=> route('successxprocharge'),
-                'customer'=> [
-                    'name'=> $user->name,
-                    'email'=> $user->email,
+                'cancel_url' => route('cancelxprocharge'),
+                'success_url' => route('successxprocharge'),
+                'customer' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
                 ],
-                'hash'=> $to_md5
+                'hash' => $to_md5
             ];
 
             $response = Http::post(config('xpro.endpoint'), $input);
@@ -1041,7 +1047,7 @@ class UserController extends Controller
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayPound', 'MM-AUTOPPD', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1059,7 +1065,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1095,7 +1101,7 @@ class UserController extends Controller
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayPound', 'MM-AUTOPPD', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1114,7 +1120,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1154,7 +1160,7 @@ class UserController extends Controller
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayStudio', 'MM-AUTOPS', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1172,7 +1178,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1208,7 +1214,7 @@ class UserController extends Controller
         if ($data['status'] == 'success') {
             $amt = $dp->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-PayStudio', 'MM-AUTOPS', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1227,7 +1233,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1260,7 +1266,7 @@ class UserController extends Controller
         $data['ip_address'] = $request->ip();
         $data['response_url'] = route('verifychargemoneycharge');
         $data['webhook_url'] = route('verifychargemoneycharge');
-        $data['customer_order_id'] = $t7_id . '-'.$order_id.'-'.$user->id;
+        $data['customer_order_id'] = $t7_id . '-' . $order_id . '-' . $user->id;
 
         unset($data['_token']);
 
@@ -1271,7 +1277,7 @@ class UserController extends Controller
         if ($resp->status == 'success') {
             $amt = $resp->data->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-ChargeMoney', 'MM-AUTOCM', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support, we have received your payment! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1289,7 +1295,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1306,7 +1312,7 @@ class UserController extends Controller
             return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
         } else {
             $msg = $resp->message;
-            foreach($resp->errors as $field => $error) {
+            foreach ($resp->errors as $field => $error) {
                 $msg .= implode(", ", $error);
             }
             return redirect()->back()->with('message', $msg);
@@ -1343,7 +1349,7 @@ class UserController extends Controller
         if ($resp['status'] == 'C') {
             $amt = $resp['amount'];
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-YWallit', 'MM-AUTOYWP', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1361,7 +1367,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1395,7 +1401,7 @@ class UserController extends Controller
         if ($data['status'] == 'C') {
             $amt = $dp->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-YWallit', 'MM-AUTOYWP', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1415,7 +1421,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1465,7 +1471,7 @@ class UserController extends Controller
         if ($resp->responseCode == '0') {
             $amt = $resp->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-VirtualPay', 'MM-AUTOVP', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1483,7 +1489,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1519,7 +1525,7 @@ class UserController extends Controller
         if ($data['responseCode'] == '0') {
             $amt = $dp->amount;
             $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-VirtualPay', 'MM-AUTOVP', 'deposit', 'balance');
-            if(gettype($respTrans) !== 'integer') {
+            if (gettype($respTrans) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support! ');
             } else {
                 $t7->balance = $t7->balance + $amt;
@@ -1538,7 +1544,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
 
             $objDemo = new \stdClass();
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
@@ -1567,7 +1573,7 @@ class UserController extends Controller
         $merchantAuthentication->setTransactionKey(config('authorizenet.transaction_key'));
 
         // Set the transaction's refId
-        $refId = $user ->id . time();
+        $refId = $user->id . time();
         $cardNumber = preg_replace('/\s+/', '', $request->cardNumber);
 
         // Create the payment data for a credit card
@@ -1613,7 +1619,7 @@ class UserController extends Controller
 
                     $amt = $data['amount'];
                     $respTrans = $this->performTransaction($t7->currency, $t7->number, $amt, 'MM-AuthorizeNet', 'MM-AUTOAN', 'deposit', 'balance');
-                    if(gettype($respTrans) !== 'integer') {
+                    if (gettype($respTrans) !== 'integer') {
                         return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
                     } else {
                         $t7->balance = $t7->balance + $amt;
@@ -1631,7 +1637,7 @@ class UserController extends Controller
                     $site_name = Setting::getValue('site_name');
 
                     $objDemo = new \stdClass();
-                    $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                    $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
                     $objDemo->message = "\r Hello $name, \r\n\r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
                     $objDemo->sender = "$site_name";
                     $objDemo->date = Carbon::Now();
@@ -1720,11 +1726,11 @@ class UserController extends Controller
         //     return redirect()->back()->with('message', $msg);
         // }
 
-        if($resp['data']['gatewayStatus']=='APPROVED') {
-            $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Cashonex', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+        if ($resp['data']['gatewayStatus'] == 'APPROVED') {
+            $paymentId = $resp['data']['paymentId'];
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Cashonex', 'MM-AUTOCO-' . $paymentId, 'deposit', 'balance');
 
-            if(gettype($respT7) !== 'integer') {
+            if (gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance += $amount;
@@ -1742,7 +1748,7 @@ class UserController extends Controller
                 $site_name = Setting::getValue('site_name');
                 $objDemo = new \stdClass();
 
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
                 $objDemo->message = "\r Hello $name, \r\n
 
                 \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
@@ -1758,17 +1764,17 @@ class UserController extends Controller
         // If 3D
         $url = $resp['data']['redirectUrl'];
         // dd([$url, $response]);
-        if($url) {
+        if ($url) {
             $msg = 'Security Redirection by PSP! Redirecting...';
             return redirect($url);
         }
 
         // If 2D
-        if($resp['data']['gatewayStatus']=='initiated') {
+        if ($resp['data']['gatewayStatus'] == 'initiated') {
             $msg = 'Deposit Initiated by PSP! Check back later...';
         }
 
-        if($resp['data']['gatewayStatus']=='DECLINED') {
+        if ($resp['data']['gatewayStatus'] == 'DECLINED') {
             $msg = 'Deposit Declined by PSP!' . $resp['data']['gatewayResponse'];
         }
 
@@ -1785,18 +1791,18 @@ class UserController extends Controller
         $msg = $request->message;
 
         $deposit = Deposit::find($request->orderId);
-        if($deposit) {
-            if($request->status == 'DECLINED') {
+        if ($deposit) {
+            if ($request->status == 'DECLINED') {
                 $deposit->status = 'Declined';
                 $deposit->save();
 
                 $msg = 'Sorry your payment was delined because for the following reason: ' . $request->message;
             } elseif ($request->status == 'APPROVED') {
                 $amount = $deposit->amount;
-                $paymentId =$request->paymentId;
-                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Cashonex', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+                $paymentId = $request->paymentId;
+                $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Cashonex', 'MM-AUTOCO-' . $paymentId, 'deposit', 'balance');
 
-                if(gettype($respT7) !== 'integer') {
+                if (gettype($respT7) !== 'integer') {
                     return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
                 } else {
                     $t7->balance += $amount;
@@ -1813,7 +1819,7 @@ class UserController extends Controller
                     $site_name = Setting::getValue('site_name');
                     $objDemo = new \stdClass();
 
-                    $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                    $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
                     $objDemo->message = "\r Hello $name, \r\n
 
                     \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
@@ -1845,7 +1851,7 @@ class UserController extends Controller
         $paymentId = $request->transaction_id;
 
         $deposit = Deposit::where('txn_id', $paymentId)->first();
-        if(!$deposit) $deposit = new Deposit();
+        if (!$deposit) $deposit = new Deposit();
 
         $deposit->status = $request->status;
         $deposit->payment_mode = 'NumPay';
@@ -1856,15 +1862,15 @@ class UserController extends Controller
         $deposit->save();
         $msg = $request->status . ': '  . $request->xresponse;
 
-        if($request->status ==  'Declined') {
+        if ($request->status ==  'Declined') {
             return redirect(route('account.liveaccounts'))->with('message', $msg);
         }
 
-        if($request->status == 'Success') {
-            if($request->paid_amount) $amount = $request->paid_amount;
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-NUMPAY', 'MM-AUTONP-'.$paymentId, 'deposit', 'balance');
+        if ($request->status == 'Success') {
+            if ($request->paid_amount) $amount = $request->paid_amount;
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-NUMPAY', 'MM-AUTONP-' . $paymentId, 'deposit', 'balance');
 
-            if(gettype($respT7) !== 'integer') {
+            if (gettype($respT7) !== 'integer') {
                 return redirect(route('account.liveaccounts'))->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance += $amount;
@@ -1882,7 +1888,7 @@ class UserController extends Controller
                 $site_name = Setting::getValue('site_name');
                 $objDemo = new \stdClass();
 
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
                 $objDemo->message = "\r Hello $name, \r\n
 
                 \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
@@ -1958,7 +1964,7 @@ class UserController extends Controller
             'client_ip' => $request->ip(),
             'action' => 'producct',
             'source' => 'Host-Redirect-Card-Payment (Core PHP)',
-            'source_url' => (isset($_SERVER["HTTPS"])?'https://':'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']),
+            'source_url' => (isset($_SERVER["HTTPS"]) ? 'https://' : 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']),
             'product_name' => 'Training Pack 1',
             'fullname' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
@@ -2000,11 +2006,11 @@ class UserController extends Controller
         //     return redirect()->back()->with('message', $msg);
         // }
 
-        if($resp['data']['gatewayStatus']=='APPROVED') {
-            $paymentId =$resp['data']['paymentId'];
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+        if ($resp['data']['gatewayStatus'] == 'APPROVED') {
+            $paymentId = $resp['data']['paymentId'];
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Paycly', 'MM-AUTOCO-' . $paymentId, 'deposit', 'balance');
 
-            if(gettype($respT7) !== 'integer') {
+            if (gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance += $amount;
@@ -2022,7 +2028,7 @@ class UserController extends Controller
                 $site_name = Setting::getValue('site_name');
                 $objDemo = new \stdClass();
 
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
                 $objDemo->message = "\r Hello $name, \r\n
 
                 \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
@@ -2038,17 +2044,17 @@ class UserController extends Controller
         // If 3D
         $url = $resp['data']['redirectUrl'];
         // dd([$url, $response]);
-        if($url) {
+        if ($url) {
             $msg = 'Security Redirection by PSP! Redirecting...';
             return redirect($url);
         }
 
         // If 2D
-        if($resp['data']['gatewayStatus']=='initiated') {
+        if ($resp['data']['gatewayStatus'] == 'initiated') {
             $msg = 'Deposit Initiated by PSP! Check back later...';
         }
 
-        if($resp['data']['gatewayStatus']=='DECLINED') {
+        if ($resp['data']['gatewayStatus'] == 'DECLINED') {
             $msg = 'Deposit Declined by PSP!';
         }
 
@@ -2116,7 +2122,7 @@ class UserController extends Controller
             ));
 
             $charge = Stripe\Charge::create([
-                "amount" => $amount*100,
+                "amount" => $amount * 100,
                 "currency" => "usd",
                 "customer" => $customer->id,
                 "description" => "Purchase of Product",
@@ -2131,14 +2137,13 @@ class UserController extends Controller
                     ],
                 ]
             ]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $msg = $e->getMessage() . ' Please check your card details';
             return redirect()->back()->with('message', $msg);
         }
 
-        if($charge->status !== 'succeeded') {
+        if ($charge->status !== 'succeeded') {
             $msg = 'An error has occured: ';
-
         } else {
             $t7_id = $request->session()->get('t7_account_id');
             $t7 = Trader7::find($t7_id);
@@ -2153,9 +2158,9 @@ class UserController extends Controller
             $deposit->save();
 
             $paymentId = $charge->id;
-            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Stripe', 'MM-AUTOCO-'.$paymentId, 'deposit', 'balance');
+            $respT7 = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Stripe', 'MM-AUTOCO-' . $paymentId, 'deposit', 'balance');
 
-            if(gettype($respT7) !== 'integer') {
+            if (gettype($respT7) !== 'integer') {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to support!');
             } else {
                 $t7->balance += $amount;
@@ -2172,7 +2177,7 @@ class UserController extends Controller
                 $site_name = Setting::getValue('site_name');
                 $objDemo = new \stdClass();
 
-                $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+                $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
                 $objDemo->message = "\r Hello $name, \r\n
 
                 \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
@@ -2199,7 +2204,6 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
-
     }
 
 
@@ -2207,10 +2211,10 @@ class UserController extends Controller
     {
         $data = $request->all();
         $amount = $request->session()->get('amount');
-        if(!$amount)
-            $amount = $data['amount']/1.4;
+        if (!$amount)
+            $amount = $data['amount'] / 1.4;
 
-        if($data['response']) {
+        if ($data['response']) {
 
             $user = User::where('id', Auth::user()->id)->first();
 
@@ -2218,8 +2222,8 @@ class UserController extends Controller
 
             $t7 = Trader7::find($t7_id);
 
-            $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Helcim', 'MM-AUTOHELCIM-'.$data['transactionId'], 'deposit', 'balance');
-            if(gettype($resp) !== 'integer') {
+            $resp = $this->performTransaction($t7->currency, $t7->number, $amount, 'MM-Helcim', 'MM-AUTOHELCIM-' . $data['transactionId'], 'deposit', 'balance');
+            if (gettype($resp) !== 'integer') {
                 return json_encode(['message' => 'Sorry an error occured, report this to support!']);
             } else {
                 $t7->balance += $amount;
@@ -2237,7 +2241,7 @@ class UserController extends Controller
             $site_name = Setting::getValue('site_name');
             $objDemo = new \stdClass();
 
-            $name = $user->name ? $user->name: ($user->first_name ? $user->first_name: $user->last_name);
+            $name = $user->name ? $user->name : ($user->first_name ? $user->first_name : $user->last_name);
             $objDemo->message = "\r Hello $name, \r\n
 
             \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
@@ -2250,7 +2254,6 @@ class UserController extends Controller
             $msg = 'Your deposit was successfully processed!';
             Session::flash('message', $msg);
             return redirect(route('account.liveaccounts'))->with('message', $msg);
-
         } else {
             $msg = $data['responseMessage'];
             Session::flash('message', $msg);

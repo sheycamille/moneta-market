@@ -6,15 +6,12 @@ use App\Models\AccountType;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\State;
-use App\Models\Setting;
 
-use App\Mail\NewNotification;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use App\Jobs\ProcessEmails;
 
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class FrontController extends Controller
@@ -39,16 +36,9 @@ class FrontController extends Controller
 
     public function sendContact(Request $request)
     {
-        $site_name = Setting::getValue('site_name');
-        $contact_email = Setting::getValue('contact_email');
+        $emailJobs = new ProcessEmails();
 
-        $objDemo = new \stdClass();
-        $objDemo->message = substr(wordwrap($request['message'], 70), 0, 350);
-        $objDemo->sender = "$site_name";
-        $objDemo->date = Carbon::Now();
-        $objDemo->subject = "Inquiry from $request->name with email $request->email";
-
-        Mail::mailer('smtp')->bcc($contact_email)->send(new NewNotification($objDemo));
+        $this->dispatch($emailJobs);
 
         return redirect()->back()
             ->with('message', ' Your message was sent successfully!');

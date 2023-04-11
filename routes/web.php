@@ -48,7 +48,7 @@ Route::get('risk-disclosure', 'FrontController@disclosure')->name('risk-disclosu
 // Route::get('products', 'FrontController@products')->name('products');
 Route::get('account-types', 'FrontController@accountTypes')->name('account-types');
 // Route::get('trading-platforms', 'FrontController@tradingPlatforms')->name('trading-platforms');
-Route::post('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
+Route::get('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
 // Route::get('private/ftds', 'FrontController@ftds')->name('ftds');
 
 Route::get('dependent-dropdown', 'FrontController@fetchDependent');
