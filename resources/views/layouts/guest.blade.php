@@ -11,7 +11,7 @@
         content="{{ \App\Models\Setting::getValue('site_description') }} Moneta Market offers CFDs on currency pairs and five other asset classes. Start trading forex online with the world’s best forex broker.">
     <meta name="keywords"
         content="forex, exchange, broker, crypto, trading, indices, shares, stocks, bonds, cryptocurrencies, futures, energies">
-    <meta name="author" content="gestiondupatrimoine.net">
+    <meta name="author" content="monetamarket.net">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f2f3f5" />

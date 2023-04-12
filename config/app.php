@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://gestiondupatrimoine.net'),
+    'url' => env('APP_URL', 'https://monetamarket.net'),
 
     'asset_url' => env('ASSET_URL', null),
 

@@ -60,14 +60,14 @@
                                                 <th>Amount</th>
                                                 <th>Payment mode</th>
                                                 <th>Status</th>
-                                                <th>Date created</th>
+                                                <th>Date created / Date updated</th>
                                                 <th>Option</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @forelse ($deposits as $deposit)
                                                 <tr>
-                                                    <th scope="row">{{ $deposit->id }}</th>
+                                                    <th scope="row">{{ $deposit->order_number }}</th>
                                                     <td>{{ $deposit->duser->name ? $deposit->duser->name : $deposit->duser->first_name . ' ' . $deposit->duser->last_name }}
                                                     </td>
                                                     <td>{{ $deposit->duser->email }}</td>
@@ -80,7 +80,7 @@
                                                     </td>
                                                     <td>{{ $deposit->payment_mode }}</td>
                                                     <td>{{ $deposit->status }}</td>
-                                                    <td>{{ $deposit->created_at }}
+                                                    <td>{{ $deposit->created_at }} | {{ $deposit->updated_at }}
                                                     </td>
                                                     <td>
                                                         <a href="#" class="btn btn-primary btn-sm m-1"

@@ -3,7 +3,7 @@
 --
 -- https://tableplus.com/
 --
--- Database: gestiondupatrimoine
+-- Database: monetamarket
 -- Generation Time: 2022-12-25 21:55:58.1550
 -- -------------------------------------------------------------
 
@@ -26,9 +26,9 @@ INSERT INTO `account_types` (`id`, `name`, `image`, `active`, `cost`, `trading_m
 (5, 'VIP', NULL, 1, '100k', 'STP', 'Trader7, iOs, Andriod', 1, 0.1, 'Unlimited', 1, '2.50USD/EUR per 100,000', 71, 5, 12, 100000, '1:100', 0.1, 'Market Execution', 'None', 'FX, Indices, Commodities, Metals', 1, NULL, NULL);
 
 INSERT INTO `admins` (`id`, `firstName`, `lastName`, `two_factor_code`, `two_factor_expires_at`, `email`, `email_verified_at`, `password`, `phone`, `dashboard_style`, `remember_token`, `acnt_type_active`, `status`, `type`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'Moneta Market', NULL, NULL, 'admin@gestiondupatrimoine.net', NULL, '$2y$10$J2t.er/QRqT47Vg463jLM.Il/ukz07rKa.u9i0Dsx9ptkEfurZ8SK', '+237679286569', 'dark', NULL, 'active', 'active', 'Super Admin', NULL, '2022-12-23 05:44:12', '2022-12-23 05:44:12'),
-(2, 'Louis', 'Arthur', NULL, NULL, 'louis.arthur@gestiondupatrimoine.net', NULL, '$2y$10$ZO7bGiuhum3OJGUnbmccJuavTjY5kGYrQj6Cnl8mL8q8oXlBwNRKm', '000', 'dark', NULL, 'active', 'active', 'Admin', NULL, '2022-08-29 19:59:15', '2022-08-29 19:59:15'),
-(3, 'Martin', 'Bruel', NULL, NULL, 'martin.bruel@gestiondupatrimoine.net', NULL, '$2y$10$FgFbLdYWL6fViRM/6YrVMek7DPSWx4wCNxt923NghNehIiVRtCsPK', '66464646', 'dark', NULL, 'active', 'active', 'Admin', NULL, '2022-08-29 20:12:33', '2022-08-29 20:12:33');
+(1, 'Admin', 'Moneta Market', NULL, NULL, 'admin@monetamarketNULL, '$2y$10$J2t.er/QRqT47Vg463jLM.Il/ukz07rKa.u9i0Dsx9ptkEfurZ8SK', '+237679286569', 'dark', NULL, 'active', 'active', 'Super Admin', NULL, '2022-12-23 05:44:12', '2022-12-23 05:44:12'),
+(2, 'Louis', 'Arthur', NULL, NULL, 'louis.arthur@monetamarketNULL, '$2y$10$ZO7bGiuhum3OJGUnbmccJuavTjY5kGYrQj6Cnl8mL8q8oXlBwNRKm', '000', 'dark', NULL, 'active', 'active', 'Admin', NULL, '2022-08-29 19:59:15', '2022-08-29 19:59:15'),
+(3, 'Martin', 'Bruel', NULL, NULL, 'martin.bruel@monetamarketNULL, '$2y$10$FgFbLdYWL6fViRM/6YrVMek7DPSWx4wCNxt923NghNehIiVRtCsPK', '66464646', 'dark', NULL, 'active', 'active', 'Admin', NULL, '2022-08-29 20:12:33', '2022-08-29 20:12:33');
 
 INSERT INTO `countries` (`id`, `name`, `full_name`, `capital`, `code`, `code_alpha3`, `code_numeric`, `emoji`, `currency_code`, `currency_name`, `callingcode`, `tld`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Cameroon', 'the Republic of Cameroon', 'Yaoundé', 'cm', 'cmr', '120', '🇨🇲', 'XAF', 'CFA Franc BEAC', '237', '.cm', 'active', '2022-12-23 06:44:12', '2022-12-23 06:44:12', NULL),
@@ -465,10 +465,10 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 ('swgguJgNw5wBx3M2zAbNr6lfP5vJ1NG2YyQAya5x', 1, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36', 'ZXlKcGRpSTZJbFpCTTBaVVFsWnpkblo2U0VOc05XUllTREZxWlZFOVBTSXNJblpoYkhWbElqb2lXbkpIVGxwVU5pOHJOVE5xVWtFMWNIRjFabTlOVnpsT01tWTBWbEJvYjFWWFV6UjRZa0ZEUVZwaUwzRkZORFJMTmtoNlRHTXZPSEZSY1VOUk4xcHhPVUoxVm1OT2NuVlhSa3RwVkc5TWR5dFlaVlFyYVcxdlRtUktjRlpMVFRWMU0ydzVPVkJVVG5WNVJtNVJibmxMVlVoM2NXcGFaM2RUYTBwa0t6ZzFla3RGWjNJNFVGQmtjR05HZEZsbWJYVnBha1ZWWW04NGNWRnpRV1p5VUd4TVQyUjFSbWhSZW1wb2REWkxTRmhuVVhjemJsSTBiME5pUjFaRVNTOTFUMWd3TVhGak5YTlhiV3BWU0RGSFZuWlFNM0YxVlVSQ09VMXNVMVJ2T0VkcmNGUmhaMlJRZFZKbWNtNTJVRWxqUTJaM2N6aE9iMFpsUTNGSFNrOTFVV1J6VFcxdUwwbEhSMDFWU0M4dlNHZEdRa1JFY1Roc2NYWlBOMWgzY1dzNGIyaHpObTVOUW1OaVpsZFBVVXB3V1daTmRXMHdZbTl3V1RWU2NtUlNRUzlKVDJncmEyMVFWRkEwSzJaaGJUSndkVEY2VEhWM1duRXhUWEZ3TW5oTVEzbEpjVzFaZHpWNWMxWTVkMGt6TlhacmJ6Rm5ZVlpPZWpseVRHeFdUall2UnpkTGVHMTBjMEZITjNWNWVYaGtRbEpHTm5WSWJVSnpkamRwUkRGS2JFVk1Wa3htV2t0T09FNUdSeXRRUW5NNFpucEdZVGxoVFRocEwySldhMngzV2l0V09UVjBaRVl2VjBGWVJsaFFZekF2SzJORFRFZ3pkalZIZVZwVmNtNU5ZVkpGU3k5MFFucDFZeTl1TVdWaGRrTmlhMjVGYmtGUFVIUjJSVGxZZFRsb04wNURiWFowWXpGMllYVlpNMW8xYkVkT1lVVlFPVTQyZFdOTFJUUklSVmxPVFVKWVNrcDZUVE55TnpBelpISnVUMWR3Y0VWYVpFY3lXRU5JYjJOc0sySTNUbEIwVFZsSmJWSTFhWHBXYVRFM2NVNTJlVkJzWVUxM01XNWlXa2hxWTB0NWJVNUxVbEl4VDJSUE5qRnRabTFITkVReE16WTVkMDFwUWt3emNITlJWa056V0dVM1NFZFBUMUl5UXpCTFQzZG1TSFZsYkdaSlFrSXdjV3g2YVc1TVYyOVNaVEk1YUc1NlZ5c3pNbEZXWmxwdGFVWnBObFp6T0ZBNGNHWkJNVGtpTENKdFlXTWlPaUkwWldNek9EaG1NVE0wT1daaE4yUmlZbU5sWldaaVpEZ3haRFptTTJFME1XVm1NREUyTXpjMU5EY3dOR00xTXpnd01HUTJZbUl6T0Roak1EUTJaVEUxSWl3aWRHRm5Jam9pSW4wPQ==', 1671999862);
 
 INSERT INTO `settings` (`id`, `name`, `value`, `created_at`, `updated_at`) VALUES
-(2, 'contact_email', 'support@gestiondupatrimoine.net', '2022-01-18 08:24:16', '2022-01-18 08:24:16'),
-(3, 'deposit_email', 'skdeposits@gestiondupatrimoine.net', '2022-01-18 08:24:16', '2022-08-23 15:00:11'),
-(4, 'withdrawal_email', 'withdrawals@gestiondupatrimoine.net', '2022-01-18 08:24:16', '2022-01-18 08:24:16'),
-(5, 'verification_email', 'verification@gestiondupatrimoine.net', '2022-01-18 08:24:16', '2022-03-23 15:43:03'),
+(2, 'contact_email', 'support@monetamarket'2022-01-18 08:24:16', '2022-01-18 08:24:16'),
+(3, 'deposit_email', 'skdeposits@monetamarket'2022-01-18 08:24:16', '2022-08-23 15:00:11'),
+(4, 'withdrawal_email', 'withdrawals@monetamarket'2022-01-18 08:24:16', '2022-01-18 08:24:16'),
+(5, 'verification_email', 'verification@monetamarket'2022-01-18 08:24:16', '2022-03-23 15:43:03'),
 (6, 'currency', '$', '2022-01-18 08:24:16', '2022-01-18 08:24:16'),
 (7, 's_currency', 'USD', '2022-01-18 08:24:16', '2022-01-18 08:24:16'),
 (8, 'location', 'Local', '2022-01-18 08:24:16', '2022-01-18 08:24:16'),
@@ -484,7 +484,7 @@ INSERT INTO `settings` (`id`, `name`, `value`, `created_at`, `updated_at`) VALUE
 (18, 'description', 'Moneta Market offers CFDs on currency pairs and five other asset classes. Start trading forex online with the world’s best forex broker.', '2022-01-18 10:10:09', '2022-08-23 14:58:55'),
 (19, 'keywords', 'forex, exchange, broker, crypto, trading, indices, shares, stocks, bonds, cryptocurrencies, futures, energies', '2022-01-18 10:10:09', '2022-01-18 10:10:09'),
 (20, 'site_title', 'Moneta Markets', '2022-01-18 10:10:09', '2022-01-18 10:10:09'),
-(21, 'site_address', 'https://gestiondupatrimoine.net', '2022-01-18 10:10:09', '2022-01-18 10:10:09'),
+(21, 'site_address', 'https://monetamarket'2022-01-18 10:10:09', '2022-01-18 10:10:09'),
 (22, 'btc_address', '1KTCgdqGezZf9XJA8U4gYLhDy4hPLhVg32', '2022-01-18 10:21:45', '2022-10-31 17:07:49'),
 (23, 'bch_address', 'qrww2refvu9mwft83v2tkjljajng6mk5qgqszz94pa', '2022-01-18 10:21:45', '2022-02-08 10:29:40'),
 (24, 'ltc_address', 'LZj8UGJykvrx893D1hCKhcqwHte8KkuvfF', '2022-01-18 10:21:45', '2022-02-08 10:33:39'),
@@ -501,7 +501,7 @@ INSERT INTO `settings` (`id`, `name`, `value`, `created_at`, `updated_at`) VALUE
 (35, 'account_name', 'test name', '2022-02-21 08:52:07', '2022-02-21 08:52:07'),
 (36, 'account_number', 'test number', '2022-02-21 08:52:07', '2022-02-21 08:52:07'),
 (37, 'interac_name', 'MM Deposit', '2022-03-29 15:53:14', '2022-09-29 21:32:38'),
-(38, 'interac_email', 'interac@gestiondupatrimoine.net', '2022-03-29 15:53:14', '2022-12-15 20:37:58'),
+(38, 'interac_email', 'interac@monetamarket'2022-03-29 15:53:14', '2022-12-15 20:37:58'),
 (39, 'interac_message', 'transfer', '2022-03-29 15:53:14', '2022-08-23 19:00:09'),
 (40, 'interac_question', 'Qui?', '2022-03-29 15:53:14', '2022-08-26 21:41:55'),
 (41, 'interac_answer', 'sk123dp', '2022-03-29 15:53:14', '2022-09-29 21:32:38'),
@@ -4485,7 +4485,7 @@ INSERT INTO `states` (`id`, `country_id`, `name`, `full_name`, `code`, `status`,
 (4015, 33, 'Mambere-Kadei', NULL, 'hs', 'active', '2022-12-23 06:44:12', '2022-12-23 06:44:12', NULL);
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `name`, `email`, `phone`, `password`, `phone_password`, `account_type`, `dob`, `address`, `country_id`, `town`, `state`, `zip_code`, `dashboard_style`, `bank_name`, `bank_address`, `swift_code`, `account_name`, `account_number`, `acnt_type_active`, `btc_address`, `eth_address`, `ltc_address`, `bch_address`, `bnb_address`, `usdt_address`, `usdc_address`, `xrp_address`, `interac`, `paypal_email`, `account_bal`, `bonus`, `ref_bonus`, `signup_bonus`, `auto_trade`, `bonus_released`, `ref_by`, `ref_link`, `id_card`, `id_card_back`, `address_document`, `passport`, `docs_uploaded_date`, `docs_verified_date`, `account_verify`, `entered_at`, `activated_at`, `last_growth`, `status`, `trade_mode`, `act_session`, `two_factor_secret`, `two_factor_recovery_codes`, `token_2fa`, `token_2fa_expiry`, `remember_token`, `current_team_id`, `profile_photo_path`, `email_verified_at`, `created_at`, `updated_at`) VALUES
-(1, 'John', 'Doe', 'John Doe', 'support@gestiondupatrimoine.net', NULL, '$2y$10$4UUUt3zxVSrIdH6Ik4qYHeszzeJDlI2UJn3VlinVT7SKI4ZGut.Hu', NULL, '1', NULL, 'Makepe', '1', 'Buea', 'South West', '063', 'dark', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, 0, '1', NULL, 'YIO47rred gestiondp-market logo.png', 'YIO47rgestiondp market logo.jpg', 'YIO47rgestiondp market logo.jpg', 'YIO47rMoneta-Market Logo only.png', '2022-12-25 20:14:09', '2022-12-25 20:21:18', 'Verified', NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-23 05:44:12', '2022-12-23 05:44:12', '2022-12-25 19:21:18');
+(1, 'John', 'Doe', 'John Doe', 'support@monetamarketNULL, '$2y$10$4UUUt3zxVSrIdH6Ik4qYHeszzeJDlI2UJn3VlinVT7SKI4ZGut.Hu', NULL, '1', NULL, 'Makepe', '1', 'Buea', 'South West', '063', 'dark', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, NULL, NULL, 0, '1', NULL, 'YIO47rred gestiondp-market logo.png', 'YIO47rgestiondp market logo.jpg', 'YIO47rgestiondp market logo.jpg', 'YIO47rMoneta-Market Logo only.png', '2022-12-25 20:14:09', '2022-12-25 20:21:18', 'Verified', NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-12-23 05:44:12', '2022-12-23 05:44:12', '2022-12-25 19:21:18');
 
 INSERT INTO `wdmethods` (`id`, `name`, `logo`, `setting_key`, `exchange_symbol`, `country_ids`, `minimum`, `maximum`, `charges_fixed`, `charges_percentage`, `duration`, `type`, `details`, `status`, `created_at`, `updated_at`) VALUES
 (2, 'Bitcoin', NULL, NULL, NULL, '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,236,237,238,239,240,241,242,243,244,245,246', 50, 1000000, '0', '0', '8Hrs', 'withdrawal', NULL, 'enabled', '2022-01-21 07:44:40', '2022-04-18 07:23:59'),

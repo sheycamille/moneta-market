@@ -10,10 +10,10 @@
 
     <meta name="description" content="{{ \App\Models\Setting::getValue('site_description') }}">
     <meta name="keywords" content="{{ \App\Models\Setting::getValue('keywords') }}">
-    <meta name="author" content="gestiondupatrimoine.net">
+    <meta name="author" content="monetamarket.net">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f2f3f5"/>
+    <meta name="theme-color" content="#f2f3f5" />
 
     <link rel="icon" href="{{ asset('front/favicon.png') }}" type="image/png" />
 
@@ -87,7 +87,7 @@
                                         </ul>
                                     </div>
                                     <!-- module logo begin -->
-                                    <a class="uk-logo" href="https://monetamarket.ca/">
+                                    <a class="uk-logo" href="https://monetamarket.net/">
                                         <img class="in-offset-top-10" src="{{ asset('front/img/group-logo.png') }}"
                                             data-src="{{ asset('front/img/group-logo.png') }}" alt="logo"
                                             width="180" height="36" data-uk-img>

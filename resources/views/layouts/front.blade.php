@@ -10,7 +10,7 @@
 
     <meta name="description" content="{{ \App\Models\Setting::getValue('site_description') }}">
     <meta name="keywords" content="{{ \App\Models\Setting::getValue('keywords') }}">
-    <meta name="author" content="gestiondupatrimoine.net">
+    <meta name="author" content="monetamarket.net">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f2f3f5" />
@@ -317,8 +317,8 @@
                                         src="{{ asset('front/img/group-logo.png') }}"
                                         data-src="{{ asset('front/img/group-logo.png') }}" alt="logo"
                                         width="180" height="36" data-uk-img></a></li>
-                            <li><a href="mailto:support@gestiondupatrimoine.net"><i
-                                        class="fas fa-envelope uk-margin-small-right"></i>support@gestiondupatrimoine.net</a>
+                            <li><a href="mailto:support@monetamarket.net"><i
+                                        class="fas fa-envelope uk-margin-small-right"></i>support@monetamarket.net</a>
                             </li>
                             <li><a href="#"><i class="fas fa-map-marker-alt uk-margin-small-right"></i>F26 First
                                     Floor, Eden Plaza, Eden Island, Seychelles</a></li>

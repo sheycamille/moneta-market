@@ -8,14 +8,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://gitlab.com/wadleo/gestiondupatrimoine.git"
+        "url": "git+https://gitlab.com/wadleo/monetamarket.git"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://gitlab.com/wadleo/gestiondupatrimoine/issues"
+        "url": "https://gitlab.com/wadleo/monetamarket/issues"
     },
-    "homepage": "https://gitlab.com/wadleo/gestiondupatrimoine#readme",
+    "homepage": "https://gitlab.com/wadleo/monetamarket#readme",
     "devDependencies": {
         "nodemon": "^2.0.20"
     }

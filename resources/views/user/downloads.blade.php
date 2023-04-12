@@ -23,7 +23,7 @@
                         </div>
                         <div class="card-body">
                             <h4>Web & Mobile Apps</h4>
-                            <a href="https://web.monetamarket.ca" class="btn btn-primary"
+                            <a href="https://web.monetamarket.net" class="btn btn-primary"
                                 target="_blank">@lang('message.launch_webtrader')</a>
                             <a href="https://play.google.com/store/apps/details?id=com.mtrader7.terminal&hl=en"
                                 class="btn btn-primary" target="_blank">@lang('message.body.android') </a>

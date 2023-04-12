@@ -451,7 +451,7 @@ return [
         'b20' => 'Moneta Market acomodará a los Clientes que adquirieron la Póliza o sancionados a tomar la Póliza por medios electrónicos o cualquier otra transacción en línea, incluyendo aquellos que se han conformado en gran medida con los Términos y Condiciones de Negociación de Moneta Market. ',
         'contact' => 'Contacto',
         'cus' => 'Departamento de Atención al Cliente',
-        'email' => 'Email:support@gestiondupatrimoine.net ',
+        'email' => 'Email:support@monetamarket.net ',
 
 
     ],
@@ -690,7 +690,7 @@ return [
         'head' => 'SOLUCIÓN DE CONTROVERSIAS ',
         'b1' => 'Si el Cliente cree notar una discrepancia entre los resultados de las operaciones que se mostrados oficialmente y los que deberían mostrarse en su opinión (ej: La orden orden no se mostró o fue alterada; la posición que debía abrirse está cerrada; la posición que debía cerrarse no está cerrada; la aparición de posiciones y/o órdenes adicionales y/o órdenes, etc.), el Cliente debe tomar medidas inmediatas para remediar la situación o cerrar inmediatamente la/s posición/es. ',
         'b2' => 'Después de eso, el Cliente debe ponerse en contacto con el representante de la Compañía con los disponibles medios de comunicación disponibles o en los contactos indicados en el sitio web oficial de la Empresa',
-        'b3' => 'Si el Cliente no cumple con estas acciones, el Cliente renuncia a cualquier derecho que pueda haber hubiera tenido frente a Moneta Market en relación con dicha discrepancia desde la imposibilidad de seguir adelante. Esto significa que para todas las configuraciones de la cartera del Cliente, éste asume toda la responsabilidad del momento de la no realización de las acciones correspondientes independientemente de la repercusión ulterior de beneficios o pérdidas del importe total de beneficios y pérdidas. El incumplimiento de estas acciones se considera como una incapacidad para mitigar las pérdidas. El Cliente deberá presentar cualquier reclamación a Moneta Market por escrito a la dirección de correo electrónico support@gestiondupatrimoine.net. ',
+        'b3' => 'Si el Cliente no cumple con estas acciones, el Cliente renuncia a cualquier derecho que pueda haber hubiera tenido frente a Moneta Market en relación con dicha discrepancia desde la imposibilidad de seguir adelante. Esto significa que para todas las configuraciones de la cartera del Cliente, éste asume toda la responsabilidad del momento de la no realización de las acciones correspondientes independientemente de la repercusión ulterior de beneficios o pérdidas del importe total de beneficios y pérdidas. El incumplimiento de estas acciones se considera como una incapacidad para mitigar las pérdidas. El Cliente deberá presentar cualquier reclamación a Moneta Market por escrito a la dirección de correo electrónico support@monetamarket.net. ',
         'b4' => 'En el plazo de treinta (30) días hábiles, Moneta Market deberá verificar cualquier reclamación por escrito escrito, si está suficientemente documentado, y presentar su posición al Cliente. Cliente. ',
         'b5' => 'El Cliente, a su vez, no hará ninguna declaración pública en cualquier forma relativa a su reclamación en el plazo de treinta (30) días hábiles. Si el Cliente incumple esta cláusula, el Cliente se compromete a pagar a Moneta Market daños reputacionales de 100,00 dólares por día desde el momento de dicha violación, mientras que el máximo acumulativo del pago podrá alcanzar los 10.000,00 dólares.',
         'b6' => 'El Cliente y Moneta Market se comprometen a hacer todo lo posible para resolver cualquier disputa, de buena fe y sobre una base constructiva.
@@ -978,7 +978,7 @@ return [
     'trade_cdfs' => 'Opere con CFDs sobre una amplia gama de instrumentos, incluyendo los pares de divisas más populares, Futuros, Índices, Metales, Energías y Acciones y experimente los mercados globales al alcance de su mano',
     'open_acount' => 'Abra una cuenta',
     'compliment_trading' => 'Complementa tu operativa con nuestras herramientas exclusivas',
-    'gestiondupatrimoine_clients' => 'Los clientes de Moneta Market tienen acceso exclusivo a herramientas de negociación, noticias y análisis',
+    'monetamarket_clients' => 'Los clientes de Moneta Market tienen acceso exclusivo a herramientas de negociación, noticias y análisis',
     'calender' => 'Calendario',
     'econs_earning' => 'Calendarios económicos y de resultados',
     'analysis' => 'Análisis',
@@ -1011,7 +1011,7 @@ return [
     'discover' => 'Descubrir plataforma',
     'choose_platform' => 'Elija su plataforma',
     'platforms' => 'Proporcionamos a nuestros clientes una amplia gama de plataformas de negociación de escritorio, web y móvil, incluyendo la plataforma Moneta Market Trader 7 y WebTrader',
-    'gestiondupatrimoine_platform' => 'Plataforma Moneta Market',
+    'monetamarket_platform' => 'Plataforma Moneta Market',
     'start_trading' => 'Comenzar a operar',
     'six_years' => '6 años',
     'fifthteen' => '15 años',
