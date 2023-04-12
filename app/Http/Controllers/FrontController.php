@@ -8,9 +8,10 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\Setting;
 
+use App\Jobs\ProcessEmails;
+
 use App\Mail\NewNotification;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -48,7 +49,8 @@ class FrontController extends Controller
         $objDemo->date = Carbon::Now();
         $objDemo->subject = "Inquiry from $request->name with email $request->email";
 
-        Mail::mailer('smtp')->bcc($contact_email)->send(new NewNotification($objDemo));
+        //dispatch email
+        dispatch(new ProcessEmails($objDemo));
 
         return redirect()->back()
             ->with('message', ' Your message was sent successfully!');

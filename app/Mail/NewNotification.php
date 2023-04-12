@@ -15,6 +15,7 @@ class NewNotification extends Mailable
      * Create a new message instance.
      *
      * @var Demo
+     * @return void
      */
     public $demo;
 
