@@ -318,6 +318,3 @@ Route::any('verify_paycly_charge', 'UserOutDoorController@handlePaycly')->name('
 
 // xpro payments notifications
 Route::any('xpro_notifications', 'UserOutDoorController@xproNotifications')->name('xpro_notifications');
-
-// helcim payments notifications
-Route::any('helcim_notifications', 'UserOutDoorController@helcimNotifications')->name('helcim_notifications');
