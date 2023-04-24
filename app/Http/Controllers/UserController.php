@@ -994,6 +994,8 @@ class UserController extends Controller
             $data = [
                 'dmethod' => $method,
             ];
+        } elseif (strpos(strtolower($method->setting_key), 'axes') > -1) {
+            return redirect('https://axesformation.ca/shop/');
         } else {
             $view = 'coins';
             $wallet_address = Setting::where('name', $method->setting_key)->first()->value;
