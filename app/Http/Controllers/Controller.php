@@ -134,6 +134,7 @@ class Controller extends BaseController
     protected function updateaccounts($user)
     {
         // initialize the Trader7 m7
+        $mobius = new MobiusTrader(config('mobius'));
         $m7 = new MtClient(config('mobius'));
 
         // Get user Trader7 accounts
@@ -147,12 +148,12 @@ class Controller extends BaseController
                 'Currency' => '',
             ));
             if(is_string($resp)) return ['status' => false, 'msg' => 'An error occurred, contact support'];
-            foreach($resp as $acc_num => $money_info) {
+            foreach($resp['data'] as $acc_num => $money_info) {
                 Trader7::where('number', $acc_num)
                     ->update([
-                        'balance' => $m7->deposit_from_int('USD', $money_info['Balance']),
-                        'bonus' => $m7->deposit_from_int('USD', $money_info['Bonus']),
-                        'credit' => $m7->deposit_from_int('USD', $money_info['Credit']),
+                        'balance' => $mobius->deposit_from_int('USD', $money_info['Balance']),
+                        'bonus' => $mobius->deposit_from_int('USD', $money_info['Bonus']),
+                        'credit' => $mobius->deposit_from_int('USD', $money_info['Credit']),
                         'currency_id' => $money_info['CurrencyId'],
                         'currency' => $money_info['Currency']
                     ]);

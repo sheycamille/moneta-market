@@ -45,7 +45,7 @@ class MtClient
     public function call($method, array $params = NULL)
     {
         $url = 'https://mtrader7api.com/v2';
-        $payload = new stdClass;
+        $payload = new \stdClass;
 
         $payload->jsonrpc = '2.0';
         $payload->id = $this->generate_id();
