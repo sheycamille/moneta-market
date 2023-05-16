@@ -11,6 +11,7 @@ use App\Models\TpTransaction;
 use App\Models\Withdrawal;
 
 use App\Libraries\MobiusTrader;
+use App\Libraries\MobiusTrader\MtClient;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,21 +67,30 @@ class Controller extends BaseController
 
     protected function performTransaction($cur, $actNum, $amt, $paySysCode, $purse, $type, $account='balance')
     {
-        $m7 = new MobiusTrader(config('mobius'));
+        $mobius = new MobiusTrader(config('mobius'));
+        $m7 = new MtClient(config('mobius'));
 
         $resp = ['status' => false];
-        $amt = (int)$m7->deposit_to_int($cur, $amt);
+        $amt = (int)$mobius->deposit_to_int($cur, $amt);
         $actNum = (int)$actNum;
 
         if($type == 'deposit') {
+            $data = array(
+                'TradingAccountId' => $actNum,
+                'Amount' => $amt,
+                'Comment' => $paySysCode . ' | ' . $purse);
             if($account == 'balance')
-                $resp = $m7->balance_add($actNum, $amt, $purse, $paySysCode);
+                $resp = $m7->call('BalanceAdd', $data);
             elseif($account == 'credit')
-                $resp = $m7->credit_add($actNum, $amt, $purse, $paySysCode);
+                $resp = $m7->call('CreditAdd', $data);
             elseif($account == 'bonus')
-                $resp = $m7->bonus_add($actNum, $amt, $purse, $paySysCode);
+                $resp = $m7->call('BonusAdd', $data);
         } else {
-            $resp = $m7->funds_withdraw($cur, $actNum, -$amt, $paySysCode, $purse);
+            $data = array(
+                'TradingAccountId' => $actNum,
+                'Amount' => -$amt,
+                'Comment' => $paySysCode . ' | ' . $purse);
+            $resp = $m7->call('BalanceAdd', $data);
         }
 
         return $resp;
@@ -124,7 +134,7 @@ class Controller extends BaseController
     protected function updateaccounts($user)
     {
         // initialize the Trader7 m7
-        $m7 = new MobiusTrader(config('mobius'));
+        $m7 = new MtClient(config('mobius'));
 
         // Get user Trader7 accounts
         $accs = $user->accounts();
@@ -132,7 +142,10 @@ class Controller extends BaseController
         $acc_numbers = $accs->pluck('number')->all();
 
         try {
-            $resp = $m7->money_info($acc_numbers);
+            $resp = $m7->call('MoneyInfo', array(
+                'TradingAccounts' => (array)$acc_numbers,
+                'Currency' => '',
+            ));
             if(is_string($resp)) return ['status' => false, 'msg' => 'An error occurred, contact support'];
             foreach($resp as $acc_num => $money_info) {
                 Trader7::where('number', $acc_num)
@@ -153,20 +166,28 @@ class Controller extends BaseController
 
     protected function setMobiusPassword($acc_id, $login, $password)
     {
-        $m7 = new MobiusTrader(config('mobius'));
+        $m7 = new MtClient(config('mobius'));
 
         // set the password
-        $resp = $m7->password_set($acc_id, $login, $password);
+        $data = array(
+            'ClientId' => (int)$acc_id,
+            'Login' => $login,
+            'Password' => $password,
+            'SessionType' => 0
+        );
+        $resp = $m7->call('PasswordSet', $data);
         return $resp;
     }
 
 
     protected function fetchAccountNumbers($acc_id)
     {
-        $m7 = new MobiusTrader(config('mobius'));
+        $m7 = new MtClient(config('mobius'));
 
         // set the password
-        $resp = $m7->get_account_numbers((int)$acc_id);
+        $resp = $m7->call('TradingAccountsGet', array(
+            'Id' => (int)$acc_id
+        ));
         return $resp;
     }
 }

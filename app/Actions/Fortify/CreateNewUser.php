@@ -14,12 +14,13 @@ use Illuminate\Validation\ValidationException;
 
 use Laravel\Jetstream\Jetstream;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use stdClass;
 
 use Carbon\Carbon;
 
 use App\Libraries\MobiusTrader;
+use App\Libraries\MobiusTrader\MtClient;
 use App\Rules\ReCaptcha;
+
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -34,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        Validator::make($input, [
+        $validator = Validator::make($input, [
             // 'name' => ['required', 'string', 'max:255'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -56,7 +57,6 @@ class CreateNewUser implements CreatesNewUsers
         $name .= $input['last_name'] ? $input['last_name'] : '';
         $data = [
             'name' => $name,
-            'lastName' => $input['last_name'],
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],
             'email' => $input['email'],
@@ -67,19 +67,25 @@ class CreateNewUser implements CreatesNewUsers
             'state' => $input['state'],
             'zip_code' => $input['zip_code'],
             'country_id' => $input['country'],
+            'ref_by' => $referrer,
             'status' => 'active',
             'password' => $input['password'],
             'ref_by' => $referrer,
         ];
 
+        // create the user
+        $user = User::create($data);
+
+        // create the user on mobius server
+        $data['ClientId'] = $user->id;
         $mobiusResp = $this->createTrader($data);
 
         if($mobiusResp['status'] === MobiusTrader::STATUS_OK) {
-            // hash the password before creating the user
+            // hash the password before updating the user
             $data['password'] = Hash::make($data['password']);
             $data['account_number'] = $mobiusResp['data']['Id'];
 
-            $user = User::create($data);
+            $user->update($data);
 
             // update the user's referral link and his referrer
             $ref_link = 'https://' . request()->getHttpHost() . '/' . $user->id;
@@ -94,7 +100,7 @@ class CreateNewUser implements CreatesNewUsers
 
             return $user;
         } else{
-            throw ValidationException::withMessages([$mobiusResp['data']]);
+            throw ValidationException::withMessages([$mobiusResp['message']]);
         }
     }
 
@@ -102,7 +108,7 @@ class CreateNewUser implements CreatesNewUsers
     protected function notifyUser($user)
     {
         $site_name = Setting::getValue('site_name');
-        $objDemo = new stdClass();
+        $objDemo = new \stdClass();
         $hash = sha1($user->email);
         $link = route('verification.verify', [
             'id' =>  $user->id,
@@ -114,9 +120,9 @@ class CreateNewUser implements CreatesNewUsers
         \r\n This is to inform you that you have successfully registered on $site_name. \r\n ";
         $objDemo->sender = "$site_name";
         $objDemo->date = Carbon::Now();
-        $objDemo->subject = "Welcome To Moneta Market, Experience the Future of Online Trading.";
+        $objDemo->subject = "Welcome To Gestion du Patrimoine, Experience the Future of Online Trading.";
         $mail = new NewNotification($objDemo);
-        $mail->subject = "Welcome To Moneta Market, Experience the Future of Online Trading.";
+        $mail->subject = "Welcome To Gestion du Patrimoine, Experience the Future of Online Trading.";
         Mail::mailer('smtp')->bcc($user->email)->send($mail);
     }
 
@@ -124,31 +130,35 @@ class CreateNewUser implements CreatesNewUsers
     protected function createTrader($data)
     {
         $country = Country::find($data['country_id']);
-        $m7 = new MobiusTrader(config('mobius'));
+        $m7 = new MtClient(config('mobius'));
 
         // create the account
-        $resp = $m7->create_account(
-            $data['email'],
-            $data['name'],
-            null,
-            $country->name,
-            $data['town'],
-            $data['address'],
-            $data['phone'],
-            $data['zip_code'],
-            $data['state'],
-            'MM-Creation'
+        $cdata = array(
+            'Name' => $data['name'],
+            'Email' => $data['email'],
+            'AgentClient' => $data['ClientId'],
+            'Country' => $country->name,
+            'City' => $data['town'],
+            'Phone' => $data['phone'],
+            'State' => $data['state'],
+            'ZipCode' => $data['zip_code'],
+            'Address' => $data['address'],
+            'Comment' => 'MM-Creation',
         );
+        $resp = $m7->call('ClientCreate', $cdata);
 
         // set password
         if($resp['status'] == MobiusTrader::STATUS_OK) {
             $account = $resp['data'];
-            $login = $account['Email'];
-            $account_id = $account['Id'];
-            $password = $data['password'];
+            $data = array(
+                'ClientId' => (int)$account['Id'],
+                'Login' => $account['Email'],
+                'Password' => $data['password'],
+                'SessionType' => 0
+            );
 
             // set the password
-            $respPassSet = $m7->password_set($account_id, $login, $password);
+            $respPassSet = $m7->call('PasswordSet', $data);
             if($respPassSet['status'] == MobiusTrader::STATUS_OK)
                 return $resp;
             else

@@ -7,6 +7,7 @@ use Exception;
 use App\Models\Trader7;
 
 use App\Libraries\MobiusTrader;
+use App\Libraries\MobiusTrader\MtClient;
 
 
 class UpdateAccounts
@@ -37,7 +38,7 @@ class UpdateAccounts
             return;
 
         // initialize the Trader7 api
-        $m7 = new MobiusTrader();
+        $m7 = new MtClient(config('mobius'));
 
         // Get user Trader7 accounts
         $accs = $user->accounts();
@@ -45,7 +46,10 @@ class UpdateAccounts
         $acc_numbers = $accs->pluck('number')->all();
 
         try {
-            $resp = $m7->money_info($acc_numbers);
+            $resp = $m7->call('MoneyInfo', array(
+                'TradingAccounts' => (array)$acc_numbers,
+                'Currency' => '',
+            ));
             if(is_string($resp)) return ['status' => false, 'msg' => 'An error occurred, contact support'];
             foreach($resp as $acc_num => $money_info) {
                 Trader7::where('number', $acc_num)

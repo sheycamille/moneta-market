@@ -16,6 +16,8 @@ use App\Mail\NewNotification;
 
 use App\Http\Controllers\Controller;
 
+use App\Libraries\MobiusTrader;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -149,7 +151,7 @@ class LogicController extends Controller
         // do the deposit on the Trader7 account
         $respTrans = $this->performTransaction($t7->currency, $t7->number, $deposit->amount, 'MM-Admin', 'MM-AUTO', 'deposit', 'balance');
 
-        if(gettype($respTrans) !== 'integer') {
+        if($respTrans['status'] !== MobiusTrader::STATUS_OK) {
             return redirect()->back()->with('message', 'Sorry an error occured, report this to IT!');
         }
 
@@ -193,7 +195,7 @@ class LogicController extends Controller
         $t7 = Trader7::find($withdrawal->account_id);
         $respTrans = $this->performTransaction($t7->currency, $t7->number, $withdrawal->amount, 'MM-Admin', 'MM-AUTO', 'withdrawal');
 
-        if(gettype($respTrans) !== 'integer') {
+        if($respTrans['status'] !== MobiusTrader::STATUS_OK) {
             return redirect()->back()->with('message', 'Sorry an error occured, report this to IT!');
         }
 

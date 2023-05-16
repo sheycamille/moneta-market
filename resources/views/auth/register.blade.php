@@ -155,7 +155,7 @@
             <div class="uk-width-1-2 uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip fas fa-cog fa-sm" for="account_type"></span>
                 <select class="uk-input uk-border-rounded" name="account_type" id="account_type" required>
-                    <option>Choose account type*</option>
+                    <option disabled>Choose account type*</option>
                     @foreach ($account_types as $accType)
                         <option @if ($accType->id == request()->get('account_type')) selected @endif value="{{ $accType->id }}">
                             {{ $accType->name }}</option>

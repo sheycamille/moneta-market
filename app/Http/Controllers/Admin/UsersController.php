@@ -12,7 +12,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Http\Controllers\Controller;
+
 use App\Libraries\MobiusTrader;
+
 use App\Mail\NewNotification;
 
 use App\Models\User;
@@ -400,7 +402,7 @@ class UsersController extends Controller
                 $t7->balance += $amt;
             }
 
-            if(gettype($respTrans) !== 'integer') {
+            if($respTrans['status'] !== MobiusTrader::STATUS_OK) {
                 return redirect()->route('manageusers')
                     ->with('message', 'Sorry an error occured, report this to IT!');
             } else {
@@ -429,7 +431,7 @@ class UsersController extends Controller
                 $t7->balance -= $amt;
             }
 
-            if (gettype($respTrans) !== 'integer') {
+            if($respTrans['status'] !== MobiusTrader::STATUS_OK) {
                 // create withdrawal record
                 $this->saveRecord($request->user_id, $request->account_id, 'Express Debit', $amt, 'Withdrawal', 'Processed');
 

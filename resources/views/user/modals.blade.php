@@ -15,7 +15,7 @@
                     <br />
 
                     <select required class="form-control" name="account_id" id="account_id" required>
-                        <option value="" disabled selected>@lang('message.modal.chose')</option>
+                        <option value="" disabled>@lang('message.modal.chose')</option>
                         @foreach (Auth::user()->accounts() as $account)
                             <option value="{{ $account->id }}">{{ $account->number }} |  USD {{ $account->balance }}
                             </option>

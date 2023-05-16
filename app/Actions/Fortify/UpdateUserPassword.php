@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 use App\Libraries\MobiusTrader;
-
+use App\Libraries\MobiusTrader\MtClient;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 
 
@@ -35,8 +35,18 @@ class UpdateUserPassword implements UpdatesUserPasswords
         })->validateWithBag('updatePassword');
 
         // set the password
-        $m7 = new MobiusTrader(config('mobius'));
-        $resp = $m7->password_set($user->account_number, $user->email, $password);
+        $m7 = new MtClient(config('mobius'));
+        $account = $resp['data'];
+
+        $data = array(
+            'ClientId' => (int)$account['Id'],
+            'Login' => $account['Email'],
+            'Password' => $data['password'],
+            'SessionType' => 0
+        );
+
+        // set the password
+        $respPassSet = $m7->call('PasswordSet', $data);
         if($resp['status'] == MobiusTrader::STATUS_OK) {
             $data = ['status' => 'OK', "message" => "Password has been reset to default."];
             $user->forceFill([

@@ -268,7 +268,7 @@ class MtSearch
                 'OpenTime',
                 'CloseTime',
                 'TradeCmd',
-                'AccountNumberId',
+                'TradingAccountId',
                 'Sl',
                 'Tp',
                 'Volume',
@@ -469,4 +469,5 @@ class MtSearch
             return $this->_result[0];
         }
         return $this->_result;
-    }}
+    }
+}

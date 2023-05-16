@@ -13,7 +13,7 @@
                     <input style="padding: 10px;" class="form-control" value="{{ $user->id }}" type="text"
                         disabled><br />
                     <select required class="form-control" name="account_id" id="account_id" required>
-                        <option value="" disabled selected>Choose Acount</option>
+                        <option value="" disabled>Choose Account</option>
                         @foreach ($user->accounts() as $account)
                             <option value="{{ $account->id }}">{{ $account->number }} |
                                 USD {{ $account->balance }}

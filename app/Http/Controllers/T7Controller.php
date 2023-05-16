@@ -7,6 +7,7 @@ use App\Models\Trader7;
 use App\Mail\NewNotification;
 
 use App\Libraries\MobiusTrader;
+use App\Libraries\MobiusTrader\MtClient;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -51,24 +52,24 @@ class T7Controller extends Controller
 
         $m7 = new MobiusTrader(config('mobius'));
 
-        if($accounts->isEmpty()) {
-            $accountsData = $this->fetchAccountNumbers($user->account_number);
-            foreach($accountsData as $data) {
-                $t7 = new Trader7();
-                $t7->client_id = $user->id;
-                $t7->number = $data['Id'];
-                $t7->name = $data['Name'];
-                $t7->type = $data['Type'];
-                $t7->leverage = $data['Leverage'];
-                $t7->currency = 'USD';
-                $t7->status = 'active';
-                $t7->currency_id = $data['CurrencyId'];
-                $t7->balance = $m7->deposit_to_int('USD', $data['Balance']);
-                $t7->bonus = $m7->deposit_to_int('USD', $data['Bonus']);
-                $t7->credit = $m7->deposit_to_int('USD', $data['Credit']);
-                $t7->save();
-            }
-        }
+        // if($accounts->isEmpty()) {
+        //     $accountsData = $this->fetchAccountNumbers($user->account_number);
+        //     foreach($accountsData as $data) {
+        //         $t7 = new Trader7();
+        //         $t7->client_id = $user->id;
+        //         $t7->number = $data['Id'];
+        //         $t7->name = $data['Name'];
+        //         $t7->type = $data['Type'];
+        //         $t7->leverage = $data['Leverage'];
+        //         $t7->currency = 'USD';
+        //         $t7->status = 'active';
+        //         $t7->currency_id = $data['CurrencyId'];
+        //         $t7->balance = $m7->deposit_to_int('USD', $data['Balance']);
+        //         $t7->bonus = $m7->deposit_to_int('USD', $data['Bonus']);
+        //         $t7->credit = $m7->deposit_to_int('USD', $data['Credit']);
+        //         $t7->save();
+        //     }
+        // }
         $accounts = Trader7::where('type', MobiusTrader::ACCOUNT_NUMBER_TYPE_REAL)->where('client_id', $user->id)->get();
 
         return view('user.liveaccounts', [
@@ -102,11 +103,19 @@ class T7Controller extends Controller
         }
 
         // Trader7 account creation
-        $m7 = new MobiusTrader(config('mobius'));
-        $resp = $m7->create_account_number($type, $user->account_number, $leverage, $currency, $name, $tags);
+        $m7 = new MtClient(config('mobius'));
+        $data = array(
+            'ClientId' => (int)$user->account_number,
+            'Leverage' => (int)$leverage,
+            'SettingsTemplate' => $currency,
+            'DisplayName' => $name,
+            'Tags' => $tags,
+            'Type' => $type,
+        );
+        $resp = $m7->call('TradingAccountCreate', $data);
         if ($resp['status'] !== MobiusTrader::STATUS_OK) {
-            $request->session()->flash("message", $resp['data']);
-            response(["message" => $resp['status']]);
+            $request->session()->flash("message", $resp['message']);
+            return response(["message" => $resp['message']]);
         }
         $data = $resp['data'];
 
@@ -154,7 +163,8 @@ class T7Controller extends Controller
         $resp = $this->performTransaction($t7Acc->currency, $t7Acc->number, '10000.0', 'MM-DEMO', 'MM-AUTO', 'deposit', 'balance');
 
         $msg = 'Your Trader7 Demo Account has been successfully topped up with $10k!';
-        if(gettype($resp) !== 'integer') {
+
+        if($resp['status'] !== MobiusTrader::STATUS_OK) {
             $msg = 'An error occurred, please contact support';
         } else {
             // update the local record

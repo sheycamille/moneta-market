@@ -14,15 +14,16 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Libraries\MobiusTrader;
 
+use App\Mail\Twofa;
+
 use Spatie\Permission\Traits\HasRoles;
 
 use Illuminate\Support\Facades\Auth;
 
 use Mail;
-use App\Mail\Twofa;
-
 
 use Carbon\Carbon;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -83,12 +84,12 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     public function resetTwoFactorCode()
-{
-    $this->timestamps = false;
-    $this->token_2fa = null;
-    $this->token_2fa_expiry = null;
-    $this->save();
-}
+    {
+        $this->timestamps = false;
+        $this->token_2fa = null;
+        $this->token_2fa_expiry = null;
+        $this->save();
+    }
 
     public function resendCode()
     {
@@ -230,5 +231,4 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return $total;
     }
-
 }

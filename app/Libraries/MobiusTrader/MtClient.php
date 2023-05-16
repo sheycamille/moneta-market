@@ -44,8 +44,8 @@ class MtClient
 
     public function call($method, array $params = NULL)
     {
-        $url = 'https://api.mtrader7.com/v1';
-        $payload = new \stdClass;
+        $url = 'https://mtrader7api.com/v2';
+        $payload = new stdClass;
 
         $payload->jsonrpc = '2.0';
         $payload->id = $this->generate_id();
@@ -73,9 +73,9 @@ class MtClient
             CURLOPT_URL => $url,
             CURLOPT_USERAGENT => $this->options['user_agent'],
             CURLOPT_POST => 1,
-            CURLOPT_SSL_VERIFYPEER => TRUE,
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_TIMEOUT => 20,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_SSL_VERIFYPEER => FALSE,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_POSTFIELDS => json_encode($payload)
         ));
@@ -88,8 +88,8 @@ class MtClient
         if ($http_code !== 200) {
             return array(
                 'status' => self::STATUS_ERROR,
-                'data' => $http_code,
-                'message' => $response,
+                'data' => $http_code ? $http_code : 'UnknownError',
+                'message' => curl_error($curl) ? curl_error($curl) : $response,
             );
         }
 
