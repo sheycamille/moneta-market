@@ -13,6 +13,8 @@ use App\Models\Notification;
 use App\Models\TpTransaction;
 use App\Events\CheckAccounts;
 
+use App\Jobs\ProcessEmails;
+
 use App\Mail\KycUpload;
 use App\Mail\UserUpload;
 use App\Mail\NewNotification;
@@ -379,8 +381,11 @@ class UserController extends Controller
         $objDemo->sender = "$site_name";
         $objDemo->date = Carbon::Now();
         $objDemo->subject = "Deposit Processed!";
+        
+        //dispatch email
+        dispatch(new ProcessEmails($objDemo));
 
-        Mail::bcc($user->email)->send(new NewNotification($objDemo));
+        //Mail::bcc($user->email)->send(new NewNotification($objDemo));
 
         Session::flash('message', 'Your deposit was successfully processed!');
 
