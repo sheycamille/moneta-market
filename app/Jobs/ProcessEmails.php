@@ -41,11 +41,11 @@ class ProcessEmails implements ShouldQueue
     public function handle(Request $request)
     {
         //contact email
-        Mail::mailer('smtp')->bcc('wisdomcamille@gmail.com')->send(new NewNotification($this->objDemo));
+        // Mail::mailer('smtp')->bcc('wisdomcamille@gmail.com')->send(new NewNotification($this->objDemo));
 
         //deposit email
         $user = User::where('id', Auth::user()->id)->first();
 
-        Mail::bcc($user->email)->send(new NewNotification($this->objDemo));
+        Mail::mailer('smtp')->bcc($user->email)->send(new NewNotification($this->objDemo));
     }
 }
