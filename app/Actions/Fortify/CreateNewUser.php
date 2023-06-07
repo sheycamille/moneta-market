@@ -54,7 +54,7 @@ class CreateNewUser implements CreatesNewUsers
 
         $referrer = session()->pull('ref_by') ? session()->pull('ref_by') : $input['ref_by'];
         $name = $input['first_name'];
-        $name .= $input['last_name'] ? $input['last_name'] : '';
+        $name .= $input['last_name'] ? ' ' . $input['last_name'] : '';
         $data = [
             'name' => $name,
             'first_name' => $input['first_name'],
@@ -88,7 +88,7 @@ class CreateNewUser implements CreatesNewUsers
             $user->update($data);
 
             // update the user's referral link and his referrer
-            $ref_link = 'https://' . request()->getHttpHost() . '/' . $user->id;
+            $ref_link = 'https://' . request()->getHttpHost() . '/ref/' . $user->id;
             $user->ref_link = $ref_link;
 
             if(!$user->ref_by) $user->ref_by = $referrer;
@@ -99,7 +99,8 @@ class CreateNewUser implements CreatesNewUsers
             $this->notifyUser($user);
 
             return $user;
-        } else{
+        } else {
+            $user->delete();
             throw ValidationException::withMessages([$mobiusResp['message']]);
         }
     }
