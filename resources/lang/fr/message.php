@@ -420,7 +420,7 @@ return [
         appropriée. La Société vous informera si elle décide d'apporter des changements, soit en
         en publiant un avis à l'intention du public ou par courrier électronique.",
         'links' => 'Liens',
-        'b13' => "Notre site web, monetamarket.net, peut contenir des liens vers d'autres sites web sur l'internet. Nous ne sommes, en
+        'b13' => "Notre site web, monetamarkets.net, peut contenir des liens vers d'autres sites web sur l'internet. Nous ne sommes, en
         Nous ne sommes en aucun cas responsables des pratiques de confidentialité ou de collecte de vos
         ces sites web. Notre politique ne s'applique qu'aux informations collectées par la Société. ",
         'questions' => 'Questions',
@@ -524,7 +524,7 @@ return [
         sur les conditions générales de vente d'Moneta Market. ",
         'contact' => 'Contact',
         'cus' => 'Département du support client',
-        'email' => 'Courriel :support@monetamarket.net',
+        'email' => 'Courriel :support@monetamarkets.net',
 
     ],
     'risk_disclosure' => [
@@ -987,7 +987,7 @@ return [
                 d'aller de l'avant. Cela signifie que pour toutes les configurations du portefeuille du Client, ce dernier
                 porte l'entière responsabilité du moment où il n'a pas effectué les actions correspondantes
                 quel que soit l'impact ultérieur du profit ou de la perte sur le montant total du profit et de la perte. Le non-respect de ces actions est considéré comme une incapacité à atténuer les pertes. Le client doit soumettre toute réclamation à Moneta Market par écrit à l'adresse e-mail :
-                support@monetamarket.net.",
+                support@monetamarkets.net.",
         'b4' => 'Dans un délai de trente (30) jours ouvrables, Moneta Market doit vérifier toute plainte écrite, si elle est suffisamment documentée, et présenter sa position à la Commission.
                 écrite si elle est suffisamment documentée, et présenter sa position au client.
                 client. ',

@@ -51,8 +51,7 @@
                                 href="https://mobius-trader.s3.eu-north-1.amazonaws.com/MobiusTrader/MobiusTrader-Mobius.win.exe">@lang('message.trading_platform.download_now')</a><br>
                         </div>
                     </div>
-                    <img class="col-md-6" src="{{ asset('front/img/about/MT5-10.jpg') }}" alt="Trader7"
-                        tilte="Trader7" />
+                    <img class="col-md-6" src="{{ asset('front/img/about/MT5-10.jpg') }}" alt="Trader7" tilte="Trader7" />
                 </div>
             </div>
         </section>
@@ -92,7 +91,7 @@
                         </p>
                         <div class="text-left">
                             <a class="" target="_blank"
-                                href="https://play.google.com/store/apps/details?id=com.mtrader7.terminal&hl=en">
+                                href="https://play.google.com/store/apps/details?id=com.freetraderprogram&hl=en">
                                 <img class="" src="{{ asset('front/img/about/google_play_badge.png') }}"
                                     alt="Andriod Download" tilte="Andriod Download" height="66" />
                                 @lang('message.download_now')</a>

@@ -27,8 +27,8 @@
             value="{{ \App\Models\Setting::getValue('keywords') }}" required>
     </div>
     <div class="form-group">
-        <h5 class="">Website Url (https://monetamarket.net)</h5>
-        <input type="text" placeholder="https://monetamarket.net" name="site_address" class="form-control"
+        <h5 class="">Website Url (https://monetamarkets.net)</h5>
+        <input type="text" placeholder="https://monetamarkets.net" name="site_address" class="form-control"
             value="{{ \App\Models\Setting::getValue('site_address') }}" required>
     </div>
     <div class="form-group">

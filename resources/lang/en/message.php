@@ -456,7 +456,7 @@ return [
         'b20' => 'Moneta Market will accomodate Clients who acquired the Policy or sanctioned to take the Policy by electronic means or any other online transactions including those who have largely settled upon on the Trading Terms and Conditions of Moneta Market. ',
         'contact' => 'Contact',
         'cus' => 'Customer Support Department',
-        'email' => 'Email:support@monetamarket.net ',
+        'email' => 'Email:support@monetamarkets.net ',
 
     ],
     'risk_disclosure' => [
@@ -831,7 +831,7 @@ return [
         of moving on. This means that for all configurations in the Customer’s portfolio, the Client
         bears full responsibility of the moment of failure to perform the corresponding actions
         regardless of further impact of profit or loss from the total amount of profit and loss. Noncompliance with these actions is seen as an inability to mitigate losses. The Client must submit any complaints to Moneta Market in writing to the email address:
-        support@monetamarket.net. ',
+        support@monetamarkets.net',
         'b4' => 'Within thirty (30) business days, Moneta Market must verify any written
         complaint if it is sufficiently documented, and present its position to the
         Client. ',

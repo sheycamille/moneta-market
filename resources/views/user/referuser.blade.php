@@ -50,7 +50,7 @@
                                 <div class="col-12 text-center card shadow-lg p-3">
                                     <strong>You can refer users by sharing your referral link:</strong><br>
                                     <h4 style="color:green;">
-                                        {{ Auth::user()->ref_link ? Auth::user()->ref_link : 'https://app.monetamarket.net/ref/' . Auth::user()->id }}
+                                        {{ Auth::user()->ref_link ? Auth::user()->ref_link : 'https://app.monetamarkets.net/ref/' . Auth::user()->id }}
                                     </h4> <br>
                                 </div>
                             </div>

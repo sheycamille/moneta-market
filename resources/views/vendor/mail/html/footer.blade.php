@@ -8,9 +8,9 @@
         <div class="col-sml icons"
             style="display:inline-block;width:100%;max-width:145px;vertical-align:top;text-align:left;font-family:Arial,sans-serif;font-size:14px;color:#363636;">
             <a style="text-align:center;"
-                href="https://play.google.com/store/apps/details?id=com.mtrader7.terminal&hl=en">
+                href="https://play.google.com/store/apps/details?id=com.freetraderprogram&hl=en">
                 <img class="" src="{{ URL::to('/') }}/dash/images/google_play_badge.png" alt="Andriod Download"
-                    tilte="Andriod Download"  />
+                    tilte="Andriod Download" />
                 <br><br>
                 <span>Download Now</span>
             </a>
@@ -21,7 +21,7 @@
             <a style="text-align:center;" href="https://apps.apple.com/gb/app/mobiustrader-7/id1355359598"
                 target="_blank">
                 <img src="{{ URL::to('/') }}/dash/images/app-store-en.png" alt="iPhone Download"
-                    tilte="iPhone Download"  />
+                    tilte="iPhone Download" />
                 <br><br>
                 <span>Download Now</span>
             </a>
